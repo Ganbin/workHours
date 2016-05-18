@@ -44,6 +44,30 @@
 						"Y": 484
 					}
 				}
+			},
+			"UserTime": {
+				"panelColor": "#CCC1D9",
+				"flatVisible": "true",
+				"methVisible": "true",
+				"panel": {
+					"isOpen": "true",
+					"position": {
+						"X": 775,
+						"Y": 20
+					}
+				}
+			},
+			"Utility": {
+				"panelColor": "#D7E3BC",
+				"flatVisible": "true",
+				"methVisible": "true",
+				"panel": {
+					"isOpen": "true",
+					"position": {
+						"X": 1025,
+						"Y": 20
+					}
+				}
 			}
 		},
 		"model": {
@@ -63,6 +87,12 @@
 				},
 				"Category": {
 					"computed": "Category/Category-events.js"
+				},
+				"WorkTime": {
+					"events": "WorkTime/WorkTime-events.js"
+				},
+				"Utility": {
+					"method": "Utility/Utility-methods.js"
 				}
 			}
 		}
@@ -119,10 +149,16 @@
 				},
 				{
 					"name": "categoryClient",
+					"kind": "calculated",
 					"scope": "public",
 					"type": "string",
-					"kind": "calculated",
-					"scriptKind": "javascript"
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.Category.categoryClient.onGet",
+							"userDefined": true
+						}
+					]
 				}
 			]
 		},
@@ -171,6 +207,32 @@
 					"applyTo": "dataClass",
 					"scope": "public",
 					"from": "$mainModel.Client.methods.getReport",
+					"userDefined": true
+				}
+			]
+		},
+		{
+			"name": "Utility",
+			"className": "Utility",
+			"collectionName": "UtilityCollection",
+			"scope": "public",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"scope": "public",
+					"unique": true,
+					"autosequence": true,
+					"type": "long",
+					"primKey": true
+				}
+			],
+			"methods": [
+				{
+					"name": "getUserNames",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.Utility.methods.getUserNames",
 					"userDefined": true
 				}
 			]
@@ -271,13 +333,37 @@
 				},
 				{
 					"name": "categoryClient",
+					"kind": "alias",
 					"scope": "public",
-					"path": "category.categoryClient",
 					"type": "string",
-					"kind": "alias"
+					"path": "category.categoryClient"
+				},
+				{
+					"name": "userID",
+					"kind": "storage",
+					"scope": "public",
+					"type": "uuid"
+				}
+			],
+			"events": [
+				{
+					"kind": "save",
+					"from": "$mainModel.WorkTime.events.save",
+					"userDefined": true
+				}
+			]
+		},
+		{
+			"name": "UserTime",
+			"className": "UserTime",
+			"collectionName": "UserTimeCollection",
+			"scope": "public",
+			"extends": "WorkTime",
+			"restrictingQuery": [
+				{
+					"queryStatement": "userID == :$userid"
 				}
 			]
 		}
-	],
-	"type": []
+	]
 }

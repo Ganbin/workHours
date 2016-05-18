@@ -33,6 +33,7 @@
 						case 'report':
 							self.categories = sharedData.message.reportArr;
 							self.clientName = sharedData.message.clientName || 'tout les clients';
+							self.userName = sharedData.message.userName;
 							self.from = sharedData.message.from;
 							self.to = sharedData.message.to;
 						break;

@@ -47,13 +47,13 @@
 					clientName = self.clientSelected.name;
 				}
 				
-				ds.Client.getReport({from:from,to:to,clientName:clientName}).$promise.then(function(evt){
+				ds.Client.getReport({from:from,to:to,clientName:clientName,userID:self.userSelected.ID}).$promise.then(function(evt){
 					self.categories = [];
 					for(cat in evt.result){
 						//debugger;
 						self.categories.push({'name':cat,'time':evt.result[cat].time,'price':evt.result[cat].price,'addPrice':evt.result[cat].addPrice,'trainTime':evt.result[cat].trainTime,'label':evt.result[cat].label});
 					}
-					sharedData.prepForBroadcast({'action':'report','reportArr':self.categories,'clientName':clientName,from:from,to:to});
+					sharedData.prepForBroadcast({'action':'report','reportArr':self.categories,'clientName':clientName,from:from,to:to,'userName':self.userSelected.name});
 				});
 			},
 			
@@ -67,6 +67,10 @@
 
 			self.getAllClients = getAllClients;
 			self.getReport = getReport;
+			
+			ds.Utility.getUserNames().$promise.then(function (evt) {
+				self.users = evt.result;
+			});
 			
 			self.getAllClients();
 		});

@@ -17,19 +17,20 @@ model.Client.methods.getReport = function (options) {
 		from = options.from;
 		to = options.to;
 		clientName = options.clientName || null;
+		userID = options.userID;
 		
-		from = new Date(from.substr(0,from.length-10));
+		from = new Date(from/*.substr(0,from.length-10)*/);
 		from.setHours(0);
 		from.setMinutes(0);
-		to = new Date(to.substr(0,to.length-10));
+		to = new Date(to/*.substr(0,to.length-10)*/);
 		to.setHours(23);
 		to.setMinutes(59);
 	}
 	
 	if(clientName !== null){
-		workTimes = ds.WorkTime.query('start > :1 and end < :2 and clientName == :3',from,to,clientName);
+		workTimes = ds.WorkTime.query('start > :1 and end < :2 and userID == :3 and clientName == :4',from,to,userID,clientName);
 	}else{
-		workTimes = ds.WorkTime.query('start > :1 and end < :2 ',from,to);
+		workTimes = ds.WorkTime.query('start > :1 and end < :2 and userID == :3',from,to,userID);
 	}
 
 	categoryClientNames = workTimes.distinctValues('categoryClient'); // List of all the categories

@@ -2,6 +2,8 @@
 	<group ID="01000000000000000000000000000000" name="Admin">	</group>
 	<group ID="C4EDAA1B68FE4324BF5AA15FC28EBB45" name="dataAdmin">
 		<include user="ganbin" ID="25142ED937B243768ECEBBF070E96A09"/>
+		<include user="momo" ID="93C116C1D4AC4C089C2DE233853B2C9B"/>
 	</group>
 	<user ID="25142ED937B243768ECEBBF070E96A09" name="ganbin" fullName="Gabriel Inzirillo" password="e1c2fec20f0d1dd72f0d00d708c95ed5"/>
+	<user ID="93C116C1D4AC4C089C2DE233853B2C9B" name="momo" fullName="Maurice Inzirillo" password="e5047b926db556c45c1167e692e32d09"/>
 </directory>

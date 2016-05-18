@@ -45,7 +45,8 @@
 			});
 
 			var getAll = function(options){
-				ds.WorkTime.$all(options).$promise.then(function(event){
+				
+				ds.UserTime.$all(options).$promise.then(function(event){
 					self.workTimes = event.result;
 					self.canGetMore = (self.workTimes.length < self.workTimes.$totalCount) ? true : false;
 				});

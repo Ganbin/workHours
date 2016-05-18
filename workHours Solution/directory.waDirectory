@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><directory>
+	<group ID="01000000000000000000000000000000" name="Admin">	</group>
+	<group ID="C4EDAA1B68FE4324BF5AA15FC28EBB45" name="dataAdmin">
+		<include user="ganbin" ID="25142ED937B243768ECEBBF070E96A09"/>
+	</group>
+	<user ID="25142ED937B243768ECEBBF070E96A09" name="ganbin" fullName="Gabriel Inzirillo" password="e1c2fec20f0d1dd72f0d00d708c95ed5"/>
+</directory>

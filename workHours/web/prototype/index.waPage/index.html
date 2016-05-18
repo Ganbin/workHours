@@ -1,0 +1,37 @@
+<!DOCTYPE html><html>
+	<head>
+		<title>Main Page</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta name="generator" content="Wakanda GUIDesigner"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+		<meta name="WAF.packageJson"/>
+		<meta name="WAF.catalog" content="Client,WorkTime,Category"/>
+		<meta name="wakanda-version" content="11 build 11.195328"/>
+		<meta name="wakanda-build" content="11.195328"/>
+		<meta name="WAF.config.loadCSS" id="waf-interface-css" content="styles/index.css"/>
+		<meta name="WAF.config.loadCSS" id="waf-project-css" content="/prototype/application.css"/>
+
+		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="worktime" data-lib="WAF" data-id="worktime" data-dataType="string" data-autoLoad="true" content="worktime"/>
+		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="Category" data-lib="WAF" data-id="category" data-dataType="string" data-autoLoad="true" content="category"/>
+		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="WorkTime" data-lib="WAF" data-id="workTime" data-dataType="string" data-autoLoad="true" content="workTime"/>
+		<meta name="WAF.config.datasources" data-type="dataSource" data-source-type="dataClass" data-source="Client" data-lib="WAF" data-id="client" data-dataType="string" data-autoLoad="true" content="client"/>
+		
+		
+		<meta name="WAF.config.loadJS" id="waf-script" content="scripts/index.js"/>
+		<meta name="WAF.config.loadJS" content="/bower_components/alertify.js/dist/js/alertify.js"/>
+</head>
+	<body style="" id="waf-body" data-workspace-width="0" data-workspace-orientation="portrait" data-workspace-height="0" data-workspace-device="desktop" data-viewport-width="device-width" data-viewport-minimum-scale="1.0" data-viewport-maximum-scale="1.0" data-viewport-initial-scale="1.0" data-type="document" data-title="Main Page" data-theme="default" data-rpc-validation="false" data-rpc-namespace="rpc" data-rpc-activate="false" data-platform="desktop" data-lib="WAF" data-group="[]" data-entire-model="false" data-apple-meta-tags-status-bar="default">
+		<div id="dataGrid1" data-type="dataGrid" data-selection-mode="single" data-lib="WAF" data-label-position="top" data-label="" data-footer-text="item(s)" data-display-error="true" data-constraint-top="true" data-constraint-left="true" data-column="[{'sourceAttID':'ID','colID':'ID','width':'70','title':'ID','type':'long'},{'sourceAttID':'name','colID':'name','width':'150','title':'name','type':'string'}]" data-binding="client" class="waf-widget waf-dataGrid"></div>
+		<div id="dataGrid2" data-type="dataGrid" data-selection-mode="single" data-lib="WAF" data-label-position="top" data-label="" data-footer-text="item(s)" data-display-error="true" data-constraint-top="true" data-constraint-left="true" data-column="[{'sourceAttID':'ID','colID':'ID','width':'70','title':'ID'},{'sourceAttID':'start','colID':'start','width':'100','title':'start'},{'sourceAttID':'end','colID':'end','width':'100','title':'end'},{'sourceAttID':'break','colID':'break','width':'150','title':'break'},{'sourceAttID':'breakReason','colID':'breakReason','width':'150','title':'breakReason'},{'sourceAttID':'comment','colID':'comment','width':'150','title':'comment'},{'sourceAttID':'clientName','colID':'clientName','width':'150','title':'client'},{'sourceAttID':'categoryName','colID':'categoryName','width':'150','title':'category'}]" data-binding="workTime" class="waf-widget waf-dataGrid"></div>
+		<div id="dataGrid3" data-type="dataGrid" data-selection-mode="single" data-lib="WAF" data-label-position="top" data-label="" data-footer-text="item(s)" data-display-error="true" data-constraint-top="true" data-constraint-left="true" data-column="[{'sourceAttID':'ID','colID':'ID','width':'70','title':'ID'},{'sourceAttID':'name','colID':'name','width':'150','title':'name'},{'sourceAttID':'priceHour','colID':'priceHour','width':'90','title':'priceHour'},{'sourceAttID':'client.name','colID':'client_name','width':'90','title':'Client'}]" data-binding="category" class="waf-widget waf-dataGrid"></div>
+	<button style="" id="categoryBtn" data-urltarget="_blank" data-type="Button" data-package="Button" data-constraint-top="true" data-constraint-left="true" class="btn btn-default"><span class="btn-text"></span><span class="btn-text">Category</span></button>
+		<button style="" id="clientBtn" data-urltarget="_blank" data-type="Button" data-package="Button" data-constraint-top="true" data-constraint-left="true" class="btn btn-default"><span class="btn-text"></span><span class="btn-text">Client</span></button>
+		<div id="login1" data-user-label="User: " data-user-display="Signed in as " data-type="login" data-password-label="Password: " data-logout-action="Logout" data-login-title="Login Dialog" data-login-button="Login" data-login-action="Login" data-lib="WAF" data-constraint-top="true" data-constraint-left="true" class="waf-widget waf-login"></div>
+		<input value="[workTime.start]" type="text" style="" placeholder="" id="textInput1" data-value="[workTime.start]" data-type="TextInput" data-package="TextInput" data-label="start" data-inputtype="text" data-displayvalue="[workTime.start]" data-constraint-top="true" data-constraint-left="true" data-binding-value="workTime.start" class="form-control"/>
+		<label id="label1" for="textInput1" data-valign="middle" data-type="label" data-margin="5" data-lib="WAF" data-constraint-top="true" data-constraint-left="true" class="waf-widget waf-label waf-label-textinput">start</label>
+		<input value="[workTime.end]" type="text" style="" placeholder="" id="textInput2" data-value="[workTime.end]" data-type="TextInput" data-package="TextInput" data-label="end" data-inputtype="text" data-displayvalue="[workTime.end]" data-constraint-top="true" data-constraint-left="true" data-binding-value="workTime.end" class="form-control"/>
+		<label id="label2" for="textInput2" data-valign="middle" data-type="label" data-margin="5" data-lib="WAF" data-constraint-top="true" data-constraint-left="true" class="waf-widget waf-label waf-label-textinput">end</label>
+		<button style="" id="setCategoryClientBtn" data-urltarget="_blank" data-type="Button" data-package="Button" data-constraint-top="true" data-constraint-left="true" class="btn btn-default"><span class="btn-text"></span><span class="btn-text">Set Category Client</span></button>
+		<script type="text/javascript" src="/waLib/WAF/Loader.js"></script>
+	</body>
+</html>

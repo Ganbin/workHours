@@ -1,0 +1,283 @@
+{
+	"toJSON": true,
+	"extraProperties": {
+		"version": "2",
+		"classes": {
+			"Client": {
+				"panelColor": "#4FA997",
+				"methVisible": "true",
+				"methodInhVisible": "true",
+				"relVisible": "true",
+				"panel": {
+					"isOpen": "true",
+					"pathVisible": true,
+					"position": {
+						"X": 25,
+						"Y": 20
+					}
+				}
+			},
+			"WorkTime": {
+				"panelColor": "#B2A2C7",
+				"methVisible": "true",
+				"methodInhVisible": "true",
+				"relVisible": "true",
+				"panel": {
+					"isOpen": "true",
+					"pathVisible": true,
+					"position": {
+						"X": 405,
+						"Y": 24
+					}
+				}
+			},
+			"Category": {
+				"panelColor": "#4FA997",
+				"methVisible": "true",
+				"methodInhVisible": "true",
+				"relVisible": "true",
+				"panel": {
+					"isOpen": "true",
+					"pathVisible": true,
+					"position": {
+						"X": 301,
+						"Y": 484
+					}
+				}
+			}
+		},
+		"model": {
+			"scriptMode": "manual",
+			"workspaceLeft": 0,
+			"workspaceTop": 0,
+			"methodShowMode": "true",
+			"methodInhShowMode": "true",
+			"relShowMode": "true",
+			"relationCurve": {
+				"run": true,
+				"mode": 1
+			},
+			"lastScriptLocation": {
+				"Client": {
+					"method": "Client/Client-methods.js"
+				},
+				"Category": {
+					"computed": "Category/Category-events.js"
+				}
+			}
+		}
+	},
+	"dataClasses": [
+		{
+			"name": "Category",
+			"className": "Category",
+			"collectionName": "CategoryCollection",
+			"scope": "public",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"scope": "public",
+					"unique": true,
+					"autosequence": true,
+					"type": "long",
+					"primKey": true
+				},
+				{
+					"name": "name",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "priceHour",
+					"kind": "storage",
+					"scope": "public",
+					"type": "number"
+				},
+				{
+					"name": "workTimeCollection",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "WorkTimeCollection",
+					"reversePath": true,
+					"path": "category"
+				},
+				{
+					"name": "client",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "Client",
+					"path": "Client"
+				},
+				{
+					"name": "clientName",
+					"kind": "alias",
+					"scope": "public",
+					"type": "string",
+					"path": "client.name"
+				},
+				{
+					"name": "categoryClient",
+					"scope": "public",
+					"type": "string",
+					"kind": "calculated",
+					"scriptKind": "javascript"
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"className": "Client",
+			"collectionName": "ClientCollection",
+			"scope": "public",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"scope": "public",
+					"unique": true,
+					"autosequence": true,
+					"type": "long",
+					"primKey": true
+				},
+				{
+					"name": "name",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "workTimeCollection",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "WorkTimeCollection",
+					"reversePath": true,
+					"path": "client"
+				},
+				{
+					"name": "allCategories",
+					"kind": "relatedEntities",
+					"matchColumn": "categoryCollection",
+					"scope": "public",
+					"type": "CategoryCollection",
+					"reversePath": true,
+					"path": "client"
+				}
+			],
+			"methods": [
+				{
+					"name": "getReport",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.Client.methods.getReport",
+					"userDefined": true
+				}
+			]
+		},
+		{
+			"name": "WorkTime",
+			"className": "WorkTime",
+			"collectionName": "WorkTimeCollection",
+			"scope": "public",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"scope": "public",
+					"unique": true,
+					"autosequence": true,
+					"type": "long",
+					"primKey": true
+				},
+				{
+					"name": "start",
+					"kind": "storage",
+					"scope": "public",
+					"type": "date",
+					"simpleDate": false
+				},
+				{
+					"name": "end",
+					"kind": "storage",
+					"scope": "public",
+					"type": "date",
+					"simpleDate": false
+				},
+				{
+					"name": "break",
+					"kind": "storage",
+					"scope": "public",
+					"type": "duration"
+				},
+				{
+					"name": "breakReason",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "comment",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "client",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "Client",
+					"path": "Client"
+				},
+				{
+					"name": "category",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "Category",
+					"path": "Category"
+				},
+				{
+					"name": "categoryName",
+					"kind": "alias",
+					"scope": "public",
+					"type": "string",
+					"path": "category.name"
+				},
+				{
+					"name": "clientName",
+					"kind": "alias",
+					"scope": "public",
+					"type": "string",
+					"path": "client.name"
+				},
+				{
+					"name": "trainTime",
+					"kind": "storage",
+					"scope": "public",
+					"type": "duration"
+				},
+				{
+					"name": "trainPrice",
+					"kind": "storage",
+					"scope": "public",
+					"type": "number"
+				},
+				{
+					"name": "categoryPriceHour",
+					"kind": "alias",
+					"scope": "public",
+					"type": "number",
+					"path": "category.priceHour"
+				},
+				{
+					"name": "categoryClient",
+					"scope": "public",
+					"path": "category.categoryClient",
+					"type": "string",
+					"kind": "alias"
+				}
+			]
+		}
+	],
+	"type": []
+}

@@ -1,0 +1,47 @@
+{
+	"name": "workHours/index.waPage/index.html",
+	"type": "page",
+	"version": "1.0.0",
+	"loadDependencies": [
+		{
+			"id": "Desktop_Core",
+			"version": "1.0.0",
+			"type": "core"
+		},
+		{
+			"id": "Widget/dataGrid",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/login",
+			"type": "widget"
+		},
+		{
+			"id": "Widget/label",
+			"type": "widget"
+		},
+		{
+			"package": "default"
+		},
+		{
+			"package": "Button"
+		},
+		{
+			"package": "TextInput"
+		},
+		{
+			"file": "styles/index.css"
+		},
+		{
+			"file": "prototype/application.css",
+			"path": "WEBFOLDER"
+		},
+		{
+			"file": "scripts/index.js"
+		},
+		{
+			"file": "bower_components/alertify.js/dist/js/alertify.js",
+			"path": "WEBFOLDER"
+		}
+	]
+}

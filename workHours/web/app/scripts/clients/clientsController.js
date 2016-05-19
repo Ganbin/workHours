@@ -3,14 +3,14 @@
  */
 (function(angular,moment,utils){
 	'use strict';
-	
+
 	var clientsController = function($scope,$state,$wakanda,alertify,sharedData){
 		var self = this;
-		
+
 		self.loggedin = sharedData.getData('logged') || false;
 		self.displayForm = false;
 		self.goToState = $state.go;
-		
+
 		/**
 		 * Wakanda Initialization
 		 */
@@ -24,7 +24,7 @@
 						self.loggedin = false;
 					break;
 					case 'saved':
-						self.getAll({orderBy:''});
+						self.getAll({orderBy:'name'});
 					break;
 				}
 
@@ -37,7 +37,7 @@
 							//self.getAllClients();
 							//self.getAllCategories();
 							self.loggedin = true;
-							self.getAll({orderBy:''});
+							self.getAll({orderBy:'name'});
 							// If not params, I set the form as a new entity to add
 							if(self.ID !== ''){
 								//getEntity(self.ID);
@@ -73,7 +73,7 @@
 				    // user clicked "cancel"
 				});
 			},
-			
+
 			add = function () {
 				self.goToState('clients.add');
 			};
@@ -84,11 +84,11 @@
 			self.remove = remove;
 			self.add = add;
 
-			self.getAll({orderBy:''});
+			self.getAll({orderBy:'name'});
 		});
 	};
-	
+
 	angular.module('workTime').controller('clientsController',clientsController);
 	clientsController.$inject = ['$scope','$state','$wakanda','alertify','mySharedData'];
-	
+
 }(window.angular,window.moment,window.utils));

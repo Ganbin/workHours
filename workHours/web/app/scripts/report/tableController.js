@@ -3,14 +3,14 @@
  */
 (function(angular,moment,utils){
 	'use strict';
-	
+
 	var reportTableController = function($scope,$state,$wakanda,alertify,sharedData){
 		var self = this;
 		self.loggedin = sharedData.getData('logged') || false;
 		self.goToState = $state.go;
 		self.report = [];
-		self.clientName = 'tout les clients';
-		
+		self.clientName = 'tous les clients';
+
 		/**
 		 * Wakanda Initialization
 		 */
@@ -32,7 +32,7 @@
 						break;
 						case 'report':
 							self.categories = sharedData.message.reportArr;
-							self.clientName = sharedData.message.clientName || 'tout les clients';
+							self.clientName = sharedData.message.clientName || 'tous les clients';
 							self.userName = sharedData.message.userName;
 							self.from = sharedData.message.from;
 							self.to = sharedData.message.to;
@@ -42,14 +42,14 @@
 			});
 
 			var getReport = function(options){
-				
+
 			};
 
 			self.getReport = getReport;
 		});
 	};
-	
+
 	angular.module('workTime').controller('reportTableController',reportTableController);
 	reportTableController.$inject = ['$scope','$state','$wakanda','alertify','mySharedData'];
-	
+
 }(window.angular,window.moment,window.utils));

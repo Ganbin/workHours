@@ -65,9 +65,10 @@
 				var newClient = ds.Client.$create();
 
 				newClient.name = this.name;
-				
+
 				newClient.$save().$promise.then(function(){
 					sharedData.prepForBroadcast('saved');
+					self.name = '';
 					alertify.success('New Client Saved!');
 				})
 			},
@@ -79,7 +80,7 @@
 				var editClient = self.entity;
 
 				editClient.name = this.name;
-				
+
 				editClient.$save().$promise.then(function(){
 					sharedData.prepForBroadcast('saved');
 					alertify.success('New Client Saved!');

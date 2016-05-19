@@ -24,7 +24,7 @@
 						self.loggedin = false;
 					break;
 					case 'saved':
-						self.getAll({orderBy:'name'});
+						self.getAll({orderBy:'clientName'});
 					break;
 				}
 
@@ -37,7 +37,7 @@
 							//self.getAllClients();
 							//self.getAllCategories();
 							self.loggedin = true;
-							self.getAll({orderBy:'name'});
+							self.getAll({orderBy:'clientName'});
 							// If not params, I set the form as a new entity to add
 							if(self.ID !== ''){
 								//getEntity(self.ID);
@@ -84,7 +84,7 @@
 			self.remove = remove;
 			self.add = add;
 
-			self.getAll({orderBy:'name'});
+			self.getAll({orderBy:'clientName'});
 		});
 	};
 

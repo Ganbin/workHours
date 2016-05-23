@@ -11,6 +11,10 @@
 
 		self.ID = $stateParams.ID;
 
+		self.endNow = function () {
+			self.endAt = new Date();
+		};
+
 		self.setEntity = function(entity){
 			self.entity = entity;
 			self.edit = true;

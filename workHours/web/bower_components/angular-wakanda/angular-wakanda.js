@@ -5902,11 +5902,11 @@ wakanda.factory('directoryFactory', ['$q', 'rootScopeSafeApply', 'wakandaClient'
   function ($q, rootScopeSafeApply, wakandaClient) {
   var directoryFactory = {};
 
-  directoryFactory.login = function (login, password) {
+  directoryFactory.login = function (login, password,duration) {
     var deferred = $q.defer();
     var promise = deferred.promise;
 
-    wakandaClient.directory.login(login, password)
+    wakandaClient.directory.login(login, password,duration)
       .then(function (res) {
         rootScopeSafeApply(function () {
           deferred.resolve({

@@ -17,6 +17,8 @@
 			 * Broadcast event handler
 			 */
 			$scope.$on('handleBroadcast', function() {
+				var dataTmp,timeForChart=[],priceForChart=[],labelsForChart=[],dataTime,dataPrice,i;
+				
 				switch(sharedData.message){
 					case 'logout':
 						self.loggedin = false;
@@ -28,11 +30,54 @@
 						case 'loggedin':
 							self.loggedin = true;
 						break;
+						case 'report':
+							dataTmp = sharedData.message.reportArr;
+							for(i=0;i<dataTmp.length-2;i++){ // Loop through the reportArr, we don't check the 2 last one because their represent the total and subtotal
+								timeForChart.push({name:dataTmp[i].label,y:dataTmp[i].time});
+								priceForChart.push({name:dataTmp[i].label,y:dataTmp[i].price});
+							}
+							
+							self.displayPieChart('.ct-chart-time',timeForChart,'Time for the client (in minutes)');
+							self.displayPieChart('.ct-chart-price',priceForChart,'Price for the client (in CHF)');
+						break;
 					}
 				}
 			});
 
-			var displayPieChart = function(options){
+			var displayPieChart = function (elementID,data,title) {
+				$(elementID).highcharts({
+				//Highcharts.Chart(elementID,{	
+					chart: {
+						plotBackgroundColor: null,
+						plotBorderWidth: null,
+						plotShadow: false,
+						type: 'pie'
+					},
+					title: {
+						text: title
+					},
+					tooltip: {
+						pointFormat: '{series.name}: <b>{point.y}</b>'
+					},
+					plotOptions: {
+						pie: {
+							allowPointSelect: true,
+							cursor: 'pointer',
+							dataLabels: {
+								enabled: false
+							},
+							showInLegend: true
+						}
+					},
+					series:[{
+	                	name: 'Brands',
+	                	colorByPoint: true,
+	                	data:  data
+	                }]
+				});
+			};
+
+			/*var displayPieChart = function(elementID,data,options){
 				var data = {
 					  labels: ['Bananas', 'Apples', 'Grapes'],
 					  series: [20, 15, 40]
@@ -59,12 +104,13 @@
 				  }]
 				];
 
-				new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
-			};
+				new Chartist.Pie(elementID, data, options, responsiveOptions);
+			};*/
 
 			self.displayPieChart = displayPieChart;
-			
-			//self.displayPieChart();
+			setTimeout(function(){
+				//self.displayPieChart();
+			},1000);
 		});
 	};
 	

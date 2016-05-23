@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><settings>
-	<project publicName="" listen="0" hostName="localhost" responseFormat="json" packagePath="/WEBFOLDER/;/WIDGETS_CUSTOM/;/THEMES_CUSTOM/;/WAF/waf-widget;/WAF/themes">
+	<project publicName="" listen="0" hostName="worktime.ajar.ch" responseFormat="json" packagePath="/WEBFOLDER/;/WIDGETS_CUSTOM/;/THEMES_CUSTOM/;/WAF/waf-widget;/WAF/themes">
 		<database>
 			<journal enabled="false" journalFolder="./"/>
 		</database>

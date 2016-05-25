@@ -123,6 +123,7 @@
 				newTime.$save().$promise.then(function(){
 					sharedData.prepForBroadcast('saved');
 					alertify.success('New Time Saved!');
+					self.setNewEntity();
 				});
 			},
 
@@ -145,12 +146,12 @@
 
 				editTime.trainTime = this.trainTime != null && this.trainTime.getTime()-(1000*(this.trainTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
 				editTime.trainPrice = this.trainPrice;
-				
+
 				editTime.client = utils.map(this.clients)[this.clientSelected.ID];
 				editTime.category = utils.map(this.categories)[this.categorySelected.ID];
 				editTime.$save().$promise.then(function(){
 					sharedData.prepForBroadcast('saved');
-					alertify.success('New Time Saved!');
+					alertify.success('Time Edited!');
 				});
 			},
 
@@ -180,7 +181,7 @@
 					sharedData.setData('allCategories',self.categories);
 				});
 			},
-			
+
 			// get all Categories of the client selected
 			getAllCategoriesFromClient = function(clientName){
 				ds.Category.$query({filter:'clientName == :1',params:[clientName]}).$promise.then(function(evt){
@@ -195,7 +196,7 @@
 					self.setEntity(evt.result);
 				});
 			};
-			
+
 			self.clientChange = function (evt){
 				//debugger;
 				self.getAllCategoriesFromClient(self.clientSelected.name);
@@ -208,7 +209,7 @@
 			self.getAllCategories = getAllCategories;
 			self.getAllCategoriesFromClient = getAllCategoriesFromClient;
 			self.getEntity = getEntity;
-			
+
 			// If not params, I set the form as a new entity to add
 			if(self.ID !== '' && self.ID !== undefined){
 				getEntity(self.ID);

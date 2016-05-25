@@ -78,6 +78,7 @@
 				newCategory.$save().$promise.then(function(){
 					sharedData.prepForBroadcast('saved');
 					alertify.success('New Category Saved!');
+					self.setNewEntity();
 				})
 			},
 

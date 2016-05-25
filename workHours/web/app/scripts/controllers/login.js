@@ -33,7 +33,7 @@
 
 		login = function(name,pass){
 			
-			$wakanda.$login(name,pass,3600).$promise.then(function(evt){
+			$wakanda.$login(name,pass,7200).$promise.then(function(evt){
 				if(evt.result === true){
 					$wakanda.$currentUser().$promise.then(function(evt){
 						//debugger;

@@ -53,6 +53,8 @@
 				ds.Category.$all(options).$promise.then(function(event){
 					self.categories = event.result;
 					self.canGetMore = (self.categories.length < self.categories.$totalCount) ? true : false;
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			},
 

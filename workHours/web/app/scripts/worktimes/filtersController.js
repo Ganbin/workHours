@@ -60,6 +60,8 @@
 				ds.Client.$all().$promise.then(function(evt){
 					self.clients = evt.result;
 					sharedData.setData('allCients',self.clients);
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			};
 

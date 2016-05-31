@@ -13,6 +13,7 @@
 				case 'logout':
 					sharedData.setData('logged',false);
 					self.logged = false;
+					AuthService.logout();
 				break;
 			}
 

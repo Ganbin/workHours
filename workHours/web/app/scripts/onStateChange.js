@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular.module('workTime').run(['$rootScope','$state','AUTH_EVENTS','AuthService','mySharedData',function($rootScope,$state,AUTH_EVENTS,AuthService,mySharedData){
-		$rootScope.$on('$stateChangeSuccess', function (event,next) {
+		$rootScope.$on('$viewContentLoading', function (event,next) {
 			if(next.url !== '/home'){
 				var isAuthenticated = AuthService.isAuthenticated();
 				

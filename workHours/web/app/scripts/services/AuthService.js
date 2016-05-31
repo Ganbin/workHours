@@ -6,12 +6,12 @@
 	
 	angular.module('workTime')
 	
-	.factory('AuthService', function($rootScope,Session,$wakanda,mySharedData) {
+	.factory('AuthService', function($rootScope,$state,Session,$wakanda,mySharedData) {
 		var authService = {};
 
 		authService.login = function (name,pass) {
 			return new Promise(function(resolve,refuse){
-				$wakanda.$login(name,pass,20).$promise.then(function(evt){
+				$wakanda.$login(name,pass,7200).$promise.then(function(evt){
 					if(evt.result === true){
 						$wakanda.$currentUser().$promise.then(function(evt){
 							var currentUser = evt.result;
@@ -29,6 +29,7 @@
 			return new Promise(function (resolve, refuse) {
 				$wakanda.$logout().$promise.then(function(){
 					Session.destroy();
+					$state.go('app.home');
 					resolve(true);
 				});
 			});

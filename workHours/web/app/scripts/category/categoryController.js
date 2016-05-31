@@ -53,6 +53,8 @@
 				ds.Category.$all(options).$promise.then(function(event){
 					self.categories = event.result;
 					self.canGetMore = (self.categories.length < self.categories.$totalCount) ? true : false;
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			},
 
@@ -63,7 +65,7 @@
 			},
 
 			edit = function (ID){
-				self.goToState('categories.edit',{ID:ID});
+				self.goToState('app.categories.edit',{ID:ID});
 			},
 
 			remove = function (evt){
@@ -75,7 +77,7 @@
 			},
 
 			add = function () {
-				self.goToState('categories.add');
+				self.goToState('app.categories.add');
 			};
 
 			self.getAll = getAll;

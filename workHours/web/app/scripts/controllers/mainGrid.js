@@ -49,17 +49,21 @@
 				ds.UserTime.$all(options).$promise.then(function(event){
 					self.workTimes = event.result;
 					self.canGetMore = (self.workTimes.length < self.workTimes.$totalCount) ? true : false;
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			},
 
 			getMore = function(){
 				self.workTimes.$more().$promise.then(function(event){
 					self.canGetMore = (self.workTimes.length < self.workTimes.$totalCount) ? true : false;
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			},
 
 			editTime = function (ID){
-				self.goToState('form.edit',{ID:ID});
+				self.goToState('app.form.edit',{ID:ID});
 			},
 
 			removeTime = function (evt){
@@ -71,7 +75,7 @@
 			},
 			
 			addWorkTime = function () {
-				self.goToState('form.add');
+				self.goToState('app.form.add');
 			};
 
 			self.getAll = getAll;

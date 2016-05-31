@@ -17,6 +17,8 @@
 			// CATEGORY
 			self.entity.client.$fetch().$promise.then(function(evt){
 				self.clientSelected =  evt.result;
+			},function(err){
+				sharedData.prepForBroadcast('logout');
 			});
 			self.title = 'Edit Category';
 		};
@@ -79,6 +81,8 @@
 					sharedData.prepForBroadcast('saved');
 					alertify.success('New Category Saved!');
 					self.setNewEntity();
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				})
 			},
 
@@ -95,6 +99,8 @@
 				editCategory.$save().$promise.then(function(){
 					sharedData.prepForBroadcast('saved');
 					alertify.success('New Client Saved!');
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			},
 
@@ -105,6 +111,8 @@
 				entity.$remove().$promise.then(function () {
 					sharedData.prepForBroadcast('saved');
 					alertify.success('Client removed!');
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			},
 
@@ -113,12 +121,16 @@
 				ds.Client.$all().$promise.then(function(evt){
 					self.clients = evt.result;
 					sharedData.setData('allCients',self.clients);
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			},
 
 			getEntity = function(){
 				ds.Category.$find(self.ID).$promise.then(function(evt){
 					self.setEntity(evt.result);
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			};
 

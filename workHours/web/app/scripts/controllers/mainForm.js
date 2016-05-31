@@ -43,8 +43,12 @@
 				self.entity.category.$fetch().$promise.then(function(evt){
 					self.categorySelected =  evt.result;
 					self.disableCategory = false;
+					setTimeout(function(){$('.combobox').combobox()},100); // Delay of 100ms to avoid conflict when rendering the autocomplete combobox just after asign a value.
 				});
 			});
+			if ( $('[type="date"]').prop('type') != 'date' ) {
+			    $('[type="date"]').datepicker({"dateFormat": 'yy-mm-dd'});
+			}
 		};
 
 		/**
@@ -63,6 +67,7 @@
 			self.edit = false;
 			self.title = 'Add Work Time';
 			self.disableCategory = true;
+			$('.combobox').combobox();
 		};
 
 		/**
@@ -130,7 +135,7 @@
 			/**
 			 * This method do the actions to edit and save a worktime.
 			 */
-			editTime = function(){
+			editTime = function(form){
 				var startDateTmp = moment(this.startDate),
 					startAtTmp = moment(this.startAt),
 					endDateTmp = moment(this.endDate),
@@ -223,8 +228,6 @@
 				//getAllCategories();
 				getAllClients();
 			}
-
-
 		});
 
 	};

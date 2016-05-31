@@ -63,7 +63,7 @@
 			},
 
 			edit = function (ID){
-				self.goToState('categories.edit',{ID:ID});
+				self.goToState('app.categories.edit',{ID:ID});
 			},
 
 			remove = function (evt){
@@ -75,7 +75,7 @@
 			},
 
 			add = function () {
-				self.goToState('categories.add');
+				self.goToState('app.categories.add');
 			};
 
 			self.getAll = getAll;

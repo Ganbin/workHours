@@ -3,7 +3,6 @@
 	
 	var homeController = function($scope,$wakanda,alertify,sharedData){
 		var self = this;
-		
 		/**
 		 * Broadcast event handler
 		 */
@@ -31,6 +30,8 @@
 			self.fullName = (evt.result === null) ? '' : evt.result.fullName;
 			if(self.logged){
 				sharedData.prepForBroadcast({action:'loggedin',fullName:self.fullName});
+			}else{
+				sharedData.prepForBroadcast('logout');
 			}
 		});
 	

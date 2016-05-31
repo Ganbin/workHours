@@ -7,14 +7,25 @@
 
 		$stateProvider
 
-		.state('home', {
+		.state('app',{
+			abstract: true,
+			template:'<div ui-view></div>',
+			resolve:{
+				AuthService: function (AuthService) {
+					//debugger;
+					return AuthService.promise;
+				}
+			}
+		})
+
+		.state('app.home', {
 			url: '/home',
 			templateUrl: 'views/home.html',
 			controller:'homeController',
 			controllerAs:'homeCtrl'
 		})
 
-		.state('form', {
+		.state('app.form', {
 			url: '/form',
 			templateUrl:'views/form-grid.html',
 			controller:'mainGrid',
@@ -25,13 +36,13 @@
 					controller:'mainGrid',
 					controllerAs:'gridCtrl'
 				},
-				'filters':{
+				'filters@':{
 					templateUrl:'scripts/worktimes/filters.html',
 					controller:'workTimeFiltersController',
 					controllerAs:'filterCtrl'
 				}
 			}
-		}).state('form.edit',{
+		}).state('app.form.edit',{
 			url: '/edit/:ID',
 			views:{
 				'form@':{
@@ -40,7 +51,7 @@
 					controllerAs:'formCtrl'
 				}
 			}
-		}).state('form.add',{
+		}).state('app.form.add',{
 			url: '/add',
 			views:{
 				'form@':{
@@ -49,7 +60,7 @@
 					controllerAs:'formCtrl'
 				}
 			}
-		}).state('clients', {
+		}).state('app.clients', {
 			url: '/clients',
 			templateUrl:'scripts/clients/clients.html',
 			controller:'clientsController',
@@ -63,7 +74,7 @@
 					controllerAs:'clientsForm'
 				}
 			}
-		}).state('clients.add',{
+		}).state('app.clients.add',{
 			url: '/add',
 			views:{
 				'form@':{
@@ -72,12 +83,12 @@
 					controllerAs:'clientsForm'
 				}
 			}
-		}).state('categories', {
+		}).state('app.categories', {
 			url: '/categories',
 			templateUrl:'scripts/category/grid.html',
 			controller:'categoryController',
 			controllerAs:'categoryCtrl'
-		}).state('categories.edit',{
+		}).state('app.categories.edit',{
 			url: '/edit/:ID',
 			views:{
 				'form@':{
@@ -86,7 +97,7 @@
 					controllerAs:'categoryForm'
 				}
 			}
-		}).state('categories.add',{
+		}).state('app.categories.add',{
 			url: '/add',
 			views:{
 				'form@':{
@@ -95,20 +106,20 @@
 					controllerAs:'categoryForm'
 				}
 			}
-		}).state('report',{
+		}).state('app.report',{
 			url:"/report",
 			views: {
-				'filters': {
+				'filters@': {
 					templateUrl: 'scripts/report/report-filters.html',
 					controller: "reportFilterController",
 					controllerAs:'filterCtrl'
 				},
-				'tabledata': {
+				'tabledata@': {
 					templateUrl: 'scripts/report/report-table.html',
 					controller: "reportTableController",
 					controllerAs:'tableCtrl'
 				},
-				'graph': {
+				'graph@': {
 					templateUrl: 'scripts/report/report-graph.html',
 					controller: "reportGraphController",
 					controllerAs:'graphCtrl'

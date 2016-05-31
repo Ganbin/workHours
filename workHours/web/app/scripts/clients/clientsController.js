@@ -53,17 +53,21 @@
 				ds.Client.$all(options).$promise.then(function(event){
 					self.clients = event.result;
 					self.canGetMore = (self.clients.length < self.clients.$totalCount) ? true : false;
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			},
 
 			getMore = function(){
 				self.clients.$more().$promise.then(function(event){
 					self.canGetMore = (self.clients.length < self.clients.$totalCount) ? true : false;
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			},
 
 			edit = function (ID){
-				self.goToState('clients.edit',{ID:ID});
+				self.goToState('app.clients.edit',{ID:ID});
 			},
 
 			remove = function (evt){
@@ -75,7 +79,7 @@
 			},
 
 			add = function () {
-				self.goToState('clients.add');
+				self.goToState('app.clients.add');
 			};
 
 			self.getAll = getAll;

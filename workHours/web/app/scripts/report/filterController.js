@@ -54,6 +54,8 @@
 						self.categories.push({'name':cat,'time':evt.result[cat].time,'price':evt.result[cat].price,'addPrice':evt.result[cat].addPrice,'trainTime':evt.result[cat].trainTime,'label':evt.result[cat].label});
 					}
 					sharedData.prepForBroadcast({'action':'report','reportArr':self.categories,'clientName':clientName,from:from,to:to,'userName':self.userSelected.name});
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			},
 			
@@ -62,6 +64,9 @@
 				ds.Client.$all().$promise.then(function(evt){
 					self.clients = evt.result;
 					sharedData.setData('allCients',self.clients);
+					//$('.combobox').combobox();
+				},function(err){
+					sharedData.prepForBroadcast('logout');
 				});
 			};
 
@@ -73,6 +78,7 @@
 			});
 			
 			self.getAllClients();
+			
 		});
 	};
 	

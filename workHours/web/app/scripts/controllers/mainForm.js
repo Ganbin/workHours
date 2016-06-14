@@ -43,7 +43,7 @@
 				self.entity.category.$fetch().$promise.then(function(evt){
 					self.categorySelected =  evt.result;
 					self.disableCategory = false;
-					setTimeout(function(){$('.combobox').combobox()},100); // Delay of 100ms to avoid conflict when rendering the autocomplete combobox just after asign a value.
+					//setTimeout(function(){$('.combobox').combobox()},100); // Delay of 100ms to avoid conflict when rendering the autocomplete combobox just after asign a value.
 				});
 			});
 			if ( $('[type="date"]').prop('type') != 'date' ) {

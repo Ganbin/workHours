@@ -44,6 +44,12 @@
 					self.categorySelected =  evt.result;
 					self.disableCategory = false;
 					//setTimeout(function(){$('.combobox').combobox()},100); // Delay of 100ms to avoid conflict when rendering the autocomplete combobox just after asign a value.
+					
+					// Activate the floatlabels
+					$('.form-control').on('focus blur', function (e) {
+					    $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+					}).trigger('blur');
+					
 				});
 			});
 			if ( $('[type="date"]').prop('type') != 'date' ) {
@@ -67,7 +73,14 @@
 			self.edit = false;
 			self.title = 'Add Work Time';
 			self.disableCategory = true;
-			$('.combobox').combobox();
+			
+			//$('.combobox').combobox();
+			// Activate the floatlabels
+			setTimeout(function(){
+				$('.form-control').on('focus blur', function (e) {
+				    $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+				}).trigger('blur');
+			},500);
 		};
 
 		/**
@@ -222,6 +235,7 @@
 				getEntity(self.ID);
 			}else{
 				self.setNewEntity();
+				
 			}
 
 			if(self.categories.length === 0){

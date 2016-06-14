@@ -64,6 +64,7 @@
 				ds.Client.$all().$promise.then(function(evt){
 					self.clients = evt.result;
 					sharedData.setData('allCients',self.clients);
+					//setTimeout(function(){$('.combobox').combobox()},100); // Delay of 100ms to avoid conflict when rendering the autocomplete combobox just after asign a value.
 					//$('.combobox').combobox();
 				},function(err){
 					sharedData.prepForBroadcast('logout');

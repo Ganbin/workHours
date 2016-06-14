@@ -40,8 +40,8 @@
 					"isOpen": "true",
 					"pathVisible": true,
 					"position": {
-						"X": 301,
-						"Y": 484
+						"X": 230,
+						"Y": 519
 					}
 				}
 			},
@@ -89,7 +89,8 @@
 					"computed": "Category/Category-events.js"
 				},
 				"WorkTime": {
-					"events": "WorkTime/WorkTime-events.js"
+					"events": "WorkTime/WorkTime-events.js",
+					"computed": "WorkTime/WorkTime-events.js"
 				},
 				"Utility": {
 					"method": "Utility/Utility-methods.js"
@@ -343,6 +344,19 @@
 					"kind": "storage",
 					"scope": "public",
 					"type": "uuid"
+				},
+				{
+					"name": "timeWorked",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "duration",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.WorkTime.timeWorked.onGet",
+							"userDefined": true
+						}
+					]
 				}
 			],
 			"events": [

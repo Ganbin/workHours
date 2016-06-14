@@ -67,7 +67,7 @@
 			self.edit = false;
 			self.title = 'Add Work Time';
 			self.disableCategory = true;
-			$('.combobox').combobox();
+			//$('.combobox').combobox();
 		};
 
 		/**

@@ -81,6 +81,10 @@
 				$('.form-control').on('focus blur', function (e) {
 				    $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
 				}).trigger('blur');
+				
+				if ( $('[type="date"]').prop('type') != 'date' ) {
+			    $('[type="date"]').datepicker({"dateFormat": 'yy-mm-dd'});
+			}
 			},500);
 		};
 

@@ -64,6 +64,13 @@
 			}
 		});
 
+// Activate the floatlabels
+			setTimeout(function(){
+				$('.form-control').on('focus blur', function (e) {
+				    $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+				}).trigger('blur');
+			},500);
+
 		self.logout = logout;
 		self.login = login;
 

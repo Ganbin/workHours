@@ -65,7 +65,7 @@
 			templateUrl:'scripts/clients/clients.html',
 			controller:'clientsController',
 			controllerAs:'clientsCtrl'
-		}).state('clients.edit',{
+		}).state('app.clients.edit',{
 			url: '/edit/:ID',
 			views:{
 				'form@':{

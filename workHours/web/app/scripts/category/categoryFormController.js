@@ -17,6 +17,18 @@
 			// CATEGORY
 			self.entity.client.$fetch().$promise.then(function(evt){
 				self.clientSelected =  evt.result;
+				
+				// Activate the floatlabels
+			setTimeout(function(){
+				$('.form-control').on('focus blur', function (e) {
+				    $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+				}).trigger('blur');
+				
+				if ( $('[type="date"]').prop('type') != 'date' ) {
+				    $('[type="date"]').datepicker({"dateFormat": 'yy-mm-dd'});
+				}
+			},500);
+				
 			},function(err){
 				sharedData.prepForBroadcast('logout');
 			});
@@ -31,6 +43,17 @@
 			self.priceHour = 0;
 			self.editBtn = false;
 			self.title = 'Add Category';
+			
+			// Activate the floatlabels
+			setTimeout(function(){
+				$('.form-control').on('focus blur', function (e) {
+				    $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+				}).trigger('blur');
+				
+				if ( $('[type="date"]').prop('type') != 'date' ) {
+				    $('[type="date"]').datepicker({"dateFormat": 'yy-mm-dd'});
+				}
+			},500);
 		};
 
 		/**
@@ -121,6 +144,17 @@
 				ds.Client.$all().$promise.then(function(evt){
 					self.clients = evt.result;
 					sharedData.setData('allCients',self.clients);
+					
+					// Activate the floatlabels
+			setTimeout(function(){
+				$('.form-control').on('focus blur', function (e) {
+				    $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+				}).trigger('blur');
+				
+				if ( $('[type="date"]').prop('type') != 'date' ) {
+				    $('[type="date"]').datepicker({"dateFormat": 'yy-mm-dd'});
+				}
+			},500);
 				},function(err){
 					sharedData.prepForBroadcast('logout');
 				});

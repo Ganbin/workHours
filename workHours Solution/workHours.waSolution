@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?><solution>
 	<project path="../workHours/workHours.waProject"/>
-	<project path="../../Grand Galop/Grand Galop/Grand Galop.waProject"/>
 	<file path="./settings.waSettings">
 		<tag name="settings"/>
 	</file>

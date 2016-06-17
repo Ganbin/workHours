@@ -9,6 +9,8 @@
 		self.loggedin = sharedData.getData('logged') || false;
 		self.goToState = $state.go;
 		
+		self.show = false;
+		
 		self.from = new Date();
 		self.to = new Date();
 		
@@ -66,6 +68,17 @@
 					sharedData.setData('allCients',self.clients);
 					//setTimeout(function(){$('.combobox').combobox()},100); // Delay of 100ms to avoid conflict when rendering the autocomplete combobox just after asign a value.
 					//$('.combobox').combobox();
+					
+					setTimeout(function(){
+						$('.form-control').on('focus blur', function (e) {
+						    $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+						}).trigger('blur');
+						
+						if ( $('[type="date"]').prop('type') != 'date' ) {
+						    $('[type="date"]').datepicker({"dateFormat": 'yy-mm-dd'});
+						}
+					},500);
+					
 				},function(err){
 					sharedData.prepForBroadcast('logout');
 				});

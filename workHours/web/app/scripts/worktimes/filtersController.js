@@ -12,6 +12,8 @@
 		self.from = new Date();
 		self.to = new Date();
 		
+		self.show = false;
+		
 		self.categories = [];
 		
 		/**
@@ -60,6 +62,18 @@
 				ds.Client.$all().$promise.then(function(evt){
 					self.clients = evt.result;
 					sharedData.setData('allCients',self.clients);
+					
+					// Activate the floatlabels
+					setTimeout(function(){
+						$('.form-control').on('focus blur', function (e) {
+						    $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+						}).trigger('blur');
+						
+						if ( $('[type="date"]').prop('type') != 'date' ) {
+						    $('[type="date"]').datepicker({"dateFormat": 'yy-mm-dd'});
+						}
+					},500);
+					
 				},function(err){
 					sharedData.prepForBroadcast('logout');
 				});

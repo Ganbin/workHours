@@ -5,7 +5,7 @@
  */
 model.Client.methods.getReport = function (options) {
 	var from,to,clientName,workTimes,returnArr,catObj,breakSum,categoryNames,i,subTotal,total;
-
+//debugger;
 	returnArr = [];
 	catObj = {};
 	subTotal = {'time':0,'price':0,'addPrice':0,'trainTime':0};

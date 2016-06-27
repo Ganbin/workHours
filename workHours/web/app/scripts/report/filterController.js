@@ -45,6 +45,7 @@
 				
 				from = self.from;
 				to = self.to;
+				
 				if(self.clientSelected !== undefined && (self.allClients === undefined || self.allClients === false)){
 					clientName = self.clientSelected.name;
 				}
@@ -52,7 +53,7 @@
 				ds.Client.getReport({from:from,to:to,clientName:clientName,userID:self.userSelected.ID}).$promise.then(function(evt){
 					self.categories = [];
 					for(cat in evt.result){
-						//debugger;
+						
 						self.categories.push({'name':cat,'time':evt.result[cat].time,'price':evt.result[cat].price,'addPrice':evt.result[cat].addPrice,'trainTime':evt.result[cat].trainTime,'label':evt.result[cat].label});
 					}
 					sharedData.prepForBroadcast({'action':'report','reportArr':self.categories,'clientName':clientName,from:from,to:to,'userName':self.userSelected.name});
@@ -74,9 +75,6 @@
 						    $(this).parents('.form-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
 						}).trigger('blur');
 						
-						if ( $('[type="date"]').prop('type') != 'date' ) {
-						    $('[type="date"]').datepicker({"dateFormat": 'yy-mm-dd'});
-						}
 					},500);
 					
 				},function(err){

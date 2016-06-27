@@ -47,11 +47,11 @@
 				self.to.setMinutes(59);
 				//debugger;
 				if(self.clientSelected != null && self.allClients !== true){
-					ds.UserTime.$query({filter:'start > :1 && end < :2 and clientName == :3',params:[self.from,self.to,self.clientSelected.name]}).$promise.then(function(evt){
+					ds.UserTime.$query({filter:'start > :1 && end < :2 and clientName == :3',params:[self.from,self.to,self.clientSelected.name],orderBy:'start desc'}).$promise.then(function(evt){
 						sharedData.prepForBroadcast({'action':'filter','result':evt.result,'clientName':self.clientSelected.name,from:self.from,to:self.to});
 					});
 				} else {
-					ds.UserTime.$query({filter:'start > :1 && end < :2',params:[self.from,self.to]}).$promise.then(function(evt){
+					ds.UserTime.$query({filter:'start > :1 && end < :2',params:[self.from,self.to],orderBy:'start desc'}).$promise.then(function(evt){
 						sharedData.prepForBroadcast({'action':'filter','result':evt.result,from:self.from,to:self.to});
 					});
 				}

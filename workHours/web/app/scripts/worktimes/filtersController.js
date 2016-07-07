@@ -4,17 +4,22 @@
 (function(angular,moment,utils){
 	'use strict';
 	
-	var workTimeFiltersController = function($scope,$state,$wakanda,alertify,sharedData){
+	var workTimeFiltersController = function($scope,$state,$wakanda,alertify,sharedData,Session){
 		var self = this;
 		self.loggedin = sharedData.getData('logged') || false;
 		self.goToState = $state.go;
 		
 		self.from = new Date();
+		self.from.setDate(1);
 		self.to = new Date();
 		
 		self.show = false;
 		
 		self.categories = [];
+		
+		self.onlyMine = true;
+		
+		self.allClients = true;
 		
 		/**
 		 * Wakanda Initialization
@@ -41,18 +46,24 @@
 			});
 
 			var filter = function (){
+				
+				var dataClass = self.onlyMine ? ds.UserTime : ds.WorkTime,
+					userName = self.onlyMine === true ? Session.userFullName : (self.userSelected != null) ? self.userSelected.name : '*';
+				
 				self.from.setHours(0);
 				self.from.setMinutes(0);
 				self.to.setHours(23);
 				self.to.setMinutes(59);
-				//debugger;
+				
+				sharedData.setData('selfTimeFilter',self);
+				
 				if(self.clientSelected != null && self.allClients !== true){
-					ds.UserTime.$query({filter:'start > :1 && end < :2 and clientName == :3',params:[self.from,self.to,self.clientSelected.name],orderBy:'start desc'}).$promise.then(function(evt){
-						sharedData.prepForBroadcast({'action':'filter','result':evt.result,'clientName':self.clientSelected.name,from:self.from,to:self.to});
+					dataClass.$query({filter:'start > :1 && end < :2 and clientName == :3 and userName == :4',params:[self.from,self.to,self.clientSelected.name,userName],orderBy:'start desc'}).$promise.then(function(evt){
+						sharedData.prepForBroadcast({'action':'filter','result':evt.result,'clientName':self.clientSelected.name,from:self.from,to:self.to,showUser:!self.onlyMine,userName:userName});
 					});
 				} else {
-					ds.UserTime.$query({filter:'start > :1 && end < :2',params:[self.from,self.to],orderBy:'start desc'}).$promise.then(function(evt){
-						sharedData.prepForBroadcast({'action':'filter','result':evt.result,from:self.from,to:self.to});
+					dataClass.$query({filter:'start > :1 && end < :2 and userName == :3',params:[self.from,self.to,userName],orderBy:'start desc'}).$promise.then(function(evt){
+						sharedData.prepForBroadcast({'action':'filter','result':evt.result,from:self.from,to:self.to,showUser:!self.onlyMine,userName:userName});
 					});
 				}
 			},
@@ -75,14 +86,20 @@
 				});
 			};
 
+			ds.Utility.getUserNames().$promise.then(function (evt) {
+				self.users = evt.result;
+			});
+
 			self.getAllClients = getAllClients;
 			self.filter = filter;
-			
+			//debugger;
+			//self = sharedData.getData('selfTimeFilter') === false ? self : sharedData.getData('selfTimeFilter')
+			//debugger;
 			self.getAllClients();
 		});
 	};
 	
 	angular.module('workTime').controller('workTimeFiltersController',workTimeFiltersController);
-	workTimeFiltersController.$inject = ['$scope','$state','$wakanda','alertify','mySharedData'];
+	workTimeFiltersController.$inject = ['$scope','$state','$wakanda','alertify','mySharedData','Session'];
 	
 }(window.angular,window.moment,window.utils));

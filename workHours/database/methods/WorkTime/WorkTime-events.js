@@ -21,3 +21,9 @@ model.WorkTime.timeWorked.onGet = function() {
 	
 	return returnValue;
 };
+
+
+model.WorkTime.userName.onGet = function() {
+	var user = directory.internalStore.User.find('ID == :1',this.userID);
+	return user.fullName || '';
+};

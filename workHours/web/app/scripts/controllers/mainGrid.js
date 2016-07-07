@@ -1,7 +1,7 @@
 (function(angular,moment,utils){
 	'use strict';
 
-	var mainGridController = function($scope,$state,$wakanda,alertify,sharedData){
+	var mainGridController = function($scope,$state,$wakanda,alertify,sharedData,Session){
 		var self = this,$state; // Why I put $state here?
 		self.loggedin = sharedData.getData('logged') || false;
 		self.toUTCDate = utils.toUTCDate;
@@ -9,6 +9,8 @@
 		self.goToState = $state.go;
 		self.clientName = 'tout les clients';
 		self.showDates = false;
+		self.showUser = false;
+		self.userName = Session.userFullName;
 		
 		/**
 		 * Wakanda Initialization
@@ -35,19 +37,23 @@
 						break;
 						case 'filter':
 							self.workTimes = sharedData.message.result;
-							self.clientName = sharedData.message.clientName || 'tout les clients';
+							sharedData.setData('workTimes',self.workTimes);
+							self.clientName = sharedData.message.clientName || 'tous les clients';
+							self.userName = sharedData.message.userName === '*' ? 'tous les utilisateurs' : sharedData.message.userName || Session.fullName;
 							self.from = sharedData.message.from;
 							self.to = sharedData.message.to;
 							self.showDates = true;
+							self.showUser = sharedData.message.showUser || false;
+							sharedData.setData('loadUserTime',false);
 						break;
 					}
 				}
 			});
 
 			var getAll = function(options){
-				
 				ds.UserTime.$all(options).$promise.then(function(event){
 					self.workTimes = event.result;
+					sharedData.setData('workTimes',self.workTimes);
 					self.canGetMore = (self.workTimes.length < self.workTimes.$totalCount) ? true : false;
 				},function(err){
 					sharedData.prepForBroadcast('logout');
@@ -84,12 +90,17 @@
 			self.removeTime = removeTime;
 			self.addWorkTime = addWorkTime;
 
-			self.getAll({orderBy:'start desc'});
+			if(sharedData.getData('loadUserTime') === false){
+				self.getAll({orderBy:'start desc'});
+				sharedData.setData('loadUserTime',true);
+			} else {
+				self.workTimes = sharedData.getData('workTimes');
+			}
 		});
 
 	};
 
 	angular.module('workTime').controller('mainGrid',mainGridController); // Add the controller to the workTime module
-	mainGridController.$inject = ['$scope','$state','$wakanda','alertify','mySharedData']; // Inject dependencies
+	mainGridController.$inject = ['$scope','$state','$wakanda','alertify','mySharedData','Session']; // Inject dependencies
 
 }(window.angular,window.moment,window.utils));

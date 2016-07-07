@@ -40,8 +40,8 @@
 					"isOpen": "true",
 					"pathVisible": true,
 					"position": {
-						"X": 230,
-						"Y": 519
+						"X": 50,
+						"Y": 271
 					}
 				}
 			},
@@ -344,6 +344,19 @@
 					"kind": "storage",
 					"scope": "public",
 					"type": "uuid"
+				},
+				{
+					"name": "userName",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.WorkTime.userName.onGet",
+							"userDefined": true
+						}
+					]
 				},
 				{
 					"name": "timeWorked",

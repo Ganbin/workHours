@@ -44,6 +44,8 @@
 			self.editBtn = false;
 			self.title = 'Add Category';
 			
+			self.getAllClients();
+			
 			// Activate the floatlabels
 			setTimeout(function(){
 				$('.form-control').on('focus blur', function (e) {
@@ -72,9 +74,6 @@
 
 				if(typeof sharedData.message === 'object' && sharedData.message.action != null){
 					switch(sharedData.message.action){
-						case 'removeCategory':
-							self.remove(sharedData.message.entity);
-						break;
 						case 'loggedin':
 							self.getAllClients();
 							self.loggedin = true;
@@ -127,18 +126,6 @@
 				});
 			},
 
-			/**
-			 * Remove a client
-			 */
-			remove = function(entity){
-				entity.$remove().$promise.then(function () {
-					sharedData.prepForBroadcast('saved');
-					alertify.success('Client removed!');
-				},function(err){
-					sharedData.prepForBroadcast('logout');
-				});
-			},
-
 			// get all Clients
 			getAllClients = function(){
 				ds.Client.$all().$promise.then(function(evt){
@@ -168,6 +155,11 @@
 				});
 			};
 
+			self.save = save;
+			self.edit = edit;
+			self.getAllClients = getAllClients;
+			self.getEntity = getEntity;
+
 			// If not params, I set the form as a new entity to add
 			if(self.ID !== '' && self.ID !== undefined){
 				getEntity(self.ID);
@@ -178,12 +170,6 @@
 			if(self.clients.length === 0){
 				getAllClients();
 			}
-
-			self.save = save;
-			self.edit = edit;
-			self.remove = remove;
-			self.getAllClients = getAllClients;
-			self.getEntity = getEntity;
 
 		});
 

@@ -91,17 +91,6 @@
 				});
 			},
 
-			/**
-			 * Remove a client
-			 */
-			remove = function(entity){
-				entity.$remove().$promise.then(function () {
-					sharedData.prepForBroadcast('saved');
-					alertify.success('Client removed!');
-				},function(err){
-					sharedData.prepForBroadcast('logout');
-				});
-			},
 
 			// get all Clients
 			getAllClients = function(){
@@ -131,7 +120,6 @@
 
 			self.save = save;
 			self.edit = edit;
-			self.remove = remove;
 			self.getAllClients = getAllClients;
 			self.getEntity = getEntity;
 			

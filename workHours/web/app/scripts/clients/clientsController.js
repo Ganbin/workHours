@@ -72,7 +72,12 @@
 
 			remove = function (evt){
 				alertify.confirm("Do you want to delete this clients?", function () {
-				    sharedData.prepForBroadcast({"action":"removeClient","entity":evt.client});
+				    evt.client.$remove().$promise.then(function () {
+						sharedData.prepForBroadcast('saved');
+						alertify.success('Client removed!');
+					},function(err){
+						sharedData.prepForBroadcast('logout');
+					});
 				}, function() {
 				    // user clicked "cancel"
 				});

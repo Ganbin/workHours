@@ -30,9 +30,6 @@
 
 				if(typeof sharedData.message === 'object' && sharedData.message.action !== undefined){
 					switch(sharedData.message.action){
-						case 'removeCategory':
-							//self.remove(sharedData.message.entity); we do it in the form controller
-						break;
 						case 'loggedin':
 							//self.getAllClients();
 							//self.getAllCategories();
@@ -68,9 +65,19 @@
 				self.goToState('app.categories.edit',{ID:ID});
 			},
 
-			remove = function (evt){
+			/**
+			 * Remove a category
+			 */
+			remove = function(evt){
+				var category = evt.category;
 				alertify.confirm("Do you want to delete this category?", function () {
-				    sharedData.prepForBroadcast({"action":"removeCategory","entity":evt.category});
+					// User click ok
+					category.$remove().$promise.then(function () {
+						alertify.success('Category removed!');
+						self.getAll({orderBy:'clientName'});
+					},function(err){
+						sharedData.prepForBroadcast('logout');
+					});
 				}, function() {
 				    // user clicked "cancel"
 				});

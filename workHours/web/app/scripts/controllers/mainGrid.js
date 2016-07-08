@@ -11,7 +11,7 @@
 		self.showDates = false;
 		self.showUser = false;
 		self.userName = Session.userFullName;
-		
+		self.formLoaded = $state.current.url === '/form' ? false : true;
 		/**
 		 * Wakanda Initialization
 		 */
@@ -26,6 +26,12 @@
 					break;
 					case 'saved':
 						self.getAll({pageSize:self.workTimes.length+1,orderBy:'start desc'});
+					break;
+					case 'EnterWorktimeForm':
+						self.formLoaded = true;
+					break;
+					case 'ExitWorktimeForm':
+						self.formLoaded = false;
 					break;
 				}
 
@@ -70,6 +76,7 @@
 
 			editTime = function (ID){
 				self.goToState('app.form.edit',{ID:ID});
+				self.formLoaded = true;
 			},
 
 			removeTime = function (evt){
@@ -82,6 +89,7 @@
 			
 			addWorkTime = function () {
 				self.goToState('app.form.add');
+				self.formLoaded = true;
 			};
 
 			self.getAll = getAll;

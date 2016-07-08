@@ -8,7 +8,7 @@
 		self.categories = sharedData.getData('allCategories') || [];
 		self.title = 'Edit Work Time',
 		self.disableCategory = true;
-
+		
 		self.ID = $stateParams.ID;
 
 		self.endNow = function () {

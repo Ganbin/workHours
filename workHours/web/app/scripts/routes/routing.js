@@ -1,4 +1,4 @@
-(function (angular){
+(function(angular) {
 	'use strict';
 
 	var routes = function($stateProvider, $urlRouterProvider) {
@@ -7,11 +7,11 @@
 
 		$stateProvider
 
-		.state('app',{
+		.state('app', {
 			abstract: true,
-			template:'<div ui-view></div>',
-			resolve:{
-				AuthService: function (AuthService) {
+			template: '<div ui-view></div>',
+			resolve: {
+				AuthService: function(AuthService) {
 					//debugger;
 					return AuthService.promise;
 				}
@@ -21,113 +21,125 @@
 		.state('app.home', {
 			url: '/home',
 			templateUrl: 'views/home.html',
-			controller:'homeController',
-			controllerAs:'homeCtrl'
+			controller: 'homeController',
+			controllerAs: 'homeCtrl'
 		})
 
 		.state('app.form', {
 			url: '/form',
-			templateUrl:'views/form-grid.html',
-			controller:'mainGrid',
-			controllerAs:'gridCtrl',
-			views:{
-				'':{
-					templateUrl:'views/form-grid.html',
-					controller:'mainGrid',
-					controllerAs:'gridCtrl'
+			templateUrl: 'views/form-grid.html',
+			controller: 'mainGrid',
+			controllerAs: 'gridCtrl',
+			views: {
+				'': {
+					templateUrl: 'views/form-grid.html',
+					controller: 'mainGrid',
+					controllerAs: 'gridCtrl'
 				},
-				'filters@':{
-					templateUrl:'scripts/worktimes/filters.html',
-					controller:'workTimeFiltersController',
-					controllerAs:'filterCtrl'
+				'filters@': {
+					templateUrl: 'scripts/worktimes/filters.html',
+					controller: 'workTimeFiltersController',
+					controllerAs: 'filterCtrl'
 				}
 			}
-		}).state('app.form.edit',{
+		}).state('app.form.edit', {
 			url: '/edit/:ID',
-			views:{
-				'form@':{
-					templateUrl:'views/form.html',
-					controller:'mainForm',
-					controllerAs:'formCtrl'
+			views: {
+				'form@': {
+					templateUrl: 'views/form.html',
+					controller: 'mainForm',
+					controllerAs: 'formCtrl'
 				}
+			},
+			onEnter: function(mySharedData) {
+				mySharedData.prepForBroadcast('EnterWorktimeForm');
+			},
+			onExit: function(mySharedData) {
+				mySharedData.prepForBroadcast('ExitWorktimeForm');
 			}
-		}).state('app.form.add',{
+		}).state('app.form.add', {
 			url: '/add',
-			views:{
-				'form@':{
-					templateUrl:'views/form.html',
-					controller:'mainForm',
-					controllerAs:'formCtrl'
+			views: {
+				'form@': {
+					templateUrl: 'views/form.html',
+					controller: 'mainForm',
+					controllerAs: 'formCtrl'
 				}
+			},
+			onEnter: function(mySharedData) {
+				mySharedData.prepForBroadcast('EnterWorktimeForm');
+			},
+			onExit: function(mySharedData) {
+				mySharedData.prepForBroadcast('ExitWorktimeForm');
 			}
 		}).state('app.clients', {
 			url: '/clients',
-			templateUrl:'scripts/clients/clients.html',
-			controller:'clientsController',
-			controllerAs:'clientsCtrl'
-		}).state('app.clients.edit',{
+			templateUrl: 'scripts/clients/clients.html',
+			controller: 'clientsController',
+			controllerAs: 'clientsCtrl'
+		}).state('app.clients.edit', {
 			url: '/edit/:ID',
-			views:{
-				'form@':{
-					templateUrl:'scripts/clients/clientForm.html',
-					controller:'clientsForm',
-					controllerAs:'clientsForm'
+			views: {
+				'form@': {
+					templateUrl: 'scripts/clients/clientForm.html',
+					controller: 'clientsForm',
+					controllerAs: 'clientsForm'
 				}
 			}
-		}).state('app.clients.add',{
+		}).state('app.clients.add', {
 			url: '/add',
-			views:{
-				'form@':{
-					templateUrl:'scripts/clients/clientForm.html',
-					controller:'clientsForm',
-					controllerAs:'clientsForm'
+			views: {
+				'form@': {
+					templateUrl: 'scripts/clients/clientForm.html',
+					controller: 'clientsForm',
+					controllerAs: 'clientsForm'
 				}
 			}
 		}).state('app.categories', {
 			url: '/categories',
-			templateUrl:'scripts/category/grid.html',
-			controller:'categoryController',
-			controllerAs:'categoryCtrl'
-		}).state('app.categories.edit',{
+			templateUrl: 'scripts/category/grid.html',
+			controller: 'categoryController',
+			controllerAs: 'categoryCtrl'
+		}).state('app.categories.edit', {
 			url: '/edit/:ID',
-			views:{
-				'form@':{
-					templateUrl:'scripts/category/form.html',
-					controller:'categoryForm',
-					controllerAs:'categoryForm'
+			views: {
+				'form@': {
+					templateUrl: 'scripts/category/form.html',
+					controller: 'categoryForm',
+					controllerAs: 'categoryForm'
 				}
 			}
-		}).state('app.categories.add',{
+		}).state('app.categories.add', {
 			url: '/add',
-			views:{
-				'form@':{
-					templateUrl:'scripts/category/form.html',
-					controller:'categoryForm',
-					controllerAs:'categoryForm'
+			views: {
+				'form@': {
+					templateUrl: 'scripts/category/form.html',
+					controller: 'categoryForm',
+					controllerAs: 'categoryForm'
 				}
 			}
-		}).state('app.report',{
-			url:"/report",
+		}).state('app.report', {
+			url: "/report",
 			views: {
 				'filters@': {
 					templateUrl: 'scripts/report/report-filters.html',
 					controller: "reportFilterController",
-					controllerAs:'filterCtrl'
+					controllerAs: 'filterCtrl'
 				},
 				'tabledata@': {
 					templateUrl: 'scripts/report/report-table.html',
 					controller: "reportTableController",
-					controllerAs:'tableCtrl'
+					controllerAs: 'tableCtrl'
 				},
 				'graph@': {
 					templateUrl: 'scripts/report/report-graph.html',
 					controller: "reportGraphController",
-					controllerAs:'graphCtrl'
+					controllerAs: 'graphCtrl'
 				}
 			}
 		});
 	};
 
 	angular.module('workTime').config(routes);
-	routes.$inject = ['$stateProvider','$urlRouterProvider'];
+	routes.$inject = ['$stateProvider', '$urlRouterProvider'];
 }(window.angular));

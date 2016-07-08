@@ -10,7 +10,7 @@ model.WorkTime.timeWorked.onGet = function() {
 		start = this.start,
 		end = this.end;
 		breakTime = this['break'];
-	
+		
 	if(start != null && end != null){
 		if(breakTime != null){
 			returnValue = (end-start)-breakTime;

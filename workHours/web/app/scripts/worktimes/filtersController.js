@@ -23,6 +23,7 @@
 		
 		self.Session = Session;
 		self.userSelected = {ID:self.Session.userID ,name: self.Session.userFullName};
+		self.formLoaded = $state.current.url === '/form' ? false : true;
 		/**
 		 * Wakanda Initialization
 		 */
@@ -34,6 +35,12 @@
 				switch(sharedData.message){
 					case 'logout':
 						self.loggedin = false;
+					break;
+					case 'EnterWorktimeForm':
+						self.formLoaded = true;
+					break;
+					case 'ExitWorktimeForm':
+						self.formLoaded = false;
 					break;
 				}
 

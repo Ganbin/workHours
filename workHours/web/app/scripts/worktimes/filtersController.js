@@ -21,6 +21,8 @@
 		
 		self.allClients = true;
 		
+		self.Session = Session;
+		self.userSelected = {ID:self.Session.userID ,name: self.Session.userFullName};
 		/**
 		 * Wakanda Initialization
 		 */
@@ -58,11 +60,11 @@
 				sharedData.setData('selfTimeFilter',self);
 				
 				if(self.clientSelected != null && self.allClients !== true){
-					dataClass.$query({filter:'start > :1 && end < :2 and clientName == :3 and userName == :4',params:[self.from,self.to,self.clientSelected.name,userName],orderBy:'start desc'}).$promise.then(function(evt){
+					dataClass.$query({filter:'start > :1 && end < :2 and clientName == :3 and userName == :4',params:[self.from,self.to,self.clientSelected.name,userName],orderBy:'start desc',pageSize:20}).$promise.then(function(evt){
 						sharedData.prepForBroadcast({'action':'filter','result':evt.result,'clientName':self.clientSelected.name,from:self.from,to:self.to,showUser:!self.onlyMine,userName:userName});
 					});
 				} else {
-					dataClass.$query({filter:'start > :1 && end < :2 and userName == :3',params:[self.from,self.to,userName],orderBy:'start desc'}).$promise.then(function(evt){
+					dataClass.$query({filter:'start > :1 && end < :2 and userName == :3',params:[self.from,self.to,userName],orderBy:'start desc',pageSize:20}).$promise.then(function(evt){
 						sharedData.prepForBroadcast({'action':'filter','result':evt.result,from:self.from,to:self.to,showUser:!self.onlyMine,userName:userName});
 					});
 				}
@@ -84,6 +86,12 @@
 				},function(err){
 					sharedData.prepForBroadcast('logout');
 				});
+			},
+			
+			onlyMineClick = function (result) {
+				if(result){
+					this.userSelected = {ID:this.Session.userID ,name: this.Session.userFullName};
+				}
 			};
 
 			ds.Utility.getUserNames().$promise.then(function (evt) {
@@ -91,6 +99,7 @@
 			});
 
 			self.getAllClients = getAllClients;
+			self.onlyMineClick = onlyMineClick;
 			self.filter = filter;
 			//debugger;
 			//self = sharedData.getData('selfTimeFilter') === false ? self : sharedData.getData('selfTimeFilter')

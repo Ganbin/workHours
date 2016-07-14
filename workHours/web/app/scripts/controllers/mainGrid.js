@@ -7,7 +7,7 @@
 		self.toUTCDate = utils.toUTCDate;
 		self.millisToUTCDate = utils.millisToUTCDate;
 		self.goToState = $state.go;
-		self.clientName = 'tout les clients';
+		self.clientName = 'tous les clients';
 		self.showDates = false;
 		self.showUser = false;
 		self.userName = Session.userFullName;
@@ -50,6 +50,7 @@
 							self.to = sharedData.message.to;
 							self.showDates = true;
 							self.showUser = sharedData.message.showUser || false;
+							self.canGetMore = (self.workTimes.length < self.workTimes.$totalCount) ? true : false;
 							sharedData.setData('loadUserTime',false);
 						break;
 					}
@@ -57,8 +58,13 @@
 			});
 
 			var getAll = function(options){
-				ds.UserTime.$all(options).$promise.then(function(event){
-					self.workTimes = event.result;
+				ds.UserTime.$all(options).$promise.then(function(evt){
+					self.workTimes = evt.result;
+					
+					self.collValueNow = evt.result.length;
+					self.collValueMax = evt.result.$totalCount;
+					self.collValuePercent = Math.round((self.collValueNow/self.collValueMax)*100);
+					
 					sharedData.setData('workTimes',self.workTimes);
 					self.canGetMore = (self.workTimes.length < self.workTimes.$totalCount) ? true : false;
 				},function(err){
@@ -67,7 +73,10 @@
 			},
 
 			getMore = function(){
-				self.workTimes.$more().$promise.then(function(event){
+				self.workTimes.$more().$promise.then(function(evt){
+					self.collValueNow = evt.result.length;
+					self.collValueMax = evt.result.$totalCount;
+					self.collValuePercent = Math.round((self.collValueNow/self.collValueMax)*100);
 					self.canGetMore = (self.workTimes.length < self.workTimes.$totalCount) ? true : false;
 				},function(err){
 					sharedData.prepForBroadcast('logout');
@@ -99,7 +108,7 @@
 			self.addWorkTime = addWorkTime;
 
 			if(sharedData.getData('loadUserTime') === false){
-				self.getAll({orderBy:'start desc'});
+				self.getAll({orderBy:'start desc',pageSize:10});
 				sharedData.setData('loadUserTime',true);
 			} else {
 				self.workTimes = sharedData.getData('workTimes');

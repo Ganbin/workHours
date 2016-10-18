@@ -23,7 +23,7 @@
 			self.endDate = new Date(self.entity.end);
 			self.endAt = new Date(self.entity.end);
 			self.title = 'Edit Work Time';
-//debugger;
+		
 			// Calculation of the offset to keep the duration from timestamp 0
 			var userOffsetBreak = utils.checkDST(moment(self.entity['break']).tz('UTC')._d,true)*60000,
 				userOffsetTrain = utils.checkDST(moment(self.entity.trainTime).tz('UTC')._d,true)*60000,
@@ -129,9 +129,12 @@
 
 				newTime.start = moment(startDateTmp.format('YYYYMMDD')+'T'+startAtTmp.format('HHmm')).toDate();
 				newTime.end = moment(endDateTmp.format('YYYYMMDD')+'T'+endAtTmp.format('HHmm')).toDate();
-				newTime['break'] = this.breakTime != null && this.breakTime.getTime()-(1000*(this.breakTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				//newTime['break'] = this.breakTime != null && this.breakTime.getTime()-(1000*(this.breakTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				newTime['break'] = this.breakTime != null ? (this.breakTime.getHours()*60*60*1000)+(this.breakTime.getMinutes()*60*1000) : 0;
 				newTime.breakReason = this.breakReason;
-				newTime.trainTime = this.trainTime != null && this.trainTime.getTime()-(1000*(this.trainTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				//debugger;
+				//newTime.trainTime = this.trainTime != null && this.trainTime.getTime()-(1000*(this.trainTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				newTime.trainTime = this.trainTime != null ? (this.trainTime.getHours()*60*60*1000)+(this.trainTime.getMinutes()*60*1000) : 0;
 				newTime.trainPrice = this.trainPrice;
 				newTime.comment = this.comment;
 
@@ -157,11 +160,13 @@
 
 				editTime.start = moment(startDateTmp.format('YYYYMMDD')+'T'+startAtTmp.format('HHmm')).toDate();
 				editTime.end = moment(endDateTmp.format('YYYYMMDD')+'T'+endAtTmp.format('HHmm')).toDate();
-				editTime['break'] = (this.breakTime != null) && this.breakTime.getTime()-(1000*(this.breakTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				//editTime['break'] = (this.breakTime != null) && this.breakTime.getTime()-(1000*(this.breakTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				editTime['break'] = this.breakTime != null ? (this.breakTime.getHours()*60*60*1000)+(this.breakTime.getMinutes()*60*1000) : 0;
 				editTime.breakReason = this.breakReason;
 				editTime.comment = this.comment;
 
-				editTime.trainTime = this.trainTime != null && this.trainTime.getTime()-(1000*(this.trainTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				//editTime.trainTime = this.trainTime != null && this.trainTime.getTime()-(1000*(this.trainTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				editTime.trainTime = this.trainTime != null ? (this.trainTime.getHours()*60*60*1000)+(this.trainTime.getMinutes()*60*1000) : 0;
 				editTime.trainPrice = this.trainPrice;
 
 				editTime.client = utils.map(this.clients)[this.clientSelected.ID];

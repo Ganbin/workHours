@@ -12,8 +12,8 @@
 					"isOpen": "true",
 					"pathVisible": true,
 					"position": {
-						"X": 35,
-						"Y": 25
+						"X": 65,
+						"Y": 20
 					}
 				}
 			},
@@ -73,7 +73,7 @@
 		"model": {
 			"scriptMode": "manual",
 			"workspaceLeft": 0,
-			"workspaceTop": 0,
+			"workspaceTop": 100,
 			"methodShowMode": "true",
 			"methodInhShowMode": "true",
 			"relShowMode": "true",
@@ -370,12 +370,31 @@
 							"userDefined": true
 						}
 					]
+				},
+				{
+					"name": "creationDate",
+					"kind": "storage",
+					"scope": "public",
+					"type": "date",
+					"simpleDate": false
+				},
+				{
+					"name": "modificationDate",
+					"kind": "storage",
+					"scope": "public",
+					"type": "date",
+					"simpleDate": false
 				}
 			],
 			"events": [
 				{
 					"kind": "save",
 					"from": "$mainModel.WorkTime.events.save",
+					"userDefined": true
+				},
+				{
+					"kind": "init",
+					"from": "$mainModel.WorkTime.events.init",
 					"userDefined": true
 				}
 			]

@@ -17,4 +17,17 @@
 	<allow action="execute" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.Category" temporaryForcePermissions="false" type="dataClass"/>
 	<allow action="promote" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.Category" temporaryForcePermissions="false" type="dataClass"/>
 	<allow action="read" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.WorkTime" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="read" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.UserTime" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="create" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.UserTime" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="update" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.UserTime" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="remove" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.UserTime" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="describe" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.Client" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="describe" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.Category" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="describe" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.WorkTime" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="describe" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.UserTime" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="read" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.Utility" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="create" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.Utility" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="update" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.Utility" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="remove" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.Utility" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="describe" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.Utility" temporaryForcePermissions="false" type="dataClass"/>
 </permissions>

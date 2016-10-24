@@ -30,7 +30,7 @@
 							<td data-title="End">${worktime.end | dateFormat:'DD.MM.YY HH:mm'}</td>
 							<td data-title="Duration">${worktime.timeWorked | millisToHours}</td>
 							<td data-title="Comment" class="w-b comment">${worktime.comment}</td>
-							<td data-title="Break" class="hide-on-med-and-down">${gridCtrl.millisToUTCDate(worktime.break) | dateFormat:'HH:mm'}</td>
+							<td data-title="Break" class="hide-on-med-and-down">${utils.millisToUTCDate(worktime.break) | dateFormat:'HH:mm'}</td>
 							<td data-title="Reason" class="hide-on-med-and-down truncateCstm">${worktime.breakReason | truncate:25}</td>
 							<td data-title="Client" class="hide-on-med-and-down truncateCstm">${worktime.clientName}</td>
 							<td data-title="Category" class="truncatseCstm">${worktime.categoryName}</td>

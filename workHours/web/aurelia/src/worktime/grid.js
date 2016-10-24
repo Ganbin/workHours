@@ -1,23 +1,17 @@
 import {WakandaClient} from 'wakanda-client';
 import {AppRouter} from 'aurelia-router';
 import {Auth} from 'services/Auth';
+import utils from 'services/utils';
 const wakanda = new WakandaClient('http://127.0.0.1:8081');
 const PAGE_SIZE = 5;
 
-export function Grid(auth, router) {
+export function Grid(auth, router, utils) {
     const self = this;
     this.auth = auth;
     this.showFirstLast = true;
     this.router = router;
     this.route = 'worktime';
-  // self.clientName = 'tous les clients';
-  // self.showDates = false;
-  // self.showUser = false;
-  // self.workTimes = [];
-  // //self.userName = Session.userFullName;
-  //
-  // //self.formLoaded = $state.current.url === '/form' ? false : true;
-
+    this.utils = utils;
 
     function editTime(ID) {
         this.router.navigate(this.route + '/' + ID);
@@ -33,7 +27,8 @@ export function Grid(auth, router) {
             ds.WorkTime.query({
                 filter: 'ID >= 0',
                 pageSize: PAGE_SIZE,
-                start:start
+                start: start,
+                orderBy: 'start desc'
             }).then((evt) => {
                 self.worktimes = evt;
             }).catch((err) => {
@@ -41,7 +36,7 @@ export function Grid(auth, router) {
         };
 
         self.pageChanged = (e) => {
-            self.getAll(PAGE_SIZE*(e.detail-1));
+            self.getAll(PAGE_SIZE * (e.detail - 1));
         };
 
         self.getAll(0);
@@ -104,4 +99,4 @@ export function Grid(auth, router) {
   //   getAll({filter:"ID>0"});
   // });
 }
-Grid.inject = [Auth, AppRouter];
+Grid.inject = [Auth, AppRouter, utils];

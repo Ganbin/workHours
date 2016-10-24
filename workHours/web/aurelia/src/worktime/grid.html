@@ -1,0 +1,60 @@
+<template><!-- Display a list of the worktime -->
+	<div class="m-t-20">
+		<div class="">
+	  	<button type='button' title="Add a Work Time" ng-click="gridCtrl.addWorkTime()" class="btn btn-primary no-print">ADD</button>
+			<h4>Temps de travail de ${userName} pour ${clientName}<span ng-show="gridCtrl.showDates"> du ${from | dateFormat : 'DD.MM.YYYY'} au ${to | dateFormat : 'DD.MM.YYYY'}</span></h4>
+			<span>test : ${worktimes._count}- ${worktimes._pageSize}- ${worktimes._sent}</span>
+	  </div>
+		<div class="">
+			<div class="table-responsive-vertical shadow-z-1">
+  <!-- Table starts here -->
+  			<table id="table" class="table table-hover table-mc-light-blue">
+					<thead>
+						<tr>
+							<th>Start</th>
+							<th>End</th>
+							<th class="truncateCstm">Duration</th>
+							<th class="comment" width="">Comment</th>
+							<th class="hide-on-med-and-down truncateCstm">Break</th>
+							<th class="hide-on-med-and-down truncateCstm">Reason</th>
+							<th class="hide-on-med-and-down truncateCstm">Client</th>
+							<th class="truncateCstm">Category</th>
+							<th class="truncateCstm">User</th>
+							<th class="no-print"></th>
+							<th class="no-print"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="clickable" repeat.for="worktime of worktimes.entities">
+							<td data-title="Start">${worktime.start | dateFormat:'DD.MM.YY HH:mm'}</td>
+							<td data-title="End">${worktime.end | dateFormat:'DD.MM.YY HH:mm'}</td>
+							<td data-title="Duration">${worktime.timeWorked | millisToHours}</td>
+							<td data-title="Comment" class="w-b comment">${worktime.comment}</td>
+							<td data-title="Break" class="hide-on-med-and-down">${gridCtrl.millisToUTCDate(worktime.break) | dateFormat:'HH:mm'}</td>
+							<td data-title="Reason" class="hide-on-med-and-down truncateCstm">${worktime.breakReason | truncate:25}</td>
+							<td data-title="Client" class="hide-on-med-and-down truncateCstm">${worktime.clientName}</td>
+							<td data-title="Category" class="truncatseCstm">${worktime.categoryName}</td>
+							<td data-title="User" class="truncateCstm">${worktime.userName}</td>
+							<td data-title="" click.delegate="editTime(worktime.ID)" class="no-print center-align"><span title="Edit" class="material-icons ">edit</span></td>
+							<td data-title="" class="no-print center-align"><span title="Delete" class="material-icons">delete</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<button class="full-width waves-effect btn no-print" click.delegate="worktimes.more()" show.bind="worktimes._sent < worktimes._count"><span class="material-icons">add</span></button>
+
+			<md-pagination class="center-align" md-show-first-last="0" md-show-prev-next="0" md-on-page-changed.delegate="pageChanged($event)" md-pages.bind="worktimes._count / worktimes._pageSize" md-visible-page-links="6">
+			</md-pagination>
+
+			<!-- <md-switch md-checked.bind="showFirstLast"></md-switch>
+			<md-pagination class="center-align" md-show-first-last.two-way="showFirstLast" md-show-first-last="0" md-pages="5" md-visible-page-links="3" md-active-page="1"></md-pagination>
+		</div>
+		<div class="container">
+			<div class="progress">
+				<div class="progress-bar" role="progressbar" aria-valuenow="{{gridCtrl.collValueNow}}" aria-valuemin="0" aria-valuemax="{{gridCtrl.collValueMax}}" style="width: {{gridCtrl.collValuePercent}}%;">
+					 <span>60% Complete</span>
+				</div>
+			</div>
+		</div> -->
+	</div>
+</template>

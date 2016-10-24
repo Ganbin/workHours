@@ -1,0 +1,12 @@
+/**
+* The shell for the orders section of the application.  Will contain either
+* the order-list or order page.
+*/
+export class worktimeSection {
+    configureRouter(config, router) {
+        config.map([
+            { route: '',    moduleId: './grid', nav: false, title: '' },
+            { route: ':id', moduleId: './form',      nav: false, title: '' }
+        ]);
+    }
+}

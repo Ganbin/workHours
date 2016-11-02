@@ -1,8 +1,10 @@
 import {Auth} from './services/Auth';
 // import {inject} from 'aurelia-framework';
 import {WakandaClient} from 'wakanda-client';
+import env from 'services/env';
 
-const wakanda = new WakandaClient('http://127.0.0.1:8081');
+const hostname = env.hostname;
+const wakanda = new WakandaClient(`http://${hostname}:8081`);
 // @inject(Auth)
 // export class Home{
 //     currentPage

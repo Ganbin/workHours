@@ -1,7 +1,7 @@
 import {WakandaClient} from 'wakanda-client';
-
-const wakanda = new WakandaClient('http://127.0.0.1:8081');
-// let authInstance = null;
+import env from 'services/env';
+const hostname = env.hostname;
+const wakanda = new WakandaClient(`http://${hostname}:8081`);
 
 export function Auth() {
     const self = this;

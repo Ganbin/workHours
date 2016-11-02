@@ -2,7 +2,10 @@ import {WakandaClient} from 'wakanda-client';
 import {AppRouter} from 'aurelia-router';
 import {Auth} from 'services/Auth';
 import utils from 'services/utils';
-const wakanda = new WakandaClient('http://127.0.0.1:8081');
+import env from 'services/env';
+
+const hostname = env.hostname;
+const wakanda = new WakandaClient(`http://${hostname}:8081`);
 const PAGE_SIZE = 5;
 
 export function Grid(auth, router, utils) {
@@ -16,7 +19,11 @@ export function Grid(auth, router, utils) {
     function editTime(ID) {
         this.router.navigate(this.route + '/' + ID);
     }
+    function addWorkTime() {
+        this.router.navigate(this.route + '/add');
+    }
     this.editTime = editTime;
+    this.addWorkTime = addWorkTime;
 
     wakanda.getCatalog().then((ds) => {
         /**

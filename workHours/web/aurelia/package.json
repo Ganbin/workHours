@@ -12,10 +12,11 @@
     "aurelia-animator-css": "^1.0.0",
     "aurelia-bootstrapper": "^1.0.0",
     "aurelia-fetch-client": "^1.0.0",
-    "aurelia-materialize-bridge": "^0.17.1",
+    "aurelia-materialize-bridge": "0.18.0",
     "aurelia-validation": "^0.13.1",
     "bluebird": "^3.4.1",
-    "materialize-css": "^0.97.7",
+    "material-datetime-picker": "https://github.com/Pako7/material-datetime-picker",
+    "materialize-css": "0.97.8",
     "moment": "2.14.1",
     "wakanda-client": "0.3.5"
   },

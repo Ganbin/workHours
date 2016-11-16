@@ -73,7 +73,7 @@
 		"model": {
 			"scriptMode": "manual",
 			"workspaceLeft": 0,
-			"workspaceTop": 100,
+			"workspaceTop": 0,
 			"methodShowMode": "true",
 			"methodInhShowMode": "true",
 			"relShowMode": "true",
@@ -317,7 +317,7 @@
 					"name": "trainTime",
 					"kind": "storage",
 					"scope": "public",
-					"type": "duration"
+					"type": "string"
 				},
 				{
 					"name": "trainPrice",
@@ -384,6 +384,12 @@
 					"scope": "public",
 					"type": "date",
 					"simpleDate": false
+				},
+				{
+					"name": "breakTime",
+					"scope": "public",
+					"type": "string",
+					"kind": "storage"
 				}
 			],
 			"events": [
@@ -395,6 +401,11 @@
 				{
 					"kind": "init",
 					"from": "$mainModel.WorkTime.events.init",
+					"userDefined": true
+				},
+				{
+					"kind": "validate",
+					"from": "$mainModel.WorkTime.events.validate",
 					"userDefined": true
 				}
 			]
@@ -411,5 +422,6 @@
 				}
 			]
 		}
-	]
+	],
+	"type": []
 }

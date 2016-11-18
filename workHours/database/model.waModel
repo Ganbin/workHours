@@ -274,6 +274,19 @@
 					"type": "duration"
 				},
 				{
+					"name": "breakTime",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string",
+					"events": [
+						{
+							"kind": "validate",
+							"from": "$mainModel.WorkTime.breakTime.events.validate",
+							"userDefined": true
+						}
+					]
+				},
+				{
 					"name": "breakReason",
 					"kind": "storage",
 					"scope": "public",
@@ -317,7 +330,14 @@
 					"name": "trainTime",
 					"kind": "storage",
 					"scope": "public",
-					"type": "string"
+					"type": "string",
+					"events": [
+						{
+							"kind": "validate",
+							"from": "$mainModel.WorkTime.trainTime.events.validate",
+							"userDefined": true
+						}
+					]
 				},
 				{
 					"name": "trainPrice",
@@ -386,10 +406,30 @@
 					"simpleDate": false
 				},
 				{
-					"name": "breakTime",
+					"name": "breakTimeMs",
+					"kind": "calculated",
 					"scope": "public",
-					"type": "string",
-					"kind": "storage"
+					"type": "number",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.WorkTime.breakTimeMs.onGet",
+							"userDefined": true
+						}
+					]
+				},
+				{
+					"name": "trainTimeMs",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "number",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.WorkTime.trainTimeMs.onGet",
+							"userDefined": true
+						}
+					]
 				}
 			],
 			"events": [
@@ -422,6 +462,5 @@
 				}
 			]
 		}
-	],
-	"type": []
+	]
 }

@@ -34,3 +34,36 @@ model.WorkTime.events.init = function(event) {
 	this.creationDate = new Date();
 	this.modificationDate = new Date();
 };
+
+
+model.WorkTime.events.validate = function(event) {
+	if((this['break'] != null && this.breakReason == null) || (this.breakReason != null && this['break'] == null)){
+		return {error: 10, errorMessage: 'You must have a reason for a break time!'};
+	}
+	
+	if((this.trainTime != null && this.trainPrice == null) || (this.trainPrice != null && this.trainTime == null)){
+		return {error: 11, errorMessage: 'You must have a price with a train time!'};
+	}
+};
+
+
+model.WorkTime.breakTime.events.validate = function(event) {
+	if(this.breakTime != null && !this.breakTime.match(/([01]{1}[0-9]|2[0-3]):[0-5][0-9]/)){
+		return {error: 12, errorMessage: 'The breakTime attribute must be an hours between 00:00 - 23:59'}
+	}
+};
+
+model.WorkTime.trainTime.events.validate = function(event) {
+	if(this.trainTime != null && !this.trainTime.match(/([01]{1}[0-9]|2[0-3]):[0-5][0-9]/)){
+		return {error: 13, errorMessage: 'The trainTime attribute must be an hours between 00:00 - 23:59'}
+	}
+};
+
+
+model.WorkTime.breakTimeMs.onGet = function() {
+	return ((parseInt(this.breakTime.substr(0,2))*60)+parseInt(this.breakTime.substr(3,2)))*60*1000;
+};
+
+model.WorkTime.trainTimeMs.onGet = function() {
+	return ((parseInt(this.trainTime.substr(0,2))*60)+parseInt(this.trainTime.substr(3,2)))*60*1000;
+};

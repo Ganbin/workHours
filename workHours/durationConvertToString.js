@@ -19,7 +19,7 @@ function convert(duration) {
 	}
 
 	if (typeof min !== 'number') {
-		return 'Not a number';
+		return '00:00';
 	}
 
 	return min < 60 ?
@@ -43,7 +43,6 @@ ds.WorkTime.all().forEach(function (worktime) {
 	try{
 		worktime.save();
 	} catch (e) {
-		debugger;
 	}
 });
 

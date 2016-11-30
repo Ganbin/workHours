@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html><section data-group="[['allGroupsGrid','addGroupBtn'],['usersGroupGrid','removeGroupBtn'],['userGrid','refreshBtn']]" class="default waf-widget waf-document">
+    <meta name="generator" content="Wakanda GUIDesigner"/>
+    <meta name="WAF.catalog" content=""/><meta name="WAF.config.datasources" data-type="dataSource" data-source-type="array" data-source="{id}userNotInGroup" data-scope="local" data-lib="WAF" data-id="{id}userNotInGroup" data-dataType="string" data-autoLoad="true" data-attributes="name:string,fullName:string,ID:string" content="userNotInGroup"/>
+    <meta name="WAF.config.datasources" data-type="dataSource" data-source-type="array" data-source="{id}userInGroup" data-scope="local" data-lib="WAF" data-id="{id}userInGroup" data-dataType="string" data-autoLoad="true" data-attributes="name:string,fullName:string,ID:string" content="userInGroup"/>
+    <meta name="WAF.config.datasources" data-type="dataSource" data-source-type="array" data-source="{id}users" data-scope="local" data-lib="WAF" data-id="{id}users" data-dataType="string" data-autoLoad="true" data-attributes="ID:string,name:string,fullName:string" content="users"/>
+    <meta name="WAF.config.datasources" data-type="dataSource" data-source-type="scalar" data-source="{id}password" data-scope="local" data-lib="WAF" data-id="{id}password" data-dataType="string" data-autoLoad="true" content="password"/>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	<div id="{id}userGrid" data-type="dataGrid" data-selection-mode="single" data-readOnly="true" data-lib="WAF" data-label-position="top" data-label="Users" data-footer-text="item(s)" data-display-error="true" data-constraint-top="true" data-constraint-left="true" data-column="[{'sourceAttID':'name','colID':'name','width':'150','title':'Name'},{'sourceAttID':'fullName','colID':'fullName','width':'248','title':'Full%20name'}]" data-binding="{id}users" class="waf-widget waf-dataGrid default waf-dataGrid-level-0 waf-level-0"></div>
+		<div id="{id}usersGroupGrid" data-type="dataGrid" data-selection-mode="single" data-readOnly="true" data-lib="WAF" data-label-position="top" data-label="Users Group" data-footer-text="item(s)" data-display-error="true" data-constraint-top="true" data-constraint-left="true" data-column="[{'sourceAttID':'name','colID':'name','width':'186','title':'Name'},{'sourceAttID':'fullName','colID':'fullName','width':'206','title':'Description'}]" data-binding="{id}userInGroup" class="waf-widget waf-dataGrid default inherited                       waf-dataGrid-level-0 waf-level-0 "></div>
+		<div id="{id}allGroupsGrid" data-type="dataGrid" data-selection-mode="single" data-readOnly="true" data-lib="WAF" data-label-position="top" data-label="All groups" data-footer-text="item(s)" data-display-error="true" data-constraint-top="true" data-constraint-left="true" data-column="[{'sourceAttID':'name','colID':'name','width':'150','title':'Name'},{'sourceAttID':'fullName','colID':'fullName','width':'239','title':'Description'}]" data-binding="{id}userNotInGroup" class="waf-widget waf-dataGrid default inherited                                waf-dataGrid-level-0 waf-level-0 "></div>
+		<label id="{id}label1" for="{id}allGroupsGrid" data-valign="middle" data-type="label" data-margin="5" data-lib="WAF" data-constraint-top="true" data-constraint-left="true" class="waf-widget waf-label default waf-label-dataGrid waf-label-level-0 waf-level-0 waf-label-datagrid">All groups</label>
+		<label id="{id}label2" for="{id}usersGroupGrid" data-valign="middle" data-type="label" data-margin="5" data-lib="WAF" data-constraint-top="true" data-constraint-left="true" class="waf-widget waf-label default waf-label-dataGrid waf-label-level-0 waf-level-0 waf-label-datagrid">Users Group</label>
+		<button id="{id}addGroupBtn" data-type="button" data-text="&lt;- Add" data-target="_blank" data-lib="WAF" data-constraint-top="true" data-constraint-left="true" data-action="simple" class="waf-widget waf-button default inherited                waf-button-level-0 waf-level-0"></button>
+		<button id="{id}removeGroupBtn" data-type="button" data-text="Remove -&gt;" data-target="_blank" data-lib="WAF" data-constraint-top="true" data-constraint-left="true" data-action="simple" class="waf-widget waf-button default inherited                waf-button-level-0 waf-level-0"></button>
+		<div id="{id}details" data-type="container" data-lib="WAF" data-constraint-top="true" data-constraint-left="true" class="waf-widget waf-container default inherited              waf-container-level-0 waf-level-0 ">
+ 		<input type="text" id="{id}UserID_textField" data-type="textField" data-password="false" data-multiline="false" data-lib="WAF" data-label-position="left" data-label="ID" data-datapicker-on="true" data-datapicker-icon-only="false" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" data-binding="{id}users.ID" class="waf-widget waf-textField default inherited                        waf-textField-level-0 waf-level-0"/>
+ 		<label id="{id}label3" for="{id}UserID_textField" data-valign="middle" data-type="label" data-margin="5" data-lib="WAF" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" class="waf-widget waf-label default waf-label-textField waf-label-level-0 waf-level-0 waf-label-textfield">ID</label>
+ 	
+ 		<input type="text" id="{id}userName_textField" data-type="textField" data-password="false" data-multiline="false" data-lib="WAF" data-label-position="left" data-label="Name" data-datapicker-on="true" data-datapicker-icon-only="false" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" data-binding="{id}users.name" class="waf-widget waf-textField default inherited                          waf-textField-level-0 waf-level-0"/>
+ 		<label id="{id}label4" for="{id}userName_textField" data-valign="middle" data-type="label" data-margin="5" data-lib="WAF" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" class="waf-widget waf-label default waf-label-textField waf-label-level-0 waf-level-0 waf-label-textfield">Name</label>
+ 	
+ 		<input type="text" id="{id}userFullName_textField" data-type="textField" data-password="false" data-multiline="false" data-lib="WAF" data-label-position="left" data-label="Full name" data-datapicker-on="true" data-datapicker-icon-only="false" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" data-binding="{id}users.fullName" class="waf-widget waf-textField default inherited                          waf-textField-level-0 waf-level-0"/>
+ 		<label id="{id}label5" for="{id}userFullName_textField" data-valign="middle" data-type="label" data-margin="5" data-lib="WAF" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" class="waf-widget waf-label default waf-label-textField waf-label-level-0 waf-level-0 waf-label-textfield">Full name</label>
+ 	
+ 		<input type="text" id="{id}userPassword_textField" data-type="textField" data-password="true" data-multiline="false" data-lib="WAF" data-label-position="left" data-label="Password" data-datapicker-on="true" data-datapicker-icon-only="false" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" data-binding="{id}password" class="waf-widget waf-textField default inherited                        waf-textField-level-0 waf-level-0"/>
+ 		<label id="{id}label6" for="{id}userPassword_textField" data-valign="middle" data-type="label" data-margin="5" data-lib="WAF" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" class="waf-widget waf-label default waf-label-textField waf-label-level-0 waf-level-0 waf-label-textfield">Password</label>
+ 		<button id="{id}saveBtn" data-type="button" data-text="Save" data-target="_blank" data-lib="WAF" data-constraint-top="false" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="true" data-action="simple" class="waf-widget waf-button default inherited      waf-button-level-0 waf-level-0 "></button>
+ 		<button id="{id}removeBtn" data-type="button" data-text="Remove" data-target="_blank" data-lib="WAF" data-constraint-top="false" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="true" data-action="simple" class="waf-widget waf-button default inherited      waf-button-level-0 waf-level-0 "></button>
+ 		<button id="{id}newBtn" data-type="button" data-text="New" data-target="_blank" data-lib="WAF" data-constraint-top="false" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="true" data-action="simple" class="waf-widget waf-button default inherited      waf-button-level-0 waf-level-0 "></button>
+ 		<button id="{id}cancelBtn" data-type="button" data-text="Cancel" data-target="_blank" data-lib="WAF" data-constraint-top="false" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="true" data-action="simple" class="waf-widget waf-button default inherited      waf-button-level-0 waf-level-0 "></button>
+ 		<div id="{id}richText1" data-type="richText" data-target="_blank" data-plainText="true" data-overflow="Hidden" data-lib="WAF" data-label-position="left" data-label="" data-constraint-top="true" data-constraint-right="true" data-constraint-left="true" data-constraint-bottom="false" data-autoWidth="false" class="waf-widget waf-richText default inherited      waf-richText-level-0 waf-level-0 ">Details</div>
+ 		<div id="{id}userChange" data-type="richText" data-target="_blank" data-plainText="true" data-overflow="Hidden" data-lib="WAF" data-label-position="left" data-label="" data-constraint-top="true" data-constraint-right="false" data-constraint-left="true" data-constraint-bottom="false" data-autoWidth="false" class="waf-widget waf-richText default inherited         waf-richText-level-0 waf-level-0 "></div>
+ 	</div>
+		
+		<label id="{id}label7" for="{id}userGrid" data-valign="middle" data-type="label" data-margin="5" data-lib="WAF" data-constraint-top="true" data-constraint-left="true" class="waf-widget waf-label default waf-label-level-0 waf-level-0 waf-label-dataGrid waf-label-datagrid">Users</label>
+	
+	
+	
+	
+		<button id="{id}refreshBtn" data-type="button" data-text="Refresh" data-target="_blank" data-lib="WAF" data-constraint-top="true" data-constraint-left="true" data-action="simple" class="waf-widget waf-button default inherited       waf-button-level-0 waf-level-0 "></button>
+	
+		<div id="{id}groupChange" data-type="richText" data-target="_blank" data-plainText="true" data-overflow="Hidden" data-lib="WAF" data-label-position="left" data-label="" data-constraint-top="true" data-constraint-left="true" data-autoWidth="false" class="waf-widget waf-richText default inherited           waf-richText-level-0 waf-level-0 "></div>
+	
+	</section>

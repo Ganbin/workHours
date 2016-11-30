@@ -2,12 +2,17 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var login1 = {};	// @login
 	var setCategoryClientBtn = {};	// @Button
-	var categoryBtn = {};	// @Button
-	var clientBtn = {};	// @Button
 // @endregion// @endlock
 
 // eventHandlers// @lock
+
+	login1.login = function login1_login (event)// @startlock
+	{// @endlock
+		debugger;
+		waf.sources.category.resolveSource();
+	};// @lock
 
 	setCategoryClientBtn.click = function setCategoryClientBtn_click (event)// @startlock
 	{// @endlock
@@ -18,31 +23,8 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}});
 	};// @lock
 
-	categoryBtn.click = function categoryBtn_click (event)// @startlock
-	{// @endlock
-		waf.sources.workTime.category.set(waf.sources.category.getCurrentElement());
-		waf.sources.workTime.save({onSuccess:function(evt){// @lock
-			waf.sources.workTime.serverRefresh();
-			alertify.success('Client Linked')
-		},onErro:function(err){
-			alertify.error('An error occurs');
-		}});
-	};// @lock
-
-	clientBtn.click = function clientBtn_click (event)// @startlock
-	{// @endlock
-		waf.sources.workTime.client.set(waf.sources.client.getCurrentElement());
-		waf.sources.workTime.save({onSuccess:function(evt){
-			waf.sources.workTime.serverRefresh();
-			alertify.success('Client Linked')
-		},onErro:function(err){
-			alertify.error('An error occurs');
-		}});
-	};// @lock
-
 // @region eventManager// @startlock
+	WAF.addListener("login1", "login", login1.login, "WAF");
 	WAF.addListener("setCategoryClientBtn", "click", setCategoryClientBtn.click, "WAF");
-	WAF.addListener("categoryBtn", "click", categoryBtn.click, "WAF");
-	WAF.addListener("clientBtn", "click", clientBtn.click, "WAF");
 // @endregion
 };// @endlock

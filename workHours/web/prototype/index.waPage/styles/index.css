@@ -3,39 +3,146 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
-#label2 {
-	z-index: 13;
+#component1 {
+	z-index: 1;
+	top: 20px;
+	bottom: 20px;
+	left: 20px;
+	right: 20px;
+	position: absolute;
+}
+
+#container4 {
+	z-index: 7;
+	top: 23px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	position: absolute;
+}
+
+#richText4 {
+	z-index: 1;
+	width: 66px;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuItem4 {
+	z-index: 4;
+	width: 66px;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#dataGrid4 {
+	z-index: 1;
+	top: 40px;
+	bottom: 20px;
+	left: 20px;
+	right: 20px;
+	position: absolute;
+}
+
+#label4 {
+	z-index: 5;
 	width: auto;
 	height: 14px;
-	top: 189px;
-	left: 731px;
+	top: 29px;
+	left: 509px;
 	position: absolute;
 }
 
-#textInput2 {
-	z-index: 13;
-	width: 332px;
-	height: 22px;
-	top: 185px;
-	left: 756px;
-	position: absolute;
-}
-
-#label1 {
-	z-index: 11;
+#label3 {
+	z-index: 4;
 	width: auto;
 	height: 14px;
-	top: 149px;
-	left: 612px;
+	top: 11px;
+	left: 26px;
 	position: absolute;
 }
 
-#textInput1 {
-	z-index: 11;
-	width: 240px;
+#container3 {
+	z-index: 6;
+	top: 23px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	position: absolute;
+}
+
+#richText3 {
+	z-index: 1;
+	width: 64px;
 	height: 22px;
-	top: 145px;
-	left: 640px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuItem3 {
+	z-index: 3;
+	width: 66px;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#container1 {
+	z-index: 4;
+	top: 23px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	position: absolute;
+}
+
+#richText1 {
+	z-index: 1;
+	width: 64px;
+	height: 22px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuItem1 {
+	z-index: 1;
+	width: 66px;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuBar1 > .waf-menuItem {
+	margin-bottom: 0px;
+}
+
+#menuBar1 > .waf-menuItem:not(.waf-menuItem-last) {
+	margin-right: 5px;
+}
+
+#menuBar1 {
+	z-index: 3;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	right: 5px;
+	position: absolute;
+}
+
+#tabView1 {
+	z-index: 15;
+	top: 44px;
+	bottom: 20px;
+	left: 20px;
+	right: 20px;
 	position: absolute;
 }
 
@@ -50,19 +157,10 @@
 
 #dataGrid3 {
 	z-index: 3;
-	width: 395px;
+	width: 463px;
 	height: 288px;
-	top: 419px;
-	left: 40px;
-	position: absolute;
-}
-
-#dataGrid2 {
-	z-index: 2;
-	width: 978px;
-	height: 300px;
-	top: 214px;
-	left: 584px;
+	top: 48px;
+	left: 509px;
 	position: absolute;
 }
 
@@ -70,35 +168,17 @@
 	z-index: 1;
 	width: 300px;
 	height: 300px;
-	top: 53px;
-	left: 51px;
-	position: absolute;
-}
-
-#clientBtn {
-	z-index: 8;
-	width: 92px;
-	height: 34px;
-	top: 275px;
-	left: 426px;
-	position: absolute;
-}
-
-#categoryBtn {
-	z-index: 7;
-	width: 92px;
-	height: 34px;
-	top: 434px;
-	left: 457px;
+	top: 30px;
+	left: 26px;
 	position: absolute;
 }
 
 #setCategoryClientBtn {
-	z-index: 14;
+	z-index: 2;
 	width: 125px;
 	height: 44px;
-	top: 364px;
-	left: 115px;
+	top: 124px;
+	left: 348px;
 	position: absolute;
 }
 

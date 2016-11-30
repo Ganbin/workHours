@@ -12,7 +12,7 @@
 					"isOpen": "true",
 					"pathVisible": true,
 					"position": {
-						"X": 65,
+						"X": 40,
 						"Y": 20
 					}
 				}
@@ -40,20 +40,8 @@
 					"isOpen": "true",
 					"pathVisible": true,
 					"position": {
-						"X": 50,
-						"Y": 271
-					}
-				}
-			},
-			"UserTime": {
-				"panelColor": "#CCC1D9",
-				"flatVisible": "true",
-				"methVisible": "true",
-				"panel": {
-					"isOpen": "true",
-					"position": {
-						"X": 775,
-						"Y": 20
+						"X": 43,
+						"Y": 277
 					}
 				}
 			},
@@ -64,8 +52,8 @@
 				"panel": {
 					"isOpen": "true",
 					"position": {
-						"X": 1025,
-						"Y": 20
+						"X": 772,
+						"Y": 31
 					}
 				}
 			}
@@ -447,18 +435,11 @@
 					"kind": "validate",
 					"from": "$mainModel.WorkTime.events.validate",
 					"userDefined": true
-				}
-			]
-		},
-		{
-			"name": "UserTime",
-			"className": "UserTime",
-			"collectionName": "UserTimeCollection",
-			"scope": "public",
-			"extends": "WorkTime",
-			"restrictingQuery": [
+				},
 				{
-					"queryStatement": "userID == :$userid"
+					"kind": "restrict",
+					"from": "$mainModel.WorkTime.events.restrict",
+					"userDefined": true
 				}
 			]
 		}

@@ -9,13 +9,13 @@ const hostname = env.hostname;
 const wakanda = new WakandaClient(`http://${hostname}:8081`);
 const PAGE_SIZE = 5;
 
-export function Grid(auth, router, utils, toast) {
+export function Grid(auth, router, utilsService, toast) {
     const self = this;
     this.auth = auth;
     this.showFirstLast = true;
     this.router = router;
     this.route = 'worktime';
-    this.utils = utils;
+    this.utils = utilsService;
     this.toast = toast;
     this.startForm = 0;
     this.paginationPages = 0;
@@ -30,7 +30,6 @@ export function Grid(auth, router, utils, toast) {
     this.addWorkTime = addWorkTime;
 
     wakanda.getCatalog(['WorkTime', 'Client', 'Category', 'CategoryUser', 'User']).then((ds) => {
-        console.log(directoryComponent);
         /**
          * Get all worktimes
          * @return no return but it affect the entities from the result to a worktime array
@@ -44,7 +43,6 @@ export function Grid(auth, router, utils, toast) {
             }).then((evt) => {
                 self.worktimes = evt;
                 self.paginationPages = Math.ceil(evt._count / evt._pageSize);
-                console.log(`${evt._count}<->${evt._pageSize}`);
             }).catch((err) => {
             });
         };

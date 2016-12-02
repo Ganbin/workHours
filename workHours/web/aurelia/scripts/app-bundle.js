@@ -225,7 +225,7 @@ define('debug/debug',['exports', 'aurelia-framework', 'aurelia-validation', 'aur
 
     _aureliaValidation.ValidationRules.ensure('email').email().required().on(Debug);
 });
-define('login/login',['exports', 'wakanda-client', 'aurelia-router', 'aurelia-framework', 'aurelia-validation', 'aurelia-materialize-bridge', 'services/Auth', 'services/env'], function (exports, _wakandaClient, _aureliaRouter, _aureliaFramework, _aureliaValidation, _aureliaMaterializeBridge, _Auth, _env) {
+define('login/login',['exports', 'wakanda-client', 'aurelia-router', 'aurelia-materialize-bridge', 'services/Auth', 'services/env'], function (exports, _wakandaClient, _aureliaRouter, _aureliaMaterializeBridge, _Auth, _env) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -252,7 +252,7 @@ define('login/login',['exports', 'wakanda-client', 'aurelia-router', 'aurelia-fr
     var hostname = _env2.default.hostname;
     var wakanda = new _wakandaClient.WakandaClient('http://' + hostname + ':8081');
 
-    var Login = exports.Login = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.AppRouter, _Auth.Auth, _env.datas, _aureliaMaterializeBridge.MdToastService), _dec(_class = function () {
+    var Login = exports.Login = (_dec = inject(_aureliaRouter.AppRouter, _Auth.Auth, _env.datas, _aureliaMaterializeBridge.MdToastService), _dec(_class = function () {
         function Login(router, auth, envDatas, toast) {
             _classCallCheck(this, Login);
 
@@ -331,12 +331,10 @@ define('services/Auth',['exports', 'wakanda-client', 'services/env'], function (
 
         function getCurrentUser(resolveCb, refuseCb) {
             wakanda.directory.currentUser().then(function (user) {
-                console.log('user logged in.');
                 self.user = user;
                 self.logged = true;
                 resolveCb({ result: true, value: user });
             }, function (err) {
-                console.log('user not logged in.');
                 reset();
                 resolveCb({ result: false, message: err.message });
             });
@@ -349,10 +347,8 @@ define('services/Auth',['exports', 'wakanda-client', 'services/env'], function (
         self.logout = function () {
             return wakanda.directory.logout().then(function () {
                 reset();
-                console.log('logout.');
             }).catch(function (err) {
                 reset();
-                console.log('logout error.');
             });
         };
 
@@ -717,13 +713,13 @@ define('worktime/grid',['exports', 'wakanda-client', 'aurelia-router', 'services
     var wakanda = new _wakandaClient.WakandaClient('http://' + hostname + ':8081');
     var PAGE_SIZE = 5;
 
-    function Grid(auth, router, utils, toast) {
+    function Grid(auth, router, utilsService, toast) {
         var self = this;
         this.auth = auth;
         this.showFirstLast = true;
         this.router = router;
         this.route = 'worktime';
-        this.utils = utils;
+        this.utils = utilsService;
         this.toast = toast;
         this.startForm = 0;
         this.paginationPages = 0;
@@ -738,8 +734,6 @@ define('worktime/grid',['exports', 'wakanda-client', 'aurelia-router', 'services
         this.addWorkTime = addWorkTime;
 
         wakanda.getCatalog(['WorkTime', 'Client', 'Category', 'CategoryUser', 'User']).then(function (ds) {
-            console.log(directoryComponent);
-
             self.getAll = function (start) {
                 return ds.WorkTime.query({
                     filter: 'ID >= 0',
@@ -749,7 +743,6 @@ define('worktime/grid',['exports', 'wakanda-client', 'aurelia-router', 'services
                 }).then(function (evt) {
                     self.worktimes = evt;
                     self.paginationPages = Math.ceil(evt._count / evt._pageSize);
-                    console.log(evt._count + '<->' + evt._pageSize);
                 }).catch(function (err) {});
             };
 

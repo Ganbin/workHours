@@ -18,12 +18,10 @@ export function Auth() {
     function getCurrentUser(resolveCb, refuseCb) {
         wakanda.directory.currentUser()
         .then(function (user) {
-            console.log('user logged in.');
             self.user = user;
             self.logged = true;
             resolveCb({result: true, value: user});
         }, function (err) {
-            console.log('user not logged in.');
             reset();
             resolveCb({result: false, message: err.message});
         });
@@ -36,10 +34,8 @@ export function Auth() {
     self.logout = function () {
         return wakanda.directory.logout().then(() => {
             reset();
-            console.log('logout.');
         }).catch((err) => {
             reset();
-            console.log('logout error.');
         });
     };
 

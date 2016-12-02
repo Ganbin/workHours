@@ -26,8 +26,8 @@
 					"isOpen": "true",
 					"pathVisible": false,
 					"position": {
-						"X": 534,
-						"Y": 10
+						"X": 511,
+						"Y": 31
 					}
 				}
 			},
@@ -38,7 +38,7 @@
 				"relVisible": "true",
 				"panel": {
 					"isOpen": "true",
-					"pathVisible": true,
+					"pathVisible": false,
 					"position": {
 						"X": 43,
 						"Y": 277
@@ -63,11 +63,11 @@
 				"methVisible": "true",
 				"panel": {
 					"isOpen": "true",
+					"pathVisible": true,
 					"position": {
 						"X": 427,
 						"Y": 675
-					},
-					"pathVisible": true
+					}
 				}
 			},
 			"CategoryUser": {
@@ -76,18 +76,18 @@
 				"methVisible": "true",
 				"panel": {
 					"isOpen": "true",
+					"pathVisible": true,
 					"position": {
-						"X": 56,
-						"Y": 630
-					},
-					"pathVisible": true
+						"X": 65,
+						"Y": 672
+					}
 				}
 			}
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 1,
-			"workspaceTop": 390,
+			"workspaceLeft": 0,
+			"workspaceTop": 0,
 			"methodShowMode": "true",
 			"methodInhShowMode": "true",
 			"relShowMode": "true",
@@ -97,10 +97,13 @@
 			},
 			"lastScriptLocation": {
 				"Client": {
-					"method": "Client/Client-methods.js"
+					"method": "Client/Client-methods.js",
+					"events": "Client/Client-events.js"
 				},
 				"Category": {
-					"computed": "Category/Category-events.js"
+					"computed": "Category/Category-events.js",
+					"method": "Category/Category-methods.js",
+					"events": "Category/Category-events.js"
 				},
 				"WorkTime": {
 					"events": "WorkTime/WorkTime-events.js",
@@ -108,6 +111,9 @@
 				},
 				"Utility": {
 					"method": "Utility/Utility-methods.js"
+				},
+				"User": {
+					"computed": "User/User-events.js"
 				}
 			}
 		}
@@ -177,19 +183,65 @@
 				},
 				{
 					"name": "categoryUserCollection",
+					"kind": "relatedEntities",
 					"scope": "public",
-					"reversePath": true,
-					"path": "category",
 					"type": "CategoryUserCollection",
-					"kind": "relatedEntities"
+					"reversePath": true,
+					"path": "category"
 				},
 				{
 					"name": "allUsers",
+					"kind": "relatedEntities",
 					"scope": "public",
-					"reversePath": false,
-					"path": "categoryUserCollection.user",
+					"type": "UserCollection",
+					"path": "categoryUserCollection.user"
+				}
+			],
+			"methods": [
+				{
+					"name": "addUser",
+					"applyTo": "entity",
+					"scope": "public",
+					"from": "$mainModel.Category.entityMethods.addUser",
+					"userDefined": true
+				},
+				{
+					"name": "removeUser",
+					"applyTo": "entity",
+					"scope": "public",
+					"from": "$mainModel.Category.entityMethods.removeUser",
+					"userDefined": true
+				}
+			]
+		},
+		{
+			"name": "CategoryUser",
+			"className": "CategoryUser",
+			"collectionName": "CategoryUserCollection",
+			"scope": "public",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"scope": "public",
+					"unique": true,
+					"autosequence": true,
+					"type": "long",
+					"primKey": true
+				},
+				{
+					"name": "category",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "Category",
+					"path": "Category"
+				},
+				{
+					"name": "user",
+					"kind": "relatedEntity",
+					"scope": "public",
 					"type": "User",
-					"kind": "relatedEntities"
+					"path": "User"
 				}
 			]
 		},
@@ -239,6 +291,69 @@
 					"scope": "public",
 					"from": "$mainModel.Client.methods.getReport",
 					"userDefined": true
+				}
+			]
+		},
+		{
+			"name": "User",
+			"className": "User",
+			"collectionName": "UserCollection",
+			"scope": "public",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"scope": "public",
+					"unique": true,
+					"autosequence": true,
+					"type": "long",
+					"primKey": true
+				},
+				{
+					"name": "firstName",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "lastName",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "fullName",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.User.fullName.onGet",
+							"userDefined": true
+						}
+					]
+				},
+				{
+					"name": "userID",
+					"kind": "storage",
+					"scope": "public",
+					"type": "uuid"
+				},
+				{
+					"name": "categoryUserCollection",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "CategoryUserCollection",
+					"reversePath": true,
+					"path": "user"
+				},
+				{
+					"name": "allCategories",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "CategoryCollection",
+					"path": "categoryUserCollection.category"
 				}
 			]
 		},
@@ -311,6 +426,14 @@
 					"events": [
 						{
 							"kind": "validate",
+							"from": "$mainModel.WorkTime.breakTime.events.validate"
+						},
+						{
+							"kind": "validate",
+							"from": "$mainModel.WorkTime.breakTime.events.validate"
+						},
+						{
+							"kind": "validate",
 							"from": "$mainModel.WorkTime.breakTime.events.validate",
 							"userDefined": true
 						}
@@ -362,6 +485,14 @@
 					"scope": "public",
 					"type": "string",
 					"events": [
+						{
+							"kind": "validate",
+							"from": "$mainModel.WorkTime.trainTime.events.validate"
+						},
+						{
+							"kind": "validate",
+							"from": "$mainModel.WorkTime.trainTime.events.validate"
+						},
 						{
 							"kind": "validate",
 							"from": "$mainModel.WorkTime.trainTime.events.validate",
@@ -465,8 +596,24 @@
 			"events": [
 				{
 					"kind": "save",
+					"from": "$mainModel.WorkTime.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.WorkTime.events.save"
+				},
+				{
+					"kind": "save",
 					"from": "$mainModel.WorkTime.events.save",
 					"userDefined": true
+				},
+				{
+					"kind": "init",
+					"from": "$mainModel.WorkTime.events.init"
+				},
+				{
+					"kind": "init",
+					"from": "$mainModel.WorkTime.events.init"
 				},
 				{
 					"kind": "init",
@@ -475,8 +622,24 @@
 				},
 				{
 					"kind": "validate",
+					"from": "$mainModel.WorkTime.events.validate"
+				},
+				{
+					"kind": "validate",
+					"from": "$mainModel.WorkTime.events.validate"
+				},
+				{
+					"kind": "validate",
 					"from": "$mainModel.WorkTime.events.validate",
 					"userDefined": true
+				},
+				{
+					"kind": "restrict",
+					"from": "$mainModel.WorkTime.events.restrict"
+				},
+				{
+					"kind": "restrict",
+					"from": "$mainModel.WorkTime.events.restrict"
 				},
 				{
 					"kind": "restrict",
@@ -484,89 +647,6 @@
 					"userDefined": true
 				}
 			]
-		},
-		{
-			"collectionName": "UserCollection",
-			"className": "User",
-			"attributes": [
-				{
-					"name": "ID",
-					"kind": "storage",
-					"type": "long",
-					"autosequence": "true",
-					"unique": "true",
-					"primKey": "true"
-				},
-				{
-					"name": "firstName",
-					"scope": "public",
-					"type": "string",
-					"kind": "storage"
-				},
-				{
-					"name": "lastName",
-					"scope": "public",
-					"type": "string",
-					"kind": "storage"
-				},
-				{
-					"name": "fullName",
-					"scope": "public",
-					"type": "string",
-					"kind": "storage"
-				},
-				{
-					"name": "userID",
-					"scope": "public",
-					"type": "uuid",
-					"kind": "storage"
-				},
-				{
-					"name": "categoryUserCollection",
-					"scope": "public",
-					"reversePath": true,
-					"path": "user",
-					"type": "CategoryUserCollection",
-					"kind": "relatedEntities"
-				},
-				{
-					"name": "allCategories",
-					"scope": "public",
-					"reversePath": false,
-					"path": "categoryUserCollection.category",
-					"type": "Category",
-					"kind": "relatedEntities"
-				}
-			]
-		},
-		{
-			"collectionName": "CategoryUserCollection",
-			"className": "CategoryUser",
-			"attributes": [
-				{
-					"name": "ID",
-					"kind": "storage",
-					"type": "long",
-					"autosequence": "true",
-					"unique": "true",
-					"primKey": "true"
-				},
-				{
-					"name": "category",
-					"scope": "public",
-					"path": "Category",
-					"type": "Category",
-					"kind": "relatedEntity"
-				},
-				{
-					"name": "user",
-					"scope": "public",
-					"path": "User",
-					"type": "User",
-					"kind": "relatedEntity"
-				}
-			]
 		}
-	],
-	"type": []
+	]
 }

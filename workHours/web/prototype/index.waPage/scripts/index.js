@@ -2,6 +2,8 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var button3 = {};	// @Button
+	var button2 = {};	// @Button
 	var menuItem2 = {};	// @menuItem
 	var documentEvent = {};	// @document
 	var button1 = {};	// @Button
@@ -9,11 +11,39 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 	var setCategoryClientBtn = {};	// @Button
 // @endregion// @endlock
 
-function resetlinkDirectoryDisplayTxt() {
-	setTimeout(function () {$$('linkDirectoryDisplayTxt').value("");}, 5000)	
+function resetTxt(txtID) {
+	setTimeout(function () {$$(txtID).value("");}, 5000)	
 ;}
 
 // eventHandlers// @lock
+
+	button3.click = function button3_click (event)// @startlock
+	{// @endlock
+		waf.sources.category.removeUser(waf.sources.user.ID,{onSuccess: function (evt) {
+			if (evt.result.res === true) {
+				waf.sources.category.serverRefresh();
+			}
+			
+			$$('assignUserToCategoryTxt').value(evt.result.message);
+			resetTxt('assignUserToCategoryTxt');
+		}, onError: function (err) {
+			
+		}});
+	};// @lock
+
+	button2.click = function button2_click (event)// @startlock
+	{// @endlock
+		waf.sources.category.addUser(waf.sources.user.ID,{onSuccess: function (evt) {
+			if (evt.result.res === true) {
+				waf.sources.category.serverRefresh();
+			}
+			
+			$$('assignUserToCategoryTxt').value(evt.result.message);
+			resetTxt('assignUserToCategoryTxt');
+		}, onError: function (err) {
+			
+		}});
+	};// @lock
 
 	menuItem2.click = function menuItem2_click (event)// @startlock
 	{// @endlock
@@ -31,10 +61,10 @@ function resetlinkDirectoryDisplayTxt() {
 		waf.sources.user.userID = waf.sources.dirUser.ID;
 		waf.sources.user.save({onSuccess:function(evt){
 			$$('linkDirectoryDisplayTxt').value("Done");
-			resetlinkDirectoryDisplayTxt();
+			resetTxt('linkDirectoryDisplayTxt');
 		}, onError:function(err) {
 			$$('linkDirectoryDisplayTxt').value("Error");
-			resetlinkDirectoryDisplayTxt();
+			resetTxt('linkDirectoryDisplayTxt');
 		}});
 	};// @lock
 
@@ -53,6 +83,8 @@ function resetlinkDirectoryDisplayTxt() {
 	};// @lock
 
 // @region eventManager// @startlock
+	WAF.addListener("button3", "click", button3.click, "WAF");
+	WAF.addListener("button2", "click", button2.click, "WAF");
 	WAF.addListener("menuItem2", "click", menuItem2.click, "WAF");
 	WAF.addListener("document", "onLoad", documentEvent.onLoad, "WAF");
 	WAF.addListener("button1", "click", button1.click, "WAF");

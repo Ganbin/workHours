@@ -1,5 +1,5 @@
 model.WorkTime.events.save = function(event) {
-	if (!currentSession().belongsTo('dataAdmin')) {
+	if (this.userID == null || !currentSession().belongsTo('dataAdmin')) {
 		this.userID = currentSession().user.ID;
 	}
 	this.modificationDate = new Date();

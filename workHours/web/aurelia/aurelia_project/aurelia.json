@@ -148,6 +148,11 @@
             "name": "aurelia-validation",
             "path": "../node_modules/aurelia-validation/dist/amd",
             "main": "aurelia-validation"
+          },
+          {
+            "name": "material-datetime-picker",
+            "path": "../node_modules/material-datetime-picker/dist/js",
+            "main": "datepicker"
           }
         ]
       },

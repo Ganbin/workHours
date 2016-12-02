@@ -1,5 +1,6 @@
 import {Auth} from './services/Auth';
 import {Redirect} from 'aurelia-router';
+import {setData} from './services/env';
 
 export function App(auth) {
     this.configureRouter = (config, router) => {
@@ -9,22 +10,36 @@ export function App(auth) {
         config.map([
             {route: '', redirect: 'home'},
             {route: 'home', title: 'Home', name: 'home', moduleId: './home', nav: true },
-            {route: 'worktime', title: 'Worktime', name: 'worktime', moduleId: './worktime/worktimeSection', nav: true}
+            {route: 'worktime', title: 'Worktime', name: 'worktime', moduleId: './worktime/worktimeSection', nav: true},
+            {route: 'debug', title: 'Debug', name: 'debug', moduleId: './debug/debug'},
+            {route: 'login', title: 'Login', name: 'login', moduleId: './login/login'}
         ]);
     };
     this.auth = auth;
+
+    this.activate = function () {
+        return this.auth.setCurrentUser();
+    };
+
+    this.logout = function () {
+        this.auth.logout().then(() => {
+            this.router.navigate('login');
+        });
+    };
 }
 
 App.inject = [Auth];
 
 function AuthorizeStep(auth, router) {
     this.auth = auth;
-
     this.run = (routingContext, next) => {
-        if (!this.auth.logged && routingContext.config.name !== 'home') {
-            return next.cancel(new Redirect('home'));
-        }
-        return next();
+        return this.auth.setCurrentUser().then(() => {
+            if (!this.auth.logged && routingContext.config.name !== 'login') {
+                setData('routeRequest', routingContext.fragment); // Store the request for resume after login
+                return next.cancel(new Redirect('login'));
+            }
+            return next();
+        });
     };
 }
 AuthorizeStep.inject = [Auth];

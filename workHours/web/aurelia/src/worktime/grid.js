@@ -1,6 +1,7 @@
 import {WakandaClient} from 'wakanda-client';
 import {AppRouter} from 'aurelia-router';
 import {Auth} from 'services/Auth';
+import {MdToastService} from 'aurelia-materialize-bridge';
 import utils from 'services/utils';
 import env from 'services/env';
 
@@ -8,13 +9,16 @@ const hostname = env.hostname;
 const wakanda = new WakandaClient(`http://${hostname}:8081`);
 const PAGE_SIZE = 5;
 
-export function Grid(auth, router, utils) {
+export function Grid(auth, router, utils, toast) {
     const self = this;
     this.auth = auth;
     this.showFirstLast = true;
     this.router = router;
     this.route = 'worktime';
     this.utils = utils;
+    this.toast = toast;
+    this.startForm = 0;
+    this.paginationPages = 0;
 
     function editTime(ID) {
         this.router.navigate(this.route + '/' + ID);
@@ -25,85 +29,44 @@ export function Grid(auth, router, utils) {
     this.editTime = editTime;
     this.addWorkTime = addWorkTime;
 
-    wakanda.getCatalog().then((ds) => {
+    wakanda.getCatalog(['WorkTime', 'Client', 'Category', 'CategoryUser', 'User']).then((ds) => {
+        console.log(directoryComponent);
         /**
          * Get all worktimes
          * @return no return but it affect the entities from the result to a worktime array
          */
         self.getAll = (start) => {
-            ds.WorkTime.query({
+            return ds.WorkTime.query({
                 filter: 'ID >= 0',
                 pageSize: PAGE_SIZE,
                 start: start,
                 orderBy: 'start desc'
             }).then((evt) => {
                 self.worktimes = evt;
+                self.paginationPages = Math.ceil(evt._count / evt._pageSize);
+                console.log(`${evt._count}<->${evt._pageSize}`);
             }).catch((err) => {
             });
         };
 
         self.pageChanged = (e) => {
-            self.getAll(PAGE_SIZE * (e.detail - 1));
+            self.startFrom = PAGE_SIZE * (e.detail - 1);
+            self.getAll(self.startFrom);
         };
 
+        self.deleteTime = function (ID) {
+            ds.WorkTime.find(ID).then((entity) => {
+                entity.delete().then(() => {
+                    self.toast.show('Time deleted!', 5000, 'green bold');
+                    self.getAll(self.startFrom);
+                }).catch((e) => {
+                    self.toast.show('Time can\'t be deleted!', 5000, 'red bold');
+                });
+            }).catch((e) => {
+                self.toast.show('Time not found!', 5000, 'red bold');
+            });
+        };
         self.getAll(0);
     });
-  //
-  //   var getAll = function(options) {
-  //       ds.WorkTime.query(options).then(function(evt) {
-  //         self.workTimes = evt.entities;
-  //         //self.collValueNow = evt.result.length;
-  //         //self.collValueMax = evt.result.$totalCount;
-  //         //self.collValuePercent = Math.round((self.collValueNow / self.collValueMax) * 100);
-  //
-  //         //sharedData.setData('workTimes', self.workTimes);
-  //         //self.canGetMore = (self.workTimes.length < self.workTimes.$totalCount) ? true : false;
-  //       }, function(err) {
-  //         //sharedData.prepForBroadcast('logout');
-  //       });
-  //     },
-  //
-  //     getMore = function() {
-  //       self.workTimes.more().then(function(evt) {
-  //         //self.collValueNow = evt.result.length;
-  //         //self.collValueMax = evt.result.$totalCount;
-  //         //self.collValuePercent = Math.round((self.collValueNow / self.collValueMax) * 100);
-  //         //self.canGetMore = (self.workTimes.length < self.workTimes.$totalCount) ? true : false;
-  //       }, function(err) {
-  //         //sharedData.prepForBroadcast('logout');
-  //       });
-  //     },
-  //
-  //     editTime = function(ID) {
-  //       /*self.goToState('app.form.edit', {
-  //         ID: ID
-  //       });
-  //       self.formLoaded = true;*/
-  //     },
-  //
-  //     removeTime = function(evt) {
-  //       /*alertify.confirm("Do you want to delete this item?", function() {
-  //         sharedData.prepForBroadcast({
-  //           "action": "removeTime",
-  //           "entity": evt.workTime
-  //         });
-  //       }, function() {
-  //         // user clicked "cancel"
-  //       });*/
-  //     },
-  //
-  //     addWorkTime = function() {
-  //       /*self.goToState('app.form.add');
-  //       self.formLoaded = true;*/
-  //     };
-  //
-  //   self.getAll = getAll;
-  //   self.getMore = getMore;
-  //   self.editTime = editTime;
-  //   self.removeTime = removeTime;
-  //   self.addWorkTime = addWorkTime;
-  //
-  //   getAll({filter:"ID>0"});
-  // });
 }
-Grid.inject = [Auth, AppRouter, utils];
+Grid.inject = [Auth, AppRouter, utils, MdToastService];

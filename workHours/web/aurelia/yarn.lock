@@ -264,9 +264,9 @@ aurelia-bootstrapper@^1.0.0:
     aurelia-templating-resources "^1.0.0"
     aurelia-templating-router "^1.0.0"
 
-aurelia-cli@^0.21.0:
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/aurelia-cli/-/aurelia-cli-0.21.0.tgz#4c3a64fbc5758114a19c31161475a5eb46663e08"
+aurelia-cli@0.22.0:
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/aurelia-cli/-/aurelia-cli-0.22.0.tgz#abf70827bd1d582ffd80aee54585d808368ddad0"
   dependencies:
     aurelia-dependency-injection "^1.0.0"
     aurelia-polyfills "^1.0.0"
@@ -339,9 +339,9 @@ aurelia-logging@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/aurelia-logging/-/aurelia-logging-1.1.0.tgz#e8d6dbf1635b65cda75f0bdd9b81dc3feb330023"
 
-aurelia-materialize-bridge@0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/aurelia-materialize-bridge/-/aurelia-materialize-bridge-0.18.0.tgz#f78c9478ef1e2d97b7a6496dab64686d8a020e4d"
+aurelia-materialize-bridge:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/aurelia-materialize-bridge/-/aurelia-materialize-bridge-0.19.0.tgz#93426dbdeba85e15424d3e21cfb5f18c3e4816fd"
 
 aurelia-metadata@^1.0.0:
   version "1.0.2"

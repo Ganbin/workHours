@@ -21,21 +21,32 @@ export function Auth() {
             console.log('user logged in.');
             self.user = user;
             self.logged = true;
-            //debugger;
-            resolveCb(user);
+            resolveCb({result: true, value: user});
         }, function (err) {
             console.log('user not logged in.');
             reset();
-            refuseCb(err.message);
+            resolveCb({result: false, message: err.message});
         });
     }
 
     self.setCurrentUser = function () {
-        self.promise = new Promise(getCurrentUser);
+        return new Promise(getCurrentUser);
     };
 
+    self.logout = function () {
+        return wakanda.directory.logout().then(() => {
+            reset();
+            console.log('logout.');
+        }).catch((err) => {
+            reset();
+            console.log('logout error.');
+        });
+    };
 
     reset();
-    self.setCurrentUser();
+
+//    setInterval(() => new Promise(getCurrentUser), (1000 * 60)); // Do this will restart thje time of the session
+//    Have to find a way to know that the user is not logged in anymore. Maybe in the activate method of the different route...
+    //self.setCurrentUser();
     //return authInstance;
 }

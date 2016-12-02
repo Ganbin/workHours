@@ -1,27 +1,26 @@
 import environment from './environment';
-
-
 //Configure Bluebird Promises.
 //Note: You may want to use environment-specific configuration.
 Promise.config({
-  warnings: {
-    wForgottenReturn: false
-  }
+    warnings: {
+        wForgottenReturn: false
+    }
 });
 
 export function configure(aurelia) {
-  aurelia.use
-    .standardConfiguration()
-    .feature('resources');
+    aurelia.use
+        .standardConfiguration()
+        .feature('resources')
+        .plugin('aurelia-materialize-bridge', bridge => bridge.useAll() )
+        .plugin('aurelia-validation');
 
-  if (environment.debug) {
-    aurelia.use.developmentLogging();
-  }
+    if (environment.debug) {
+        aurelia.use.developmentLogging();
+    }
 
-  if (environment.testing) {
-    aurelia.use.plugin('aurelia-testing');
-  }
-  aurelia.use.plugin('aurelia-materialize-bridge', bridge => bridge.useAll() );
+    if (environment.testing) {
+        aurelia.use.plugin('aurelia-testing');
+    }
 
-  aurelia.start().then(() => aurelia.setRoot());
+    aurelia.start().then(() => aurelia.setRoot());
 }

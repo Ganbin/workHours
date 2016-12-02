@@ -6,7 +6,8 @@ export class worktimeSection {
     configureRouter(config, router) {
         config.map([
             { route: '',    moduleId: './grid', nav: false, title: '' },
-            { route: ':id', moduleId: './form',      nav: false, title: '' }
+            { route: '/add', moduleId: './w-form',      nav: false, title: '' },
+            { route: ':id', moduleId: './w-form',      nav: false, title: '' }
         ]);
     }
 }

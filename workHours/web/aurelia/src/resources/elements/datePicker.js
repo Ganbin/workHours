@@ -1,9 +1,9 @@
 import {bindable, bindingMode, decorators} from 'aurelia-framework';
 
 export const DatePickerCustomElement = decorators(
-    bindable({ name: 'date', defaultBindingMode: bindingMode.twoWay }),
-    bindable({ name: 'ID', defaultBindingMode: bindingMode.oneTime }),
-    bindable({ name: 'label', defaultBindingMode: bindingMode.oneTime })
+    bindable({ name: 'dpdate', defaultBindingMode: bindingMode.twoWay }),
+    bindable({ name: 'dpid', defaultBindingMode: bindingMode.oneTime }),
+    bindable({ name: 'dplabel', defaultBindingMode: bindingMode.oneTime })
 ).on(class {
     constructor() {
 

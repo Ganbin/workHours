@@ -90,6 +90,7 @@ exports.removeUserFromGroup = function removeUserFromGroup(userId, groupId) {
         var user = directory.user(userId);
         var group = directory.internalStore.Group.find("ID = :1", groupId);
         user.removeFrom(group.name);
+        directory.save();
     } catch (e) {
         console.error(e);
         return userID;
@@ -113,6 +114,7 @@ exports.addUserToGroup = function addUserToGroup(userId, groupId) {
         var user = directory.user(userId);
         var group = directory.internalStore.Group.find("ID = :1", groupId);
         user.putInto(group.name);
+        directory.save();
     } catch (e) {
         console.error(e);
         return userID;
@@ -169,8 +171,8 @@ exports.updateUser = function updateUser(id, name, password, fullName) {
                 } else {
                     setpassword.setPassword(password);
                 }
-                directory.save();
             }
+            directory.save();
             return true;
         }
     } catch (e) {
@@ -193,9 +195,9 @@ exports.deleteUser = function deleteUser(id) {
 	}
 
     try {
-        var user = directory.user(id);
-        user.remove();
-
+		var user = directory.user(id);
+		user.remove();
+		directory.save();
     } catch (e) {
         console.error(e);
         return false;

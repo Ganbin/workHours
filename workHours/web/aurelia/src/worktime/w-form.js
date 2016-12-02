@@ -109,7 +109,6 @@ export class WForm {
 
             ds.Client.query({filter: 'ID >= 0'}).then((clients) => {
                 this.clients = clients.entities;
-                console.log(this.clientSelect);
                 this.clientSelect.refresh();
             });
 
@@ -125,7 +124,6 @@ export class WForm {
     }
 
     save() {
-        console.log('save');
         this.validationController.validate().then(v => {
             if (v.length === 0) {
                 this.ds.Client.query({

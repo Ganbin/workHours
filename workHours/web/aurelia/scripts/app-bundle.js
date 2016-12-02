@@ -916,7 +916,6 @@ define('worktime/w-form',['exports', 'wakanda-client', 'aurelia-router', 'aureli
 
                 ds.Client.query({ filter: 'ID >= 0' }).then(function (clients) {
                     _this.clients = clients.entities;
-                    console.log(_this.clientSelect);
                     _this.clientSelect.refresh();
                 });
 
@@ -933,7 +932,6 @@ define('worktime/w-form',['exports', 'wakanda-client', 'aurelia-router', 'aureli
         WForm.prototype.save = function save() {
             var _this2 = this;
 
-            console.log('save');
             this.validationController.validate().then(function (v) {
                 if (v.length === 0) {
                     _this2.ds.Client.query({

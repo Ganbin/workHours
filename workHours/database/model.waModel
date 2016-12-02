@@ -24,10 +24,10 @@
 				"relVisible": "true",
 				"panel": {
 					"isOpen": "true",
-					"pathVisible": false,
+					"pathVisible": true,
 					"position": {
-						"X": 511,
-						"Y": 31
+						"X": 488,
+						"Y": 9
 					}
 				}
 			},
@@ -197,6 +197,13 @@
 					"path": "categoryUserCollection.user"
 				}
 			],
+			"events": [
+				{
+					"kind": "restrict",
+					"from": "$mainModel.Category.events.restrict",
+					"userDefined": true
+				}
+			],
 			"methods": [
 				{
 					"name": "addUser",
@@ -284,6 +291,13 @@
 					"path": "client"
 				}
 			],
+			"events": [
+				{
+					"kind": "restrict",
+					"from": "$mainModel.Client.events.restrict",
+					"userDefined": true
+				}
+			],
 			"methods": [
 				{
 					"name": "getReport",
@@ -354,6 +368,15 @@
 					"scope": "public",
 					"type": "CategoryCollection",
 					"path": "categoryUserCollection.category"
+				},
+				{
+					"name": "allWorkTimes",
+					"kind": "relatedEntities",
+					"matchColumn": "workTimeCollection",
+					"scope": "public",
+					"type": "WorkTimeCollection",
+					"reversePath": true,
+					"path": "user"
 				}
 			]
 		},
@@ -521,23 +544,11 @@
 					"path": "category.categoryClient"
 				},
 				{
-					"name": "userID",
-					"kind": "storage",
-					"scope": "public",
-					"type": "uuid"
-				},
-				{
 					"name": "userName",
-					"kind": "calculated",
+					"kind": "alias",
 					"scope": "public",
 					"type": "string",
-					"scriptKind": "javascript",
-					"onGet": [
-						{
-							"from": "$mainModel.WorkTime.userName.onGet",
-							"userDefined": true
-						}
-					]
+					"path": "user.fullName"
 				},
 				{
 					"name": "timeWorked",
@@ -591,6 +602,19 @@
 							"userDefined": true
 						}
 					]
+				},
+				{
+					"name": "user",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "User",
+					"path": "User"
+				},
+				{
+					"name": "userID",
+					"kind": "storage",
+					"scope": "public",
+					"type": "uuid"
 				}
 			],
 			"events": [

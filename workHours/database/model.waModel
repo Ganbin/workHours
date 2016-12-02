@@ -10,7 +10,7 @@
 				"relVisible": "true",
 				"panel": {
 					"isOpen": "true",
-					"pathVisible": true,
+					"pathVisible": false,
 					"position": {
 						"X": 40,
 						"Y": 20
@@ -24,10 +24,10 @@
 				"relVisible": "true",
 				"panel": {
 					"isOpen": "true",
-					"pathVisible": true,
+					"pathVisible": false,
 					"position": {
-						"X": 405,
-						"Y": 24
+						"X": 534,
+						"Y": 10
 					}
 				}
 			},
@@ -52,16 +52,42 @@
 				"panel": {
 					"isOpen": "true",
 					"position": {
-						"X": 772,
+						"X": 895,
 						"Y": 31
 					}
+				}
+			},
+			"User": {
+				"panelColor": "#BFBFBF",
+				"flatVisible": "true",
+				"methVisible": "true",
+				"panel": {
+					"isOpen": "true",
+					"position": {
+						"X": 427,
+						"Y": 675
+					},
+					"pathVisible": true
+				}
+			},
+			"CategoryUser": {
+				"panelColor": "#4FA997",
+				"flatVisible": "true",
+				"methVisible": "true",
+				"panel": {
+					"isOpen": "true",
+					"position": {
+						"X": 56,
+						"Y": 630
+					},
+					"pathVisible": true
 				}
 			}
 		},
 		"model": {
 			"scriptMode": "manual",
-			"workspaceLeft": 0,
-			"workspaceTop": 0,
+			"workspaceLeft": 1,
+			"workspaceTop": 390,
 			"methodShowMode": "true",
 			"methodInhShowMode": "true",
 			"relShowMode": "true",
@@ -148,6 +174,22 @@
 							"userDefined": true
 						}
 					]
+				},
+				{
+					"name": "categoryUserCollection",
+					"scope": "public",
+					"reversePath": true,
+					"path": "category",
+					"type": "CategoryUserCollection",
+					"kind": "relatedEntities"
+				},
+				{
+					"name": "allUsers",
+					"scope": "public",
+					"reversePath": false,
+					"path": "categoryUserCollection.user",
+					"type": "User",
+					"kind": "relatedEntities"
 				}
 			]
 		},
@@ -442,6 +484,89 @@
 					"userDefined": true
 				}
 			]
+		},
+		{
+			"collectionName": "UserCollection",
+			"className": "User",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"type": "long",
+					"autosequence": "true",
+					"unique": "true",
+					"primKey": "true"
+				},
+				{
+					"name": "firstName",
+					"scope": "public",
+					"type": "string",
+					"kind": "storage"
+				},
+				{
+					"name": "lastName",
+					"scope": "public",
+					"type": "string",
+					"kind": "storage"
+				},
+				{
+					"name": "fullName",
+					"scope": "public",
+					"type": "string",
+					"kind": "storage"
+				},
+				{
+					"name": "userID",
+					"scope": "public",
+					"type": "uuid",
+					"kind": "storage"
+				},
+				{
+					"name": "categoryUserCollection",
+					"scope": "public",
+					"reversePath": true,
+					"path": "user",
+					"type": "CategoryUserCollection",
+					"kind": "relatedEntities"
+				},
+				{
+					"name": "allCategories",
+					"scope": "public",
+					"reversePath": false,
+					"path": "categoryUserCollection.category",
+					"type": "Category",
+					"kind": "relatedEntities"
+				}
+			]
+		},
+		{
+			"collectionName": "CategoryUserCollection",
+			"className": "CategoryUser",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"type": "long",
+					"autosequence": "true",
+					"unique": "true",
+					"primKey": "true"
+				},
+				{
+					"name": "category",
+					"scope": "public",
+					"path": "Category",
+					"type": "Category",
+					"kind": "relatedEntity"
+				},
+				{
+					"name": "user",
+					"scope": "public",
+					"path": "User",
+					"type": "User",
+					"kind": "relatedEntity"
+				}
+			]
 		}
-	]
+	],
+	"type": []
 }

@@ -5,11 +5,11 @@
  * to process a formated string than a duration. This way I don't need to deal with
  * `Date` object when I just need a 24h time.
  * 
- * This file have to be run one time only to convert an old version.
+ * This file have to be run only one time so do the baclkup before running to be sure everything is well done
  */
  
  
-loginByPassword('ganbin','1234');
+loginByPassword('dataAdmin','data123');
 
 function convert(duration) {
 	var min = (parseInt(duration) / 1000) / 60;

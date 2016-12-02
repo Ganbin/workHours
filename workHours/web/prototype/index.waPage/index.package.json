@@ -59,6 +59,9 @@
 			"package": "TextInput"
 		},
 		{
+			"package": "Text"
+		},
+		{
 			"file": "styles/index.css"
 		},
 		{

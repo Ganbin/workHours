@@ -3,12 +3,134 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
-#component1 {
+#button1 {
+	z-index: 5;
+	width: 123px;
+	height: 74px;
+	top: 102px;
+	left: 784px;
+	position: absolute;
+}
+
+#label1 {
+	z-index: 3;
+	width: auto;
+	height: 13px;
+	top: 13px;
+	left: 18px;
+	position: absolute;
+}
+
+#dataGrid2 {
 	z-index: 1;
+	width: 735px;
+	height: 364px;
+	top: 31px;
+	left: 18px;
+	position: absolute;
+}
+
+#container5 {
+	z-index: 5;
+	top: 0px;
+	bottom: 0px;
+	left: 66px;
+	right: 0px;
+	position: absolute;
+}
+
+#richText5 {
+	z-index: 1;
+	width: 65px;
+	height: 21px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuItem5 {
+	z-index: 2;
+	width: 66px;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#container2 {
+	z-index: 4;
+	top: 0px;
+	bottom: 0px;
+	left: 66px;
+	right: 0px;
+	position: absolute;
+}
+
+#richText2 {
+	z-index: 1;
+	width: 65px;
+	height: 21px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuItem2 {
+	z-index: 1;
+	width: 66px;
+	height: 23px;
+	top: auto;
+	left: 0px;
+	position: absolute;
+}
+
+#menuBar2 > .waf-menuItem {
+	margin-bottom: 0px;
+	margin-right: 0px;
+}
+
+#menuBar2 > .waf-menuItem:not(.waf-menuItem-last) {
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+#menuBar2 {
+	z-index: 3;
+	width: 66px;
+	height: 17px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#tabView2 {
+	z-index: 3;
 	top: 20px;
 	bottom: 20px;
 	left: 20px;
 	right: 20px;
+	position: absolute;
+}
+
+#text1 {
+	z-index: 2;
+	width: 642px;
+	height: 42px;
+	top: 9px;
+	left: 20px;
+	position: absolute;
+	font-size: 17px;
+	color: rgb(255, 255, 255);
+	background-color: rgb(191, 0, 0);
+	font-weight: bold;
+}
+
+#component1 {
+	z-index: 1;
+	width: 896px;
+	height: 695px;
+	top: 59px;
+	left: 10px;
 	position: absolute;
 }
 
@@ -51,8 +173,8 @@
 #label4 {
 	z-index: 5;
 	width: auto;
-	height: 14px;
-	top: 29px;
+	height: 13px;
+	top: 30px;
 	left: 509px;
 	position: absolute;
 }
@@ -60,8 +182,8 @@
 #label3 {
 	z-index: 4;
 	width: auto;
-	height: 14px;
-	top: 11px;
+	height: 13px;
+	top: 12px;
 	left: 26px;
 	position: absolute;
 }
@@ -138,9 +260,9 @@
 }
 
 #tabView1 {
-	z-index: 15;
-	top: 44px;
-	bottom: 20px;
+	z-index: 14;
+	top: 43px;
+	bottom: 21px;
 	left: 20px;
 	right: 20px;
 	position: absolute;
@@ -179,6 +301,33 @@
 	height: 44px;
 	top: 124px;
 	left: 348px;
+	position: absolute;
+}
+
+#label2 {
+	z-index: 6;
+	width: auto;
+	height: 13px;
+	top: 20px;
+	left: 959px;
+	position: absolute;
+}
+
+#dataGrid5 {
+	z-index: 6;
+	width: 482px;
+	height: 300px;
+	top: 38px;
+	left: 959px;
+	position: absolute;
+}
+
+#linkDirectoryDisplayTxt {
+	z-index: 7;
+	width: 125px;
+	height: 32px;
+	top: 190px;
+	left: 787px;
 	position: absolute;
 }
 

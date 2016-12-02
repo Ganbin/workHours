@@ -3,6 +3,9 @@ import {Redirect} from 'aurelia-router';
 import {setData} from './services/env';
 
 export function App(auth) {
+    this.primaryColor = '#ee6e73';
+    this.accentColor = '#2bbbad';
+    this.errorColor = '#f44336';
     this.configureRouter = (config, router) => {
         this.router = router;
         config.title = 'Work Times';

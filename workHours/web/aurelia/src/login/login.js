@@ -1,6 +1,6 @@
 import {WakandaClient} from 'wakanda-client';
 import {AppRouter} from 'aurelia-router';
-// import {inject, observable, NewInstance} from 'aurelia-framework';
+import {inject, observable, NewInstance} from 'aurelia-framework';
 // import {ValidationRules, ValidationController} from 'aurelia-validation';
 import { /*MaterializeFormValidationRenderer,*/ MdToastService } from 'aurelia-materialize-bridge';
 import {Auth} from 'services/Auth';

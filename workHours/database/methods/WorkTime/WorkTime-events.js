@@ -1,6 +1,11 @@
 model.WorkTime.events.save = function(event) {
+	var user;
 	if (this.userID == null || !currentSession().belongsTo('dataAdmin')) {
-		this.userID = currentSession().user.ID;
+		user = ds.User.find('userID == :1', currentSession().user.ID);
+		if (user == null) {
+			return {error: 14, errorMessage: 'Your user doesn\'t exist in the database, please look with an dataAdmin'};
+		}
+		this.user = user;
 	}
 	this.modificationDate = new Date();
 };
@@ -22,10 +27,11 @@ model.WorkTime.timeWorked.onGet = function() {
 	return returnValue;
 };
 
-model.WorkTime.userName.onGet = function() {
-	var user = directory.internalStore.User.find('ID == :1',this.userID);
-	return user.fullName || '';
-};
+// Deprecated we use now the user attribute to get the full name
+//model.WorkTime.userName.onGet = function() {
+//	var user = directory.internalStore.User.find('ID == :1',this.userID);
+//	return user.fullName || '';
+//};
 
 model.WorkTime.events.init = function(event) {
 	this.creationDate = new Date();
@@ -77,7 +83,8 @@ model.WorkTime.events.restrict = function(event) {
 	if (currentSession().belongsTo('DataAdmin')) {
 		returnCol = ds.WorkTime.all();
 	} else {
-		returnCol = ds.WorkTime.query('userID == :$userid');
+		returnCol = ds.WorkTime.query('user.userID == :$userid');
+		returnCol.add(ds.WorkTime.query('userID == :$userid')); // This is to keep backward compatibility but should be remove when the userID of worktime is removed after convertion
 	}
 	
 	return returnCol;

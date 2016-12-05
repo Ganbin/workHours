@@ -72,7 +72,6 @@ model.WorkTime.trainTimeMs.onGet = function() {
 	if (this.trainTime != null) {
 		return ((parseInt(this.trainTime.substr(0,2))*60)+parseInt(this.trainTime.substr(3,2)))*60*1000;
 	}
-	
 	return 0;
 };
 

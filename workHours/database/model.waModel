@@ -12,7 +12,7 @@
 					"isOpen": "true",
 					"pathVisible": false,
 					"position": {
-						"X": 40,
+						"X": 50,
 						"Y": 20
 					}
 				}
@@ -65,8 +65,8 @@
 					"isOpen": "true",
 					"pathVisible": true,
 					"position": {
-						"X": 427,
-						"Y": 675
+						"X": 854,
+						"Y": 586
 					}
 				}
 			},
@@ -113,7 +113,8 @@
 					"method": "Utility/Utility-methods.js"
 				},
 				"User": {
-					"computed": "User/User-events.js"
+					"computed": "User/User-events.js",
+					"events": "User/User-events.js"
 				}
 			}
 		}
@@ -378,6 +379,13 @@
 					"reversePath": true,
 					"path": "user"
 				}
+			],
+			"events": [
+				{
+					"kind": "restrict",
+					"from": "$mainModel.User.events.restrict",
+					"userDefined": true
+				}
 			]
 		},
 		{
@@ -400,7 +408,7 @@
 				{
 					"name": "getUserNames",
 					"applyTo": "dataClass",
-					"scope": "public",
+					"scope": "publicOnServer",
 					"from": "$mainModel.Utility.methods.getUserNames",
 					"userDefined": true
 				}

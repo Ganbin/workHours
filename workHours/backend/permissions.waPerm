@@ -33,4 +33,5 @@
 	<allow action="update" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.User" temporaryForcePermissions="false" type="dataClass"/>
 	<allow action="remove" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.User" temporaryForcePermissions="false" type="dataClass"/>
 	<allow action="describe" groupName="User" groupID="504DE9660DE94AF08C2CEE10F40B49C9" resource="Model.User" temporaryForcePermissions="false" type="dataClass"/>
+	<allow action="execute" groupName="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45" resource="Model.Client.getReport" temporaryForcePermissions="false" type="method"/>
 </permissions>

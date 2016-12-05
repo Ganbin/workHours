@@ -53,7 +53,9 @@ function resetTxt(txtID) {
 
 	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
 	{// @endlock
-		$$('component1').loadComponent();
+		if ($$('component1').loadComponent !== undefined) {
+			$$('component1').loadComponent();
+		}
 	};// @lock
 
 	button1.click = function button1_click (event)// @startlock
@@ -70,7 +72,7 @@ function resetTxt(txtID) {
 
 	login1.login = function login1_login (event)// @startlock
 	{// @endlock
-		
+		location.href = '';
 	};// @lock
 
 	setCategoryClientBtn.click = function setCategoryClientBtn_click (event)// @startlock

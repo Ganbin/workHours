@@ -49,14 +49,6 @@ export class WForm {
         this.toast = toast;
     }
 
-    canActivate() {
-        if (!this.auth.logged) {
-            this.router.navigate('login'); // maybe have a redirection to a timed out page which say or redirect to login.
-        } else {
-            return true;
-        }
-    }
-
     activate(params) {
         this.ID = params.id;
     }

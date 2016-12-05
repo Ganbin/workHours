@@ -36,11 +36,11 @@
         <div class="row">
           <div class="col ${endDateDifferent ? 's6 m3' : 's12 m6'} input-field">
             <label for="startDate" class="active">Start Date</label>
-            <input id="startDate" md-datepicker="container: body; value.bind: startDate & validate;'" type="date" placeholder="Start Date" />
+            <input id="startDate" md-datepicker="container: body; value.bind: startDate & validate;" type="date" placeholder="Start Date" />
           </div>
           <div class="col s6 ${endDateDifferent ? 'm3' : 'hide'} input-field">
             <label for="endDate" class="active">End Date</label>
-            <input id="endDate" md-datepicker="container: body; value.two-way: endDate;'" type="date" placeholder="End Date" />
+            <input id="endDate" md-datepicker="container: body; value.two-way: endDate;" type="date" placeholder="End Date" />
           </div>
           <div class="col s6 m3">
             <md-input md-type="time" md-label="Start Time" md-value.bind="startTime & validate"></md-input>

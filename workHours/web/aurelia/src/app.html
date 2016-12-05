@@ -3,17 +3,24 @@
   <require from="./color-switcher.html"></require>
   <md-colors md-primary-color.bind="primaryColor" md-accent-color.bind="accentColor" md-error-color.bind="errorColor"></md-colors>
 
-  <div class="right-align" if.bind="auth.logged">
-    <a md-button click.delegate="logout()" class="m-b-20 primary bold">Logout</a>
-    <!-- <button class="m-b-20" md-button="flat:true">Logout</button> -->
+  <div class="row">
+    <div class="col l6">
+      <color-switcher select.bind="true" primary-color.two-way="primaryColor" accent-color.two-way="accentColor" error-color.two-way="errorColor"></color-switcher>
+    </div>
+    <div class="right-align col l6" if.bind="auth.logged">
+      <a md-waves md-button="large: true" click.delegate="logout()" class="m-b-20 primary bold">Logout</a>
+      <!-- <button class="m-b-20" md-button="flat:true">Logout</button> -->
+    </div>
   </div>
+
+
   <nav class="primary">
     <div class="nav-wrapper">
-      <a href="#" class="right brand-logo waves-effect waves-light">&nbsp;${router.title}</a>
+      <a href="#" md-waves class="right brand-logo waves-effect waves-light">&nbsp;${router.title}</a>
       <a md-sidenav-collapse="ref.bind: sideNav;" class="left hide-on-large-only " style="cursor: pointer; padding: 0 10px;" data-activates="md-sidenav-0"><i class="material-icons">menu</i></a>
       <ul class="left hide-on-med-and-down">
         <li repeat.for="route of router.navigation" class="${route.isActive ? 'active' : ''}">
-          <a href.bind="route.href" class="waves-effect waves-light">${route.title}</a>
+          <a md-waves href.bind="route.href" class="waves-effect waves-light">${route.title}</a>
         </li>
       </ul>
       <!-- <ul class="side-nav">
@@ -30,12 +37,6 @@
       </md-sidenav>
     </div>
   </nav>
-
-  <div class="row">
-    <div class="col m12 l3">
-      <color-switcher primary-color.two-way="primaryColor" accent-color.two-way="accentColor" error-color.two-way="errorColor"></color-switcher>
-    </div>
-  </div>
 
   <div class="page-host">
     <router-view></router-view>

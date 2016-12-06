@@ -24,7 +24,7 @@ model.Client.methods.getReport = function (options) {
 	returnArr = [];
 	catObj = {};
 	subTotal = {'time':0,'price':0,'addPrice':0,'trainTime':0};
-	total = {'time':0,'price':0,'trainTime':0};
+	total = {'time':0,'price':0,'addPrice':0,'trainTime':0};
 
 	if(options === undefined || options.from === undefined || options.to === undefined){
 		throw new Error('Must give a from and to date');

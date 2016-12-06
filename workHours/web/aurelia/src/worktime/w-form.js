@@ -35,11 +35,6 @@ export class WForm {
 
     showBreak = false;
     showTrain = false;
-    // worktimeRules = ValidationRules
-    //     .ensure('worktime.comment')
-    //         .required()
-    //     .on(WForm.worktime)
-    //     .rules;
 
     constructor(router, validationController, auth, toast) {
         this.router = router;

@@ -1,6 +1,5 @@
 export function configure(config) {
-    config.globalResources(['./elements/navBar',
-                            './elements/datePicker',
+    config.globalResources(['./elements/filter',
                             './value-converters/millisToHours',
                             './value-converters/minutesToHours',
                             './value-converters/dateFormat',

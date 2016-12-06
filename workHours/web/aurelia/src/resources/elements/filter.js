@@ -36,25 +36,31 @@ export class Filter {
                 this.clientSelect.refresh();
             });
 
-            ds.User.query({filter: 'ID >= 0'}).then((users) => {
-                this.users = users.entities;
-                this.userSelect.refresh();
-                if (this.auth.isAdmin) {
-                    this.showUsers = true;
-                } else {
-                    this.showUsers = false;
-                    this.FUserId = this.users[0].userID;
-                }
-            });
+            if (this.auth.isAdmin) { // Only show the user list if the logged user is a dataAdmin
+                this.showUsers = true;
+                ds.User.query({filter: 'ID >= 0'}).then((users) => {
+                    this.users = users.entities;
+                    this.userSelect.refresh();
+                    if (this.auth.isAdmin) {
+                        this.showUsers = true;
+                    } else {
+                        this.showUsers = false;
+                        this.FUserId = this.users[0].userID;
+                    }
+                });
+            } else { // else, only request the report for the current user
+                this.showUsers = false;
+                this.FUserId = this.auth.user.ID;
+            }
         });
-        //this.thisMonth();
+        //this.thisMonth(); // Initialize the default range to this month
     }
 
-    apply() {
+    applyFilter() {
         this.validationController.validate().then(v => {
             if (v.length === 0) {
-                const event = new CustomEvent('submit', {
-                    bubble: true
+                const event = new CustomEvent('apply', {
+                    bubbles: true
                 });
 
                 /*
@@ -121,6 +127,7 @@ export class Filter {
         } else {
             this.FClientName = '';
         }
+        this.clientSelect.refresh();
     }
 }
 

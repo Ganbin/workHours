@@ -4,7 +4,6 @@
       <li>
         <div md-waves id="filterHeader" class="collapsible-header accent"><i class="material-icons">search</i>Filters</div>
         <div class="collapsible-body">
-          <form submit.delegate="apply()">
             <div class="row">
               <div class="col s12">
                 <label class="active">Custom Date</label>
@@ -30,13 +29,14 @@
               </div>
             </div>
             <div class="row">
-              <div class="col s10">
+              <div class="col s12 m8">
                 <select md-select="disabled.bind: allClients; label: Client" value.bind="FClientName & validate" md-select.ref="clientSelect">
                   <option value="" disabled selected>Select a client...</option>
                   <option repeat.for="client of clients" value.bind="client.name">${client.name}</option>
+                  <option if.bind="allClients" value="all">All Clients</option>
                 </select>
               </div>
-              <div class="col s2">
+              <div class="col s12 m4">
                 <p>
                   <md-checkbox md-checked.bind="allClients">All Clients</md-checkbox>
                 </p>
@@ -52,10 +52,9 @@
             </div>
             <div class="row">
               <div class="col s12">
-                <button type="submit" md-button="large: true" class="right">Apply</button>
+                  <button type="button" click.delegate="applyFilter()" md-button="large: true" class="right">Apply</button>
               </div>
             </div>
-          </form>
         </div>
       </li>
     </ul>

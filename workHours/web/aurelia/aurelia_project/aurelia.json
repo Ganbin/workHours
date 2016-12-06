@@ -136,6 +136,11 @@
             "main": "moment.min"
           },
           {
+            "name": "numeral",
+            "path": "../node_modules/numeral/min/",
+            "main": "numeral.min"
+          },
+          {
             "name": "wakanda-client",
             "path": "../node_modules/wakanda-client/dist",
             "main": "wakanda-client.min"

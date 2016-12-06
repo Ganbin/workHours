@@ -1,10 +1,10 @@
 {
-  "name": "aurelia",
-  "description": "An Aurelia client application.",
-  "version": "0.1.0",
+  "name": "WorktTime",
+  "description": "An application to enter and get report of worktime",
+  "version": "2.3.0",
   "repository": {
-    "type": "???",
-    "url": "???"
+    "type": "git",
+    "url": "https://github.com/Ganbin/workHours"
   },
   "license": "MIT",
   "dependencies": {

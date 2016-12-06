@@ -25,7 +25,9 @@ export class Login {
     tryLogin() {
         wakanda.directory.login(this.userLogin, this.password).then(() => {
             //User is logged in
-            this.auth.setCurrentUser().then((evt) => this.router.navigate(this.datas.routeRequest)); // Resume the initial request after the user is logged in
+            this.auth.setCurrentUser().then((evt) => {
+                this.auth.isDataAdmin().then(() => this.router.navigate(this.datas.routeRequest));
+            }); // Resume the initial request after the user is logged in
         }).catch((e) => {
             //Login failed. Maybe bad credentials?
             this.auth.setCurrentUser().then((evt) => {

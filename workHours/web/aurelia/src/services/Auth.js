@@ -5,14 +5,12 @@ const wakanda = new WakandaClient(`http://${hostname}:8081`);
 
 export function Auth() {
     const self = this;
-
-    // if (!authInstance) {
-    //     authInstance = this;
-    // }
+    self.isAdmin = false;
 
     function reset() {
         self.user = {'fullName': 'Guest'};
         self.logged = false;
+        self.isAdmin = false;
     }
 
     function getCurrentUser(resolveCb, refuseCb) {
@@ -39,10 +37,12 @@ export function Auth() {
         });
     };
 
-    reset();
+    self.isDataAdmin = function () {
+        return wakanda.directory.currentUserBelongsTo('DataAdmin').then(function (result) {
+            self.isAdmin = result;
+        });
+    };
 
-//    setInterval(() => new Promise(getCurrentUser), (1000 * 60)); // Do this will restart thje time of the session
-//    Have to find a way to know that the user is not logged in anymore. Maybe in the activate method of the different route...
-    //self.setCurrentUser();
-    //return authInstance;
+    reset();
+    self.isDataAdmin();
 }

@@ -33,10 +33,6 @@ var utils = {};
 (function(utils){
 	'use strict';
 
-	utils.pagePartID = 2;
-
-	utils.unitPriceID = 1;
-
 	utils.baseURL = 'http://'+window.location.host+'/'; // the base URL
 
 	/*

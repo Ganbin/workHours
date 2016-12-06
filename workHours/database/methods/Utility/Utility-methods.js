@@ -8,4 +8,4 @@ model.Utility.methods.getUserNames = function() {
 	
 	return returnArr;
 };
-model.Utility.methods.getUserNames.scope = 'public';
+model.Utility.methods.getUserNames.scope = 'publicOnServer';

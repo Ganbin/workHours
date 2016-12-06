@@ -3,39 +3,350 @@
 	Changes to this CSS file might be lost when it is regenerated.
 */
 
-#label2 {
-	z-index: 13;
-	width: auto;
-	height: 14px;
-	top: 189px;
-	left: 731px;
+#button3:active {
+	 background-image:url("data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48bGluZWFyR3JhZGllbnQgaWQ9IndhZi1pZS1ncmFkaWVudCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHgyPSIwIiB5Mj0iMTAwJSI+PHN0b3Agc3RvcC1jb2xvcj0iIzdmMDAwMCIgb2Zmc2V0PSIwJSIgc3RvcC1vcGFjaXR5PSIxIiAvPjxzdG9wIHN0b3AtY29sb3I9IiNiZjAwMDAiIG9mZnNldD0iNjglIiBzdG9wLW9wYWNpdHk9IjEiIC8+PHN0b3Agc3RvcC1jb2xvcj0iIzdmMDAwMCIgb2Zmc2V0PSI5OSUiIHN0b3Atb3BhY2l0eT0iMSIgLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjd2FmLWllLWdyYWRpZW50KSIgLz48L3N2Zz4=");
+	 background-image:-webkit-gradient(linear,0% 0%, 0% 100%,color-stop(0, rgb(127, 0, 0)),color-stop(0.68, rgb(191, 0, 0)),color-stop(0.99, rgb(127, 0, 0)));
+	 background-image:-webkit-linear-gradient(bottom, rgb(127, 0, 0) 0%,rgb(191, 0, 0) 68%,rgb(127, 0, 0) 99%);
+	 background-image:-moz-linear-gradient(bottom, rgb(127, 0, 0) 0%,rgb(191, 0, 0) 68%,rgb(127, 0, 0) 99%);
+	 background-image:-ms-linear-gradient(bottom, rgb(127, 0, 0) 0%,rgb(191, 0, 0) 68%,rgb(127, 0, 0) 99%);
+	 background-image:-o-linear-gradient(bottom, rgb(127, 0, 0) 0%,rgb(191, 0, 0) 68%,rgb(127, 0, 0) 99%);
+	 background-image:linear-gradient(bottom, rgb(127, 0, 0) 0%,rgb(191, 0, 0) 68%,rgb(127, 0, 0) 99%);
+}
+
+#button3:hover {
+	 background-image:url("data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48bGluZWFyR3JhZGllbnQgaWQ9IndhZi1pZS1ncmFkaWVudCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHgyPSIwIiB5Mj0iMTAwJSI+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmYWFhYSIgb2Zmc2V0PSIwJSIgc3RvcC1vcGFjaXR5PSIxIiAvPjxzdG9wIHN0b3AtY29sb3I9IiNmZmFhYWEiIG9mZnNldD0iNDklIiBzdG9wLW9wYWNpdHk9IjEiIC8+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmNTY1NiIgb2Zmc2V0PSI1MCUiIHN0b3Atb3BhY2l0eT0iMSIgLz48c3RvcCBzdG9wLWNvbG9yPSIjZmY1NjU2IiBvZmZzZXQ9IjEwMCUiIHN0b3Atb3BhY2l0eT0iMSIgLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjd2FmLWllLWdyYWRpZW50KSIgLz48L3N2Zz4=");
+	 background-image:-webkit-gradient(linear,0% 0%, 0% 100%,color-stop(0, rgb(255, 170, 170)),color-stop(0.49, rgb(255, 170, 170)),color-stop(0.5, rgb(255, 86, 86)),color-stop(1, rgb(255, 86, 86)));
+	 background-image:-webkit-linear-gradient(top, rgb(255, 170, 170) 0%,rgb(255, 170, 170) 49%,rgb(255, 86, 86) 50%,rgb(255, 86, 86) 100%);
+	 background-image:-moz-linear-gradient(top, rgb(255, 170, 170) 0%,rgb(255, 170, 170) 49%,rgb(255, 86, 86) 50%,rgb(255, 86, 86) 100%);
+	 background-image:-ms-linear-gradient(top, rgb(255, 170, 170) 0%,rgb(255, 170, 170) 49%,rgb(255, 86, 86) 50%,rgb(255, 86, 86) 100%);
+	 background-image:-o-linear-gradient(top, rgb(255, 170, 170) 0%,rgb(255, 170, 170) 49%,rgb(255, 86, 86) 50%,rgb(255, 86, 86) 100%);
+	 background-image:linear-gradient(top, rgb(255, 170, 170) 0%,rgb(255, 170, 170) 49%,rgb(255, 86, 86) 50%,rgb(255, 86, 86) 100%);
+	text-shadow: rgb(255, 255, 255) 0px 0px 0px;
+}
+
+#button2:active {
+	 background-image:url("data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48bGluZWFyR3JhZGllbnQgaWQ9IndhZi1pZS1ncmFkaWVudCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHgyPSIwIiB5Mj0iMTAwJSI+PHN0b3Agc3RvcC1jb2xvcj0iIzAwN2YwMCIgb2Zmc2V0PSI0JSIgc3RvcC1vcGFjaXR5PSIxIiAvPjxzdG9wIHN0b3AtY29sb3I9IiMwMGJmMDAiIG9mZnNldD0iNDclIiBzdG9wLW9wYWNpdHk9IjEiIC8+PHN0b3Agc3RvcC1jb2xvcj0iIzAwYmYwMCIgb2Zmc2V0PSI1MSUiIHN0b3Atb3BhY2l0eT0iMSIgLz48c3RvcCBzdG9wLWNvbG9yPSIjMDA3ZjAwIiBvZmZzZXQ9IjEwMCUiIHN0b3Atb3BhY2l0eT0iMSIgLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjd2FmLWllLWdyYWRpZW50KSIgLz48L3N2Zz4=");
+	 background-image:-webkit-gradient(linear,0% 0%, 0% 100%,color-stop(0.04, rgb(0, 127, 0)),color-stop(0.47, rgb(0, 191, 0)),color-stop(0.51, rgb(0, 191, 0)),color-stop(1, rgb(0, 127, 0)));
+	 background-image:-webkit-linear-gradient(top, rgb(0, 127, 0) 4%,rgb(0, 191, 0) 47%,rgb(0, 191, 0) 51%,rgb(0, 127, 0) 100%);
+	 background-image:-moz-linear-gradient(top, rgb(0, 127, 0) 4%,rgb(0, 191, 0) 47%,rgb(0, 191, 0) 51%,rgb(0, 127, 0) 100%);
+	 background-image:-ms-linear-gradient(top, rgb(0, 127, 0) 4%,rgb(0, 191, 0) 47%,rgb(0, 191, 0) 51%,rgb(0, 127, 0) 100%);
+	 background-image:-o-linear-gradient(top, rgb(0, 127, 0) 4%,rgb(0, 191, 0) 47%,rgb(0, 191, 0) 51%,rgb(0, 127, 0) 100%);
+	 background-image:linear-gradient(top, rgb(0, 127, 0) 4%,rgb(0, 191, 0) 47%,rgb(0, 191, 0) 51%,rgb(0, 127, 0) 100%);
+}
+
+#button2:hover {
+	 background-image:url("data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48bGluZWFyR3JhZGllbnQgaWQ9IndhZi1pZS1ncmFkaWVudCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHgyPSIwIiB5Mj0iMTAwJSI+PHN0b3Agc3RvcC1jb2xvcj0iI2FhZmY1NiIgb2Zmc2V0PSI0JSIgc3RvcC1vcGFjaXR5PSIxIiAvPjxzdG9wIHN0b3AtY29sb3I9IiNhYWZmNTYiIG9mZnNldD0iNDclIiBzdG9wLW9wYWNpdHk9IjEiIC8+PHN0b3Agc3RvcC1jb2xvcj0iIzU2ZmY1NiIgb2Zmc2V0PSI1MSUiIHN0b3Atb3BhY2l0eT0iMSIgLz48c3RvcCBzdG9wLWNvbG9yPSIjNTZmZjU2IiBvZmZzZXQ9IjEwMCUiIHN0b3Atb3BhY2l0eT0iMSIgLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjd2FmLWllLWdyYWRpZW50KSIgLz48L3N2Zz4=");
+	 background-image:-webkit-gradient(linear,0% 0%, 0% 100%,color-stop(0.04, rgb(170, 255, 86)),color-stop(0.47, rgb(170, 255, 86)),color-stop(0.51, rgb(86, 255, 86)),color-stop(1, rgb(86, 255, 86)));
+	 background-image:-webkit-linear-gradient(top, rgb(170, 255, 86) 4%,rgb(170, 255, 86) 47%,rgb(86, 255, 86) 51%,rgb(86, 255, 86) 100%);
+	 background-image:-moz-linear-gradient(top, rgb(170, 255, 86) 4%,rgb(170, 255, 86) 47%,rgb(86, 255, 86) 51%,rgb(86, 255, 86) 100%);
+	 background-image:-ms-linear-gradient(top, rgb(170, 255, 86) 4%,rgb(170, 255, 86) 47%,rgb(86, 255, 86) 51%,rgb(86, 255, 86) 100%);
+	 background-image:-o-linear-gradient(top, rgb(170, 255, 86) 4%,rgb(170, 255, 86) 47%,rgb(86, 255, 86) 51%,rgb(86, 255, 86) 100%);
+	 background-image:linear-gradient(top, rgb(170, 255, 86) 4%,rgb(170, 255, 86) 47%,rgb(86, 255, 86) 51%,rgb(86, 255, 86) 100%);
+}
+
+#button3 {
+	z-index: 11;
+	width: 150px;
+	height: 57px;
+	top: 245px;
+	left: 1010px;
 	position: absolute;
 }
 
-#textInput2 {
-	z-index: 13;
-	width: 332px;
-	height: 22px;
-	top: 185px;
-	left: 756px;
+#button2 {
+	z-index: 9;
+	width: 150px;
+	height: 61px;
+	top: 32px;
+	left: 997px;
+	position: absolute;
+}
+
+#label6 {
+	z-index: 7;
+	width: auto;
+	height: 14px;
+	top: 338px;
+	left: 578px;
+	position: absolute;
+}
+
+#label5 {
+	z-index: 8;
+	width: auto;
+	height: 14px;
+	top: 15px;
+	left: 1194px;
+	position: absolute;
+}
+
+#dataGrid7 {
+	z-index: 7;
+	width: 254px;
+	height: 265px;
+	top: 357px;
+	left: 578px;
+	position: absolute;
+}
+
+#dataGrid6 {
+	z-index: 6;
+	width: 300px;
+	height: 300px;
+	top: 34px;
+	left: 1194px;
+	position: absolute;
+}
+
+#button1 {
+	z-index: 5;
+	width: 123px;
+	height: 74px;
+	top: 102px;
+	left: 784px;
 	position: absolute;
 }
 
 #label1 {
-	z-index: 11;
+	z-index: 3;
 	width: auto;
 	height: 14px;
-	top: 149px;
-	left: 612px;
+	top: 12px;
+	left: 18px;
 	position: absolute;
 }
 
-#textInput1 {
-	z-index: 11;
-	width: 240px;
+#dataGrid2 {
+	z-index: 1;
+	width: 735px;
+	height: 364px;
+	top: 31px;
+	left: 18px;
+	position: absolute;
+}
+
+#container5 {
+	z-index: 5;
+	top: 0px;
+	bottom: 0px;
+	left: 66px;
+	right: 0px;
+	position: absolute;
+}
+
+#richText5 {
+	z-index: 1;
+	width: 65px;
+	height: 21px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuItem5 {
+	z-index: 2;
+	width: 66px;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#container2 {
+	z-index: 4;
+	top: 0px;
+	bottom: 0px;
+	left: 66px;
+	right: 0px;
+	position: absolute;
+}
+
+#richText2 {
+	z-index: 1;
+	width: 65px;
+	height: 21px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuItem2 {
+	z-index: 1;
+	width: 66px;
+	height: 23px;
+	top: auto;
+	left: 0px;
+	position: absolute;
+}
+
+#menuBar2 > .waf-menuItem {
+	margin-bottom: 0px;
+	margin-right: 0px;
+}
+
+#menuBar2 > .waf-menuItem:not(.waf-menuItem-last) {
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+#menuBar2 {
+	z-index: 3;
+	width: 66px;
+	height: 17px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#tabView2 {
+	z-index: 3;
+	top: 20px;
+	bottom: 20px;
+	left: 20px;
+	right: 20px;
+	position: absolute;
+}
+
+#component1 {
+	z-index: 1;
+	width: 896px;
+	height: 716px;
+	top: 20px;
+	left: 10px;
+	position: absolute;
+}
+
+#container4 {
+	z-index: 7;
+	top: 23px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	position: absolute;
+}
+
+#richText4 {
+	z-index: 1;
+	width: 66px;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuItem4 {
+	z-index: 4;
+	width: 66px;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#dataGrid4 {
+	z-index: 1;
+	top: 40px;
+	bottom: 20px;
+	left: 20px;
+	right: 20px;
+	position: absolute;
+}
+
+#label4 {
+	z-index: 5;
+	width: auto;
+	height: 14px;
+	top: 11px;
+	left: 509px;
+	position: absolute;
+}
+
+#label3 {
+	z-index: 4;
+	width: auto;
+	height: 14px;
+	top: 11px;
+	left: 26px;
+	position: absolute;
+}
+
+#container3 {
+	z-index: 6;
+	top: 23px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	position: absolute;
+}
+
+#richText3 {
+	z-index: 1;
+	width: 64px;
 	height: 22px;
-	top: 145px;
-	left: 640px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuItem3 {
+	z-index: 3;
+	width: 66px;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#container1 {
+	z-index: 4;
+	top: 23px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	position: absolute;
+}
+
+#richText1 {
+	z-index: 1;
+	width: 64px;
+	height: 22px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuItem1 {
+	z-index: 1;
+	width: 66px;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+#menuBar1 > .waf-menuItem {
+	margin-bottom: 0px;
+}
+
+#menuBar1 > .waf-menuItem:not(.waf-menuItem-last) {
+	margin-right: 5px;
+}
+
+#menuBar1 {
+	z-index: 3;
+	height: 23px;
+	top: 0px;
+	left: 0px;
+	right: 5px;
+	position: absolute;
+}
+
+#tabView1 {
+	z-index: 14;
+	top: 42px;
+	bottom: 22px;
+	left: 12px;
+	right: 28px;
 	position: absolute;
 }
 
@@ -50,19 +361,10 @@
 
 #dataGrid3 {
 	z-index: 3;
-	width: 395px;
+	width: 463px;
 	height: 288px;
-	top: 419px;
-	left: 40px;
-	position: absolute;
-}
-
-#dataGrid2 {
-	z-index: 2;
-	width: 978px;
-	height: 300px;
-	top: 214px;
-	left: 584px;
+	top: 30px;
+	left: 509px;
 	position: absolute;
 }
 
@@ -70,35 +372,53 @@
 	z-index: 1;
 	width: 300px;
 	height: 300px;
-	top: 53px;
-	left: 51px;
-	position: absolute;
-}
-
-#clientBtn {
-	z-index: 8;
-	width: 92px;
-	height: 34px;
-	top: 275px;
-	left: 426px;
-	position: absolute;
-}
-
-#categoryBtn {
-	z-index: 7;
-	width: 92px;
-	height: 34px;
-	top: 434px;
-	left: 457px;
+	top: 30px;
+	left: 26px;
 	position: absolute;
 }
 
 #setCategoryClientBtn {
-	z-index: 14;
+	z-index: 2;
 	width: 125px;
 	height: 44px;
-	top: 364px;
-	left: 115px;
+	top: 124px;
+	left: 355px;
+	position: absolute;
+}
+
+#label2 {
+	z-index: 6;
+	width: auto;
+	height: 14px;
+	top: 19px;
+	left: 959px;
+	position: absolute;
+}
+
+#dataGrid5 {
+	z-index: 6;
+	width: 482px;
+	height: 300px;
+	top: 38px;
+	left: 959px;
+	position: absolute;
+}
+
+#linkDirectoryDisplayTxt {
+	z-index: 7;
+	width: 125px;
+	height: 32px;
+	top: 190px;
+	left: 787px;
+	position: absolute;
+}
+
+#assignUserToCategoryTxt {
+	z-index: 10;
+	width: 142px;
+	height: 59px;
+	top: 134px;
+	left: 1010px;
 	position: absolute;
 }
 

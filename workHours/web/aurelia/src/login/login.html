@@ -1,0 +1,26 @@
+<template>
+  <md-card class="container" if.bind="!auth.logged">
+    <h3 class="center">Please login to access the application</h3>
+    <form submit.delegate="tryLogin()">
+      <md-card md-title="Login" class="container">
+        <div>
+          <md-input md-type="text" md-label="Login" md-value.bind="userLogin"></md-input>
+        </div>
+      </md-card>
+      <md-card md-title="Password" class="container">
+        <div>
+          <md-input md-type="password" md-label="password" md-value.bind="password"></md-input>
+        </div>
+      </md-card>
+      <div class="rigt">
+        <button md-button="large: true" type="submit" class="">Login</button>
+      </div>
+    </form>
+  </md-card>
+  <md-card md-title class="center container" if.bind="auth.logged">
+    <h3>You are already logged in</h3>
+    <div class="button-row">
+      <button md-button="large: true;" class="waves-effect" click.delegate="logout()">Logout</button>
+    </div>
+  </md-card>
+</template>

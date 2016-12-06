@@ -5,6 +5,7 @@
 *.waData
 # Wakanda preferences
 *.waPreferences
+*.waSettings
 # Wakanda log
 *.waLog
 */Logs
@@ -35,6 +36,6 @@ sessionID.json
 */mobile/.sass-cache
 */mobile/plugins
 
-# mobile/web 
+# mobile/web
 node_modules/
 *.log

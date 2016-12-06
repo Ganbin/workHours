@@ -1,0 +1,10 @@
+{
+	"name": "directoryComponent",
+	"html": "directoryComponent.html",
+	"scripts": [
+		"directoryComponent.js"
+	],
+	"styles": [
+		"directoryComponent.css"
+	]
+}

@@ -2,12 +2,78 @@
 WAF.onAfterInit = function onAfterInit() {// @lock
 
 // @region namespaceDeclaration// @startlock
+	var button3 = {};	// @Button
+	var button2 = {};	// @Button
+	var menuItem2 = {};	// @menuItem
+	var documentEvent = {};	// @document
+	var button1 = {};	// @Button
+	var login1 = {};	// @login
 	var setCategoryClientBtn = {};	// @Button
-	var categoryBtn = {};	// @Button
-	var clientBtn = {};	// @Button
 // @endregion// @endlock
 
+function resetTxt(txtID) {
+	setTimeout(function () {$$(txtID).value("");}, 5000)	
+;}
+
 // eventHandlers// @lock
+
+	button3.click = function button3_click (event)// @startlock
+	{// @endlock
+		waf.sources.category.removeUser(waf.sources.user.ID,{onSuccess: function (evt) {
+			if (evt.result.res === true) {
+				waf.sources.category.serverRefresh();
+			}
+			
+			$$('assignUserToCategoryTxt').value(evt.result.message);
+			resetTxt('assignUserToCategoryTxt');
+		}, onError: function (err) {
+			
+		}});
+	};// @lock
+
+	button2.click = function button2_click (event)// @startlock
+	{// @endlock
+		waf.sources.category.addUser(waf.sources.user.ID,{onSuccess: function (evt) {
+			if (evt.result.res === true) {
+				waf.sources.category.serverRefresh();
+			}
+			
+			$$('assignUserToCategoryTxt').value(evt.result.message);
+			resetTxt('assignUserToCategoryTxt');
+		}, onError: function (err) {
+			
+		}});
+	};// @lock
+
+	menuItem2.click = function menuItem2_click (event)// @startlock
+	{// @endlock
+		dirUser = directoryComponent.getUsers();
+		waf.sources.dirUser.sync();
+	};// @lock
+
+	documentEvent.onLoad = function documentEvent_onLoad (event)// @startlock
+	{// @endlock
+		if ($$('component1').loadComponent !== undefined) {
+			$$('component1').loadComponent();
+		}
+	};// @lock
+
+	button1.click = function button1_click (event)// @startlock
+	{// @endlock
+		waf.sources.user.userID = waf.sources.dirUser.ID;
+		waf.sources.user.save({onSuccess:function(evt){
+			$$('linkDirectoryDisplayTxt').value("Done");
+			resetTxt('linkDirectoryDisplayTxt');
+		}, onError:function(err) {
+			$$('linkDirectoryDisplayTxt').value("Error");
+			resetTxt('linkDirectoryDisplayTxt');
+		}});
+	};// @lock
+
+	login1.login = function login1_login (event)// @startlock
+	{// @endlock
+		location.href = '';
+	};// @lock
 
 	setCategoryClientBtn.click = function setCategoryClientBtn_click (event)// @startlock
 	{// @endlock
@@ -18,31 +84,13 @@ WAF.onAfterInit = function onAfterInit() {// @lock
 		}});
 	};// @lock
 
-	categoryBtn.click = function categoryBtn_click (event)// @startlock
-	{// @endlock
-		waf.sources.workTime.category.set(waf.sources.category.getCurrentElement());
-		waf.sources.workTime.save({onSuccess:function(evt){// @lock
-			waf.sources.workTime.serverRefresh();
-			alertify.success('Client Linked')
-		},onErro:function(err){
-			alertify.error('An error occurs');
-		}});
-	};// @lock
-
-	clientBtn.click = function clientBtn_click (event)// @startlock
-	{// @endlock
-		waf.sources.workTime.client.set(waf.sources.client.getCurrentElement());
-		waf.sources.workTime.save({onSuccess:function(evt){
-			waf.sources.workTime.serverRefresh();
-			alertify.success('Client Linked')
-		},onErro:function(err){
-			alertify.error('An error occurs');
-		}});
-	};// @lock
-
 // @region eventManager// @startlock
+	WAF.addListener("button3", "click", button3.click, "WAF");
+	WAF.addListener("button2", "click", button2.click, "WAF");
+	WAF.addListener("menuItem2", "click", menuItem2.click, "WAF");
+	WAF.addListener("document", "onLoad", documentEvent.onLoad, "WAF");
+	WAF.addListener("button1", "click", button1.click, "WAF");
+	WAF.addListener("login1", "login", login1.login, "WAF");
 	WAF.addListener("setCategoryClientBtn", "click", setCategoryClientBtn.click, "WAF");
-	WAF.addListener("categoryBtn", "click", categoryBtn.click, "WAF");
-	WAF.addListener("clientBtn", "click", clientBtn.click, "WAF");
 // @endregion
 };// @endlock

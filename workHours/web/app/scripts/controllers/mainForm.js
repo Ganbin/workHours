@@ -16,6 +16,9 @@
 		};
 
 		self.setEntity = function(entity){
+			
+			var userOffsetBreak, userOffsetTrain, madate, madate2, breakTime = new Date(0), trainTime = new Date(0);
+			
 			self.entity = entity;
 			self.edit = true;
 			self.startDate = new Date(self.entity.start);
@@ -23,15 +26,28 @@
 			self.endDate = new Date(self.entity.end);
 			self.endAt = new Date(self.entity.end);
 			self.title = 'Edit Work Time';
-//debugger;
+		
 			// Calculation of the offset to keep the duration from timestamp 0
-			var userOffsetBreak = utils.checkDST(moment(self.entity['break']).tz('UTC')._d,true)*60000,
-				userOffsetTrain = utils.checkDST(moment(self.entity.trainTime).tz('UTC')._d,true)*60000,
-				madate = moment(self.entity['break']).tz('UTC'),
-				madate2 = moment(self.entity.trainTime).tz('UTC'),
-				breakTime = new Date(Date.UTC(madate.toObject().years,madate.toObject().months,madate.toObject().date,madate.toObject().hours,madate.toObject().minutes,madate.toObject().seconds)+userOffsetBreak),
+			if(self.entity['break'] != null){
+				userOffsetBreak = utils.checkDST(moment(self.entity['break']).tz('UTC')._d,true)*60000;
+				madate = moment(self.entity['break']).tz('UTC');
+				breakTime = new Date(Date.UTC(madate.toObject().years,madate.toObject().months,madate.toObject().date,madate.toObject().hours,madate.toObject().minutes,madate.toObject().seconds)+userOffsetBreak);
+			}else{
+				userOffsetBreak = utils.checkDST(moment(breakTime).tz('UTC')._d,true)*60000;
+				madate = moment(breakTime).tz('UTC');
+				breakTime = new Date(Date.UTC(madate.toObject().years,madate.toObject().months,madate.toObject().date,madate.toObject().hours,madate.toObject().minutes,madate.toObject().seconds)+userOffsetBreak);
+			}
+			
+			if(self.entity.trainTime != null){
+				userOffsetTrain = utils.checkDST(moment(self.entity.trainTime).tz('UTC')._d,true)*60000;
+				madate2 = moment(self.entity.trainTime).tz('UTC');
 				trainTime = new Date(Date.UTC(madate2.toObject().years,madate2.toObject().months,madate2.toObject().date,madate2.toObject().hours,madate2.toObject().minutes,madate2.toObject().seconds)+userOffsetTrain);
-
+			}else{
+				userOffsetTrain = utils.checkDST(moment(trainTime).tz('UTC')._d,true)*60000;
+				madate2 = moment(trainTime).tz('UTC');
+				trainTime = new Date(Date.UTC(madate2.toObject().years,madate2.toObject().months,madate2.toObject().date,madate2.toObject().hours,madate2.toObject().minutes,madate2.toObject().seconds)+userOffsetTrain);
+			}
+				
 			self.breakTime = breakTime;//new Date(self.entity['break']);
 			self.breakReason = self.entity.breakReason;
 			self.trainTime = trainTime;
@@ -129,9 +145,12 @@
 
 				newTime.start = moment(startDateTmp.format('YYYYMMDD')+'T'+startAtTmp.format('HHmm')).toDate();
 				newTime.end = moment(endDateTmp.format('YYYYMMDD')+'T'+endAtTmp.format('HHmm')).toDate();
-				newTime['break'] = this.breakTime != null && this.breakTime.getTime()-(1000*(this.breakTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				//newTime['break'] = this.breakTime != null && this.breakTime.getTime()-(1000*(this.breakTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				newTime['break'] = this.breakTime != null ? (this.breakTime.getHours()*60*60*1000)+(this.breakTime.getMinutes()*60*1000) : 0;
 				newTime.breakReason = this.breakReason;
-				newTime.trainTime = this.trainTime != null && this.trainTime.getTime()-(1000*(this.trainTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				//debugger;
+				//newTime.trainTime = this.trainTime != null && this.trainTime.getTime()-(1000*(this.trainTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				newTime.trainTime = this.trainTime != null ? (this.trainTime.getHours()*60*60*1000)+(this.trainTime.getMinutes()*60*1000) : 0;
 				newTime.trainPrice = this.trainPrice;
 				newTime.comment = this.comment;
 
@@ -157,11 +176,13 @@
 
 				editTime.start = moment(startDateTmp.format('YYYYMMDD')+'T'+startAtTmp.format('HHmm')).toDate();
 				editTime.end = moment(endDateTmp.format('YYYYMMDD')+'T'+endAtTmp.format('HHmm')).toDate();
-				editTime['break'] = (this.breakTime != null) && this.breakTime.getTime()-(1000*(this.breakTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				//editTime['break'] = (this.breakTime != null) && this.breakTime.getTime()-(1000*(this.breakTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				editTime['break'] = this.breakTime != null ? (this.breakTime.getHours()*60*60*1000)+(this.breakTime.getMinutes()*60*1000) : 0;
 				editTime.breakReason = this.breakReason;
 				editTime.comment = this.comment;
 
-				editTime.trainTime = this.trainTime != null && this.trainTime.getTime()-(1000*(this.trainTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				//editTime.trainTime = this.trainTime != null && this.trainTime.getTime()-(1000*(this.trainTime.getTimezoneOffset())*60); // To get the number of ms without having to care about the timezone.
+				editTime.trainTime = this.trainTime != null ? (this.trainTime.getHours()*60*60*1000)+(this.trainTime.getMinutes()*60*1000) : 0;
 				editTime.trainPrice = this.trainPrice;
 
 				editTime.client = utils.map(this.clients)[this.clientSelected.ID];

@@ -10,10 +10,10 @@
 				"relVisible": "true",
 				"panel": {
 					"isOpen": "true",
-					"pathVisible": true,
+					"pathVisible": false,
 					"position": {
-						"X": 35,
-						"Y": 25
+						"X": 50,
+						"Y": 20
 					}
 				}
 			},
@@ -26,8 +26,8 @@
 					"isOpen": "true",
 					"pathVisible": true,
 					"position": {
-						"X": 405,
-						"Y": 24
+						"X": 488,
+						"Y": 9
 					}
 				}
 			},
@@ -38,22 +38,10 @@
 				"relVisible": "true",
 				"panel": {
 					"isOpen": "true",
-					"pathVisible": true,
+					"pathVisible": false,
 					"position": {
-						"X": 50,
-						"Y": 271
-					}
-				}
-			},
-			"UserTime": {
-				"panelColor": "#CCC1D9",
-				"flatVisible": "true",
-				"methVisible": "true",
-				"panel": {
-					"isOpen": "true",
-					"position": {
-						"X": 775,
-						"Y": 20
+						"X": 43,
+						"Y": 277
 					}
 				}
 			},
@@ -64,8 +52,34 @@
 				"panel": {
 					"isOpen": "true",
 					"position": {
-						"X": 1025,
-						"Y": 20
+						"X": 895,
+						"Y": 31
+					}
+				}
+			},
+			"User": {
+				"panelColor": "#BFBFBF",
+				"flatVisible": "true",
+				"methVisible": "true",
+				"panel": {
+					"isOpen": "true",
+					"pathVisible": true,
+					"position": {
+						"X": 854,
+						"Y": 586
+					}
+				}
+			},
+			"CategoryUser": {
+				"panelColor": "#4FA997",
+				"flatVisible": "true",
+				"methVisible": "true",
+				"panel": {
+					"isOpen": "true",
+					"pathVisible": true,
+					"position": {
+						"X": 65,
+						"Y": 672
 					}
 				}
 			}
@@ -83,10 +97,13 @@
 			},
 			"lastScriptLocation": {
 				"Client": {
-					"method": "Client/Client-methods.js"
+					"method": "Client/Client-methods.js",
+					"events": "Client/Client-events.js"
 				},
 				"Category": {
-					"computed": "Category/Category-events.js"
+					"computed": "Category/Category-events.js",
+					"method": "Category/Category-methods.js",
+					"events": "Category/Category-events.js"
 				},
 				"WorkTime": {
 					"events": "WorkTime/WorkTime-events.js",
@@ -94,6 +111,10 @@
 				},
 				"Utility": {
 					"method": "Utility/Utility-methods.js"
+				},
+				"User": {
+					"computed": "User/User-events.js",
+					"events": "User/User-events.js"
 				}
 			}
 		}
@@ -160,6 +181,75 @@
 							"userDefined": true
 						}
 					]
+				},
+				{
+					"name": "categoryUserCollection",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "CategoryUserCollection",
+					"reversePath": true,
+					"path": "category"
+				},
+				{
+					"name": "allUsers",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "UserCollection",
+					"path": "categoryUserCollection.user"
+				}
+			],
+			"events": [
+				{
+					"kind": "restrict",
+					"from": "$mainModel.Category.events.restrict",
+					"userDefined": true
+				}
+			],
+			"methods": [
+				{
+					"name": "addUser",
+					"applyTo": "entity",
+					"scope": "public",
+					"from": "$mainModel.Category.entityMethods.addUser",
+					"userDefined": true
+				},
+				{
+					"name": "removeUser",
+					"applyTo": "entity",
+					"scope": "public",
+					"from": "$mainModel.Category.entityMethods.removeUser",
+					"userDefined": true
+				}
+			]
+		},
+		{
+			"name": "CategoryUser",
+			"className": "CategoryUser",
+			"collectionName": "CategoryUserCollection",
+			"scope": "public",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"scope": "public",
+					"unique": true,
+					"autosequence": true,
+					"type": "long",
+					"primKey": true
+				},
+				{
+					"name": "category",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "Category",
+					"path": "Category"
+				},
+				{
+					"name": "user",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "User",
+					"path": "User"
 				}
 			]
 		},
@@ -202,12 +292,98 @@
 					"path": "client"
 				}
 			],
+			"events": [
+				{
+					"kind": "restrict",
+					"from": "$mainModel.Client.events.restrict",
+					"userDefined": true
+				}
+			],
 			"methods": [
 				{
 					"name": "getReport",
 					"applyTo": "dataClass",
 					"scope": "public",
 					"from": "$mainModel.Client.methods.getReport",
+					"userDefined": true
+				}
+			]
+		},
+		{
+			"name": "User",
+			"className": "User",
+			"collectionName": "UserCollection",
+			"scope": "public",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"scope": "public",
+					"unique": true,
+					"autosequence": true,
+					"type": "long",
+					"primKey": true
+				},
+				{
+					"name": "firstName",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "lastName",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "fullName",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "string",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.User.fullName.onGet",
+							"userDefined": true
+						}
+					]
+				},
+				{
+					"name": "userID",
+					"kind": "storage",
+					"scope": "public",
+					"type": "uuid"
+				},
+				{
+					"name": "categoryUserCollection",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "CategoryUserCollection",
+					"reversePath": true,
+					"path": "user"
+				},
+				{
+					"name": "allCategories",
+					"kind": "relatedEntities",
+					"scope": "public",
+					"type": "CategoryCollection",
+					"path": "categoryUserCollection.category"
+				},
+				{
+					"name": "allWorkTimes",
+					"kind": "relatedEntities",
+					"matchColumn": "workTimeCollection",
+					"scope": "public",
+					"type": "WorkTimeCollection",
+					"reversePath": true,
+					"path": "user"
+				}
+			],
+			"events": [
+				{
+					"kind": "restrict",
+					"from": "$mainModel.User.events.restrict",
 					"userDefined": true
 				}
 			]
@@ -232,7 +408,7 @@
 				{
 					"name": "getUserNames",
 					"applyTo": "dataClass",
-					"scope": "public",
+					"scope": "publicOnServer",
 					"from": "$mainModel.Utility.methods.getUserNames",
 					"userDefined": true
 				}
@@ -272,6 +448,27 @@
 					"kind": "storage",
 					"scope": "public",
 					"type": "duration"
+				},
+				{
+					"name": "breakTime",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string",
+					"events": [
+						{
+							"kind": "validate",
+							"from": "$mainModel.WorkTime.breakTime.events.validate"
+						},
+						{
+							"kind": "validate",
+							"from": "$mainModel.WorkTime.breakTime.events.validate"
+						},
+						{
+							"kind": "validate",
+							"from": "$mainModel.WorkTime.breakTime.events.validate",
+							"userDefined": true
+						}
+					]
 				},
 				{
 					"name": "breakReason",
@@ -317,7 +514,22 @@
 					"name": "trainTime",
 					"kind": "storage",
 					"scope": "public",
-					"type": "duration"
+					"type": "string",
+					"events": [
+						{
+							"kind": "validate",
+							"from": "$mainModel.WorkTime.trainTime.events.validate"
+						},
+						{
+							"kind": "validate",
+							"from": "$mainModel.WorkTime.trainTime.events.validate"
+						},
+						{
+							"kind": "validate",
+							"from": "$mainModel.WorkTime.trainTime.events.validate",
+							"userDefined": true
+						}
+					]
 				},
 				{
 					"name": "trainPrice",
@@ -340,23 +552,11 @@
 					"path": "category.categoryClient"
 				},
 				{
-					"name": "userID",
-					"kind": "storage",
-					"scope": "public",
-					"type": "uuid"
-				},
-				{
 					"name": "userName",
-					"kind": "calculated",
+					"kind": "alias",
 					"scope": "public",
 					"type": "string",
-					"scriptKind": "javascript",
-					"onGet": [
-						{
-							"from": "$mainModel.WorkTime.userName.onGet",
-							"userDefined": true
-						}
-					]
+					"path": "user.fullName"
 				},
 				{
 					"name": "timeWorked",
@@ -370,25 +570,113 @@
 							"userDefined": true
 						}
 					]
+				},
+				{
+					"name": "creationDate",
+					"kind": "storage",
+					"scope": "public",
+					"type": "date",
+					"simpleDate": false
+				},
+				{
+					"name": "modificationDate",
+					"kind": "storage",
+					"scope": "public",
+					"type": "date",
+					"simpleDate": false
+				},
+				{
+					"name": "breakTimeMs",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "number",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.WorkTime.breakTimeMs.onGet",
+							"userDefined": true
+						}
+					]
+				},
+				{
+					"name": "trainTimeMs",
+					"kind": "calculated",
+					"scope": "public",
+					"type": "number",
+					"scriptKind": "javascript",
+					"onGet": [
+						{
+							"from": "$mainModel.WorkTime.trainTimeMs.onGet",
+							"userDefined": true
+						}
+					]
+				},
+				{
+					"name": "user",
+					"kind": "relatedEntity",
+					"scope": "public",
+					"type": "User",
+					"path": "User"
+				},
+				{
+					"name": "userID",
+					"kind": "storage",
+					"scope": "public",
+					"type": "uuid"
 				}
 			],
 			"events": [
 				{
 					"kind": "save",
+					"from": "$mainModel.WorkTime.events.save"
+				},
+				{
+					"kind": "save",
+					"from": "$mainModel.WorkTime.events.save"
+				},
+				{
+					"kind": "save",
 					"from": "$mainModel.WorkTime.events.save",
 					"userDefined": true
-				}
-			]
-		},
-		{
-			"name": "UserTime",
-			"className": "UserTime",
-			"collectionName": "UserTimeCollection",
-			"scope": "public",
-			"extends": "WorkTime",
-			"restrictingQuery": [
+				},
 				{
-					"queryStatement": "userID == :$userid"
+					"kind": "init",
+					"from": "$mainModel.WorkTime.events.init"
+				},
+				{
+					"kind": "init",
+					"from": "$mainModel.WorkTime.events.init"
+				},
+				{
+					"kind": "init",
+					"from": "$mainModel.WorkTime.events.init",
+					"userDefined": true
+				},
+				{
+					"kind": "validate",
+					"from": "$mainModel.WorkTime.events.validate"
+				},
+				{
+					"kind": "validate",
+					"from": "$mainModel.WorkTime.events.validate"
+				},
+				{
+					"kind": "validate",
+					"from": "$mainModel.WorkTime.events.validate",
+					"userDefined": true
+				},
+				{
+					"kind": "restrict",
+					"from": "$mainModel.WorkTime.events.restrict"
+				},
+				{
+					"kind": "restrict",
+					"from": "$mainModel.WorkTime.events.restrict"
+				},
+				{
+					"kind": "restrict",
+					"from": "$mainModel.WorkTime.events.restrict",
+					"userDefined": true
 				}
 			]
 		}

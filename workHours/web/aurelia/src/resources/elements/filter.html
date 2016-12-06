@@ -1,0 +1,62 @@
+<template>
+  <div class="">
+    <ul md-collapsible>
+      <li>
+        <div md-waves id="filterHeader" class="collapsible-header accent"><i class="material-icons">search</i>Filters</div>
+        <div class="collapsible-body">
+            <div class="row">
+              <div class="col s12">
+                <label class="active">Custom Date</label>
+                <md-switch md-checked.bind="customDate" md-label-on="Yes" md-label-off="No"></md-switch>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 m6" hide.bind="customDate">
+                <select md-select="label: Range" value.bind="rangeSelection">
+                  <option value="" disabled selected>Select a range...</option>
+                  <option value="thisMonth">This Month</option>
+                  <option value="lastMonth">Last Month</option>
+                  <option value="thisYear">This Year</option>
+                </select>
+              </div>
+              <div class="col ${customDate ? 's12 m6' : 'm3 s6'} input-field">
+                <label for="from" class="active">From</label>
+                <input id="from" md-datepicker="container: body; value.bind: FFrom & validate" type="date" placeholder="From" disabled.bind="!customDate" />
+              </div>
+              <div class="col ${customDate ? 's12 m6' : 'm3 s6'} input-field">
+                <label for="to" class="active">To</label>
+                <input id="to" md-datepicker="container: body; value.bind: FTo & validate" type="date" placeholder="To" disabled.bind="!customDate" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 m8">
+                <select md-select="disabled.bind: allClients; label: Client" value.bind="FClientName & validate" md-select.ref="clientSelect">
+                  <option value="" disabled selected>Select a client...</option>
+                  <option repeat.for="client of clients" value.bind="client.name">${client.name}</option>
+                  <option if.bind="allClients" value="all">All Clients</option>
+                </select>
+              </div>
+              <div class="col s12 m4">
+                <p>
+                  <md-checkbox md-checked.bind="allClients">All Clients</md-checkbox>
+                </p>
+              </div>
+            </div>
+            <div class="row" show.bind="showUsers">
+              <div class="col s12">
+                <select md-select="label: User" value.bind="FUserId & validate" md-select.ref="userSelect">
+                  <option value="" disabled selected>Select a user...</option>
+                  <option repeat.for="user of users" value.bind="user.userID">${user.fullName}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12">
+                  <button type="button" click.delegate="applyFilter()" md-button="large: true" class="right">Apply</button>
+              </div>
+            </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</template>

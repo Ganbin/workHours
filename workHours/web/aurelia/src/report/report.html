@@ -1,0 +1,28 @@
+<template>
+  <filter apply.delegate="apply($event)" f-from.bind="from" f-to.bind="to" f-user-id.bind="userID" f-client-name.bind="clientName" class="no-print"></filter>
+
+  <h5 class="center-align">${message}</h5>
+
+  <div class="table-responsive-vertical shadow-z-1 print" show.bind="reportData.length > 0">
+    <table id="table" class="table table-hover table-mc-light-blue">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Time</th>
+          <th>Train Time</th>
+          <th>Additional Price</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody repeat.for="item of reportData">
+          <tr class="${item.label === 'Total' ? 'red lighten-3' : ''} ${item.label === 'Sub Total' ? 'blue lighten-3' : ''}">
+            <td data-title="Category">${item.label}</td>
+            <td data-title="Time">${item.time | minutesToHours}</td>
+            <td data-title="Train Time">${item.trainTime | minutesToHours}</td>
+            <td data-title="Additional Price">${item.addPrice | currency: 'CHF'}</td>
+            <td data-title="Price">${item.price | currency}</td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+</template>

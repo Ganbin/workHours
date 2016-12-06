@@ -14,6 +14,7 @@ export function App(auth) {
             {route: '', redirect: 'home'},
             {route: 'home', title: 'Home', name: 'home', moduleId: './home', nav: true },
             {route: 'worktime', title: 'Worktime', name: 'worktime', moduleId: './worktime/worktimeSection', nav: true},
+            {route: 'report', title: 'Report', name: 'report', moduleId: './report/report', nav: true},
             {route: 'debug', title: 'Debug', name: 'debug', moduleId: './debug/debug'},
             {route: 'login', title: 'Login', name: 'login', moduleId: './login/login'}
         ]);

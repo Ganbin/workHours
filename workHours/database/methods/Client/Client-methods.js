@@ -2,6 +2,9 @@
  * This method is a generic method that will generate the report.
  * params : options is an object containing the from and to date and the client to generate report.
  * If there is no client, we do a report for all the client.
+ * We can also pass 'all' ass clientName to get all the client
+ * 
+ * Params : object {from, to, clientName, userID}
  * 
  * Return an object containing : 
  * The time in minute for each categories
@@ -41,7 +44,7 @@ model.Client.methods.getReport = function (options) {
 		to.setMinutes(59);
 	}
 	
-	if(clientName !== null){
+	if(clientName !== null && clientName !== 'all'){
 		workTimes = ds.WorkTime.query('start > :1 and end < :2 and user.userID == :3 and clientName == :4',from,to,userID,clientName);
 	}else{
 		workTimes = ds.WorkTime.query('start > :1 and end < :2 and user.userID == :3',from,to,userID);

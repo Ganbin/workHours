@@ -13,7 +13,7 @@ export class Filter {
     @bindable({ defaultBindingMode: bindingMode.twoWay }) FFrom = new Date();
     @bindable({ defaultBindingMode: bindingMode.twoWay }) FTo = new Date();
     @bindable({ defaultBindingMode: bindingMode.twoWay }) FClientName = 'all';
-    @bindable({ defaultBindingMode: bindingMode.twoWay }) FUserId = 'all';
+    @bindable({ defaultBindingMode: bindingMode.twoWay }) FUserId;
     customDate = false;
     @observable rangeSelection;
     @observable allClients = false;
@@ -53,14 +53,22 @@ export class Filter {
                 this.FUserId = this.auth.user.ID;
             }
         });
-        //this.thisMonth(); // Initialize the default range to this month
+        this.thisMonth(); // Initialize the default range to this month
+
+        if (this.FClientName === 'all') {
+            this.allClients = true;
+        }
     }
 
     applyFilter() {
         this.validationController.validate().then(v => {
             if (v.length === 0) {
+                const user = this.users.find((userItem) => {
+                    return userItem.userID === this.FUserId;
+                });
                 const event = new CustomEvent('apply', {
-                    bubbles: true
+                    bubbles: true,
+                    detail: {userName: user.fullName}
                 });
 
                 /*

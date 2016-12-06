@@ -15,7 +15,7 @@ define('app',['exports', './services/Auth', 'aurelia-router', './services/env'],
             _this.router = router;
             config.title = 'Work Times';
             config.addAuthorizeStep(AuthorizeStep);
-            config.map([{ route: '', redirect: 'home' }, { route: 'home', title: 'Home', name: 'home', moduleId: './home', nav: true }, { route: 'worktime', title: 'Worktime', name: 'worktime', moduleId: './worktime/worktimeSection', nav: true }, { route: 'debug', title: 'Debug', name: 'debug', moduleId: './debug/debug' }, { route: 'login', title: 'Login', name: 'login', moduleId: './login/login' }]);
+            config.map([{ route: '', redirect: 'home' }, { route: 'home', title: 'Home', name: 'home', moduleId: './home', nav: true }, { route: 'worktime', title: 'Worktime', name: 'worktime', moduleId: './worktime/worktimeSection', nav: true }, { route: 'report', title: 'Report', name: 'report', moduleId: './report/report', nav: true }, { route: 'debug', title: 'Debug', name: 'debug', moduleId: './debug/debug' }, { route: 'login', title: 'Login', name: 'login', moduleId: './login/login' }]);
         };
         this.auth = auth;
 
@@ -229,7 +229,9 @@ define('login/login',['exports', 'wakanda-client', 'aurelia-router', 'aurelia-fr
 
             wakanda.directory.login(this.userLogin, this.password).then(function () {
                 _this.auth.setCurrentUser().then(function (evt) {
-                    return _this.router.navigate(_this.datas.routeRequest);
+                    _this.auth.isDataAdmin().then(function () {
+                        return _this.router.navigate(_this.datas.routeRequest);
+                    });
                 });
             }).catch(function (e) {
                 _this.auth.setCurrentUser().then(function (evt) {
@@ -249,6 +251,73 @@ define('login/login',['exports', 'wakanda-client', 'aurelia-router', 'aurelia-fr
         return Login;
     }()) || _class);
 });
+define('report/report',['exports', 'wakanda-client', 'aurelia-framework', 'services/env', 'moment'], function (exports, _wakandaClient, _aureliaFramework, _env, _moment) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.Report = undefined;
+
+    var _env2 = _interopRequireDefault(_env);
+
+    var _moment2 = _interopRequireDefault(_moment);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var hostname = _env2.default.hostname;
+    var wakanda = new _wakandaClient.WakandaClient('http://' + hostname + ':8081');
+
+    var Report = exports.Report = function () {
+        function Report() {
+            _classCallCheck(this, Report);
+
+            this.clientName = 'all';
+            this.userID = '';
+            this.message = '';
+        }
+
+        Report.prototype.attached = function attached() {
+            var _this = this;
+
+            wakanda.getCatalog().then(function (ds) {
+                _this.ds = ds;
+            });
+        };
+
+        Report.prototype.apply = function apply($event) {
+            var _this2 = this;
+
+            var userName = $event.detail.userName;
+            this.message = 'Work report of ' + userName + ' for ' + (this.clientName === 'all' ? 'all clients' : this.clientName) + ' from ' + (0, _moment2.default)(this.from).format('DD.MM.YYYY') + ' to ' + (0, _moment2.default)(this.to).format('DD.MM.YYYY');
+
+            this.ds.Client.getReport({ from: this.from, to: this.to, clientName: this.clientName, userID: this.userID }).then(function (evt) {
+                _this2.reportData = [];
+                for (var cat in evt) {
+                    _this2.reportData.push({ 'name': cat,
+                        'time': evt[cat].time,
+                        'price': evt[cat].price,
+                        'addPrice': evt[cat].addPrice,
+                        'trainTime': evt[cat].trainTime,
+                        'label': evt[cat].label
+                    });
+                }
+            });
+        };
+
+        return Report;
+    }();
+});
 define('resources/index',['exports'], function (exports) {
                         'use strict';
 
@@ -257,7 +326,7 @@ define('resources/index',['exports'], function (exports) {
                         });
                         exports.configure = configure;
                         function configure(config) {
-                                                config.globalResources(['./elements/navBar', './elements/datePicker', './value-converters/millisToHours', './value-converters/minutesToHours', './value-converters/dateFormat', './value-converters/truncate']);
+                                                config.globalResources(['./elements/filter', './value-converters/millisToHours', './value-converters/minutesToHours', './value-converters/dateFormat', './value-converters/truncate', './value-converters/currency']);
                         }
 });
 define('services/Auth',['exports', 'wakanda-client', 'services/env'], function (exports, _wakandaClient, _env) {
@@ -281,10 +350,12 @@ define('services/Auth',['exports', 'wakanda-client', 'services/env'], function (
 
     function Auth() {
         var self = this;
+        self.isAdmin = false;
 
         function reset() {
             self.user = { 'fullName': 'Guest' };
             self.logged = false;
+            self.isAdmin = false;
         }
 
         function getCurrentUser(resolveCb, refuseCb) {
@@ -310,7 +381,14 @@ define('services/Auth',['exports', 'wakanda-client', 'services/env'], function (
             });
         };
 
+        self.isDataAdmin = function () {
+            return wakanda.directory.currentUserBelongsTo('DataAdmin').then(function (result) {
+                self.isAdmin = result;
+            });
+        };
+
         reset();
+        self.isDataAdmin();
     }
 });
 define('services/env',['exports'], function (exports) {
@@ -822,14 +900,6 @@ define('worktime/w-form',['exports', 'wakanda-client', 'aurelia-router', 'aureli
             this.toast = toast;
         }
 
-        WForm.prototype.canActivate = function canActivate() {
-            if (!this.auth.logged) {
-                this.router.navigate('login');
-            } else {
-                return true;
-            }
-        };
-
         WForm.prototype.activate = function activate(params) {
             this.ID = params.id;
         };
@@ -990,13 +1060,31 @@ define('worktime/worktimeSection',['exports'], function (exports) {
         return worktimeSection;
     }();
 });
-define('resources/elements/datePicker',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
+define('resources/elements/filter',['exports', 'aurelia-framework', 'aurelia-validation', 'aurelia-materialize-bridge', 'wakanda-client', 'services/Auth', 'services/env'], function (exports, _aureliaFramework, _aureliaValidation, _aureliaMaterializeBridge, _wakandaClient, _Auth, _env) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.DatePickerCustomElement = undefined;
+    exports.Filter = undefined;
+
+    var _env2 = _interopRequireDefault(_env);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    function _initDefineProp(target, property, descriptor, context) {
+        if (!descriptor) return;
+        Object.defineProperty(target, property, {
+            enumerable: descriptor.enumerable,
+            configurable: descriptor.configurable,
+            writable: descriptor.writable,
+            value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
+        });
+    }
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -1004,62 +1092,249 @@ define('resources/elements/datePicker',['exports', 'aurelia-framework'], functio
         }
     }
 
-    var DatePickerCustomElement = exports.DatePickerCustomElement = (0, _aureliaFramework.decorators)((0, _aureliaFramework.bindable)({ name: 'dpdate', defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), (0, _aureliaFramework.bindable)({ name: 'dpid', defaultBindingMode: _aureliaFramework.bindingMode.oneTime }), (0, _aureliaFramework.bindable)({ name: 'dplabel', defaultBindingMode: _aureliaFramework.bindingMode.oneTime })).on(function () {
-        function _class() {
-            _classCallCheck(this, _class);
+    function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+        var desc = {};
+        Object['ke' + 'ys'](descriptor).forEach(function (key) {
+            desc[key] = descriptor[key];
+        });
+        desc.enumerable = !!desc.enumerable;
+        desc.configurable = !!desc.configurable;
+
+        if ('value' in desc || desc.initializer) {
+            desc.writable = true;
         }
 
-        _class.prototype.attached = function attached() {
-            $('.datepicker').pickadate({
-                selectMonths: true,
-                selectYears: 3 });
-        };
+        desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+            return decorator(target, property, desc) || desc;
+        }, desc);
 
-        return _class;
-    }());
-});
-define('resources/elements/navBar',["exports"], function (exports) {
-    "use strict";
+        if (context && desc.initializer !== void 0) {
+            desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+            desc.initializer = undefined;
+        }
 
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.NavBarCustomElement = NavBarCustomElement;
-    function NavBarCustomElement() {
-        var self = this;
+        if (desc.initializer === void 0) {
+            Object['define' + 'Property'](target, property, desc);
+            desc = null;
+        }
 
-        self.setActive = function (tab) {
-            self.activeTab = tab;
-        };
-        self.isActive = function (tab) {
-            if (tab === this.activeTab) {
-                return true;
-            }
-            return false;
-        };
+        return desc;
     }
+
+    function _initializerWarningHelper(descriptor, context) {
+        throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
+    }
+
+    var _dec, _dec2, _dec3, _dec4, _dec5, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
+
+    var hostname = _env2.default.hostname;
+    var wakanda = new _wakandaClient.WakandaClient('http://' + hostname + ':8081');
+
+    var Filter = exports.Filter = (_dec = (0, _aureliaFramework.inject)(Element, _aureliaFramework.NewInstance.of(_aureliaValidation.ValidationController), _Auth.Auth), _dec2 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec3 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec4 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec5 = (0, _aureliaFramework.bindable)({ defaultBindingMode: _aureliaFramework.bindingMode.twoWay }), _dec(_class = (_class2 = function () {
+        function Filter(element, validationController, auth) {
+            _classCallCheck(this, Filter);
+
+            _initDefineProp(this, 'FFrom', _descriptor, this);
+
+            _initDefineProp(this, 'FTo', _descriptor2, this);
+
+            _initDefineProp(this, 'FClientName', _descriptor3, this);
+
+            _initDefineProp(this, 'FUserId', _descriptor4, this);
+
+            this.customDate = false;
+
+            _initDefineProp(this, 'rangeSelection', _descriptor5, this);
+
+            _initDefineProp(this, 'allClients', _descriptor6, this);
+
+            this.clients = [];
+            this.users = [];
+            this.showUsers = false;
+
+            this.element = element;
+            this.validationController = validationController;
+            this.validationController.addRenderer(new _aureliaMaterializeBridge.MaterializeFormValidationRenderer());
+            this.auth = auth;
+        }
+
+        Filter.prototype.attached = function attached() {
+            var _this = this;
+
+            wakanda.getCatalog().then(function (ds) {
+                _this.ds = ds;
+                ds.Client.query({ filter: 'ID >= 0' }).then(function (clients) {
+                    _this.clients = clients.entities;
+                    _this.clientSelect.refresh();
+                });
+
+                if (_this.auth.isAdmin) {
+                    _this.showUsers = true;
+                    ds.User.query({ filter: 'ID >= 0' }).then(function (users) {
+                        _this.users = users.entities;
+                        _this.userSelect.refresh();
+                        if (_this.auth.isAdmin) {
+                            _this.showUsers = true;
+                        } else {
+                            _this.showUsers = false;
+                            _this.FUserId = _this.users[0].userID;
+                        }
+                    });
+                } else {
+                    _this.showUsers = false;
+                    _this.FUserId = _this.auth.user.ID;
+                }
+            });
+            this.thisMonth();
+
+            if (this.FClientName === 'all') {
+                this.allClients = true;
+            }
+        };
+
+        Filter.prototype.applyFilter = function applyFilter() {
+            var _this2 = this;
+
+            this.validationController.validate().then(function (v) {
+                if (v.length === 0) {
+                    var user = _this2.users.find(function (userItem) {
+                        return userItem.userID === _this2.FUserId;
+                    });
+                    var event = new CustomEvent('apply', {
+                        bubbles: true,
+                        detail: { userName: user.fullName }
+                    });
+
+                    _this2.element.dispatchEvent(event);
+
+                    document.querySelector('#filterHeader').click();
+                }
+            });
+        };
+
+        Filter.prototype.thisMonth = function thisMonth() {
+            var today = new Date();
+            var y = today.getFullYear();
+            var m = today.getMonth();
+            var firstDay = new Date(y, m, 1);
+            var lastDay = new Date(y, m + 1, 0);
+
+            this.FFrom = firstDay;
+            this.FTo = lastDay;
+        };
+
+        Filter.prototype.lastMonth = function lastMonth() {
+            var today = new Date();
+            var y = today.getFullYear();
+            var m = today.getMonth();
+            var firstDay = new Date(y, m - 1, 1);
+            var lastDay = new Date(y, m, 0);
+
+            this.FFrom = firstDay;
+            this.FTo = lastDay;
+        };
+
+        Filter.prototype.thisYear = function thisYear() {
+            var today = new Date();
+            var y = today.getFullYear();
+            var firstDay = new Date(y, 0, 1);
+            var lastDay = new Date(y + 1, 0, 0);
+
+            this.FFrom = firstDay;
+            this.FTo = lastDay;
+        };
+
+        Filter.prototype.rangeSelectionChanged = function rangeSelectionChanged(newValue, oldValue) {
+            switch (newValue) {
+                case 'thisMonth':
+                    this.thisMonth();
+                    break;
+                case 'lastMonth':
+                    this.lastMonth();
+                    break;
+                case 'thisYear':
+                    this.thisYear();
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        Filter.prototype.allClientsChanged = function allClientsChanged(newValue, oldValue) {
+            if (newValue) {
+                this.FClientName = 'all';
+            } else {
+                this.FClientName = '';
+            }
+            this.clientSelect.refresh();
+        };
+
+        return Filter;
+    }(), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, 'FFrom', [_dec2], {
+        enumerable: true,
+        initializer: function initializer() {
+            return new Date();
+        }
+    }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'FTo', [_dec3], {
+        enumerable: true,
+        initializer: function initializer() {
+            return new Date();
+        }
+    }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'FClientName', [_dec4], {
+        enumerable: true,
+        initializer: function initializer() {
+            return 'all';
+        }
+    }), _descriptor4 = _applyDecoratedDescriptor(_class2.prototype, 'FUserId', [_dec5], {
+        enumerable: true,
+        initializer: null
+    }), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, 'rangeSelection', [_aureliaFramework.observable], {
+        enumerable: true,
+        initializer: null
+    }), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, 'allClients', [_aureliaFramework.observable], {
+        enumerable: true,
+        initializer: function initializer() {
+            return false;
+        }
+    })), _class2)) || _class);
+
+
+    _aureliaValidation.ValidationRules.ensure('FFrom').displayName('From').required().ensure('FTo').displayName('To').required().ensure('FUserId').displayName('User').required().ensure('FClientName').displayName('Client').required().on(Filter);
 });
-define('resources/elements/pagination',['exports'], function (exports) {
+define('resources/value-converters/currency',['exports', 'numeral'], function (exports, _numeral) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.PaginationCustomElement = PaginationCustomElement;
-    function PaginationCustomElement() {
-        var self = this;
+    exports.CurrencyValueConverter = undefined;
 
-        self.activePage = 1;
-        self.overallPageLinks = 200;
-        self.showFirstLast = true;
-        self.showPrevNext = true;
-        self.showPageLinks = true;
-        self.visiblePageLinks = '16';
+    var _numeral2 = _interopRequireDefault(_numeral);
 
-        self.setActive = function (tab) {
-            self.activeTab = tab;
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
         };
     }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var CurrencyValueConverter = exports.CurrencyValueConverter = function () {
+        function CurrencyValueConverter() {
+            _classCallCheck(this, CurrencyValueConverter);
+        }
+
+        CurrencyValueConverter.prototype.toView = function toView(value, currency) {
+            currency = currency || 'CHF';
+            return currency + ' ' + (0, _numeral2.default)(value).format('(0,0.00)');
+        };
+
+        return CurrencyValueConverter;
+    }();
 });
 define('resources/value-converters/dateFormat',['exports', 'moment'], function (exports, _moment) {
     'use strict';
@@ -1136,8 +1411,8 @@ define('resources/value-converters/millisToHours',['exports'], function (exports
         return MillisToHoursValueConverter;
     }();
 });
-define('resources/value-converters/minutesToHours',["exports"], function (exports) {
-    "use strict";
+define('resources/value-converters/minutesToHours',['exports'], function (exports) {
+    'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
@@ -1155,7 +1430,7 @@ define('resources/value-converters/minutesToHours',["exports"], function (export
         }
 
         MinutesToHoursValueConverter.prototype.toView = function toView(minutes) {
-            var date = (Math.floor(minutes / 60) < 10 ? "0" + Math.floor(minutes / 60) : Math.floor(minutes / 60)) + ':' + (minutes % 60 < 10 ? "0" + minutes % 60 : minutes % 60);
+            var date = (Math.floor(minutes / 60) < 10 ? '0' + Math.floor(minutes / 60) : Math.floor(minutes / 60)) + ':' + (minutes % 60 < 10 ? '0' + minutes % 60 : minutes % 60);
             return date;
         };
 
@@ -9476,16 +9751,15 @@ define('aurelia-validation/implementation/validation-rules',["require", "exports
     exports.ValidationRules = ValidationRules;
 });
 
-define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"materialize-css/css/materialize.css\"></require>\n  <require from=\"./color-switcher.html\"></require>\n  <md-colors md-primary-color.bind=\"primaryColor\" md-accent-color.bind=\"accentColor\" md-error-color.bind=\"errorColor\"></md-colors>\n\n  <div class=\"row\">\n    <div class=\"col l6\">\n      <color-switcher select.bind=\"true\" primary-color.two-way=\"primaryColor\" accent-color.two-way=\"accentColor\" error-color.two-way=\"errorColor\"></color-switcher>\n    </div>\n    <div class=\"right-align col l6\" if.bind=\"auth.logged\">\n      <a md-waves md-button=\"large: true\" click.delegate=\"logout()\" class=\"m-b-20 primary bold\">Logout</a>\n      <!-- <button class=\"m-b-20\" md-button=\"flat:true\">Logout</button> -->\n    </div>\n  </div>\n\n\n  <nav class=\"primary\">\n    <div class=\"nav-wrapper\">\n      <a href=\"#\" md-waves class=\"right brand-logo waves-effect waves-light\">&nbsp;${router.title}</a>\n      <a md-sidenav-collapse=\"ref.bind: sideNav;\" class=\"left hide-on-large-only \" style=\"cursor: pointer; padding: 0 10px;\" data-activates=\"md-sidenav-0\"><i class=\"material-icons\">menu</i></a>\n      <ul class=\"left hide-on-med-and-down\">\n        <li repeat.for=\"route of router.navigation\" class=\"${route.isActive ? 'active' : ''}\">\n          <a md-waves href.bind=\"route.href\" class=\"waves-effect waves-light\">${route.title}</a>\n        </li>\n      </ul>\n      <!-- <ul class=\"side-nav\">\n        <li repeat.for=\"route of router.navigation\" class=\"${route.isActive ? 'active' : ''}\">\n          <a href.bind=\"route.href\" class=\"waves-effect waves-light\">${route.title}</a>\n        </li>\n      </ul> -->\n      <md-sidenav view-model.ref=\"sideNav\" md-edge=\"left\" md-close-on-click=\"true\">\n        <ul class=\"\">\n          <li repeat.for=\"route of router.navigation\" class=\"${route.isActive ? 'active' : ''}\">\n            <a href.bind=\"route.href\" class=\"waves-effect waves-light\">${route.title}</a>\n          </li>\n        </ul>\n      </md-sidenav>\n    </div>\n  </nav>\n\n  <div class=\"page-host\">\n    <router-view></router-view>\n  </div>\n\n</template>\n"; });
-define('text!styles/custom.css', ['module'], function(module) { module.exports = "body {\n  font-family: Arial, Helvetica, sans-serif;\n    padding: 20px;\n}\n.w-b{\n\tword-break: break-word;\n}\n\ntable{\n  table-layout: fixed;\n  overflow-x:auto;\n}\n\nth{\n\tcolor:#428bca;\n\tbackground-color: rgba(135, 206, 250, 0.19)\n}\n#titleTxt{\n\tcolor:#428bca;\n}\n.navbar-default .navbar-nav > li > a:hover{\n\n\tcolor:#428bca !important;\n}\n\n.clickable{\n\tcursor:pointer;\n}\n\n.hoverrable:hover{\n  text-decoration: underline;\n}\n\n.no-padding{\n\tpadding:0px;\n}\n.full-width{\n  width:100%;\n}\n\n.m-b-20{\n\tmargin-bottom : 20px;\n}\n.m-t-5{\n\tmargin-top:5px;\n}\n.m-t-10{\n\tmargin-top:10px;\n}\n.m-t-20{\n\tmargin-top:20px;\n}\n.m-l-10{\n\tmargin-left:10px;\n}\n.m-l-20{\n\tmargin-left:20px;\n}\n.m-r-0{\n\tmargin-right:0px;\n}\n\n.p-b-10{\n\tpadding-bottom : 10px;\n}\n.border{\n\tborder : 1px solid red;\n}\n.w-200{\n\twidth:200px;\n}\n.pieChartDiv{\n\theight:400px;\n\tz-index:999999 !important;\n\toverflow:visible !important;\n}\n\n#nowBtn{\n\tposition: absolute;\n\ttop: 372px;\n\tright: 33px;\n}\n\n.truncateCstm {\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.bold{\n  font-weight: bold !important;\n}\n"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"materialize-css/css/materialize.css\"></require>\n  <require from=\"./color-switcher.html\"></require>\n  <md-colors md-primary-color.bind=\"primaryColor\" md-accent-color.bind=\"accentColor\" md-error-color.bind=\"errorColor\"></md-colors>\n\n  <div class=\"row no-print\">\n    <div class=\"col l6\">\n      <color-switcher select.bind=\"true\" primary-color.two-way=\"primaryColor\" accent-color.two-way=\"accentColor\" error-color.two-way=\"errorColor\"></color-switcher>\n    </div>\n    <div class=\"right-align col l6\" if.bind=\"auth.logged\">\n      <a md-waves md-button=\"large: true\" click.delegate=\"logout()\" class=\"m-b-20 primary bold\">Logout</a>\n      <!-- <button class=\"m-b-20\" md-button=\"flat:true\">Logout</button> -->\n    </div>\n  </div>\n\n\n  <nav class=\"primary z-depth-4 no-print\">\n    <div class=\"nav-wrapper\">\n      <a href=\"#\" md-waves class=\"right brand-logo waves-effect waves-light\">&nbsp;${router.title}</a>\n      <a md-sidenav-collapse=\"ref.bind: sideNav;\" class=\"left hide-on-large-only \" style=\"cursor: pointer; padding: 0 10px;\" data-activates=\"md-sidenav-0\"><i class=\"material-icons\">menu</i></a>\n      <ul class=\"left hide-on-med-and-down\">\n        <li repeat.for=\"route of router.navigation\" class=\"${route.isActive ? 'active' : ''}\">\n          <a md-waves href.bind=\"route.href\" class=\"waves-effect waves-light\">${route.title}</a>\n        </li>\n      </ul>\n      <!-- <ul class=\"side-nav\">\n        <li repeat.for=\"route of router.navigation\" class=\"${route.isActive ? 'active' : ''}\">\n          <a href.bind=\"route.href\" class=\"waves-effect waves-light\">${route.title}</a>\n        </li>\n      </ul> -->\n      <md-sidenav view-model.ref=\"sideNav\" md-edge=\"left\" md-close-on-click=\"true\">\n        <ul class=\"\">\n          <li repeat.for=\"route of router.navigation\" class=\"${route.isActive ? 'active' : ''}\">\n            <a href.bind=\"route.href\" class=\"waves-effect waves-light\">${route.title}</a>\n          </li>\n        </ul>\n      </md-sidenav>\n    </div>\n  </nav>\n\n  <div class=\"page-host\">\n    <router-view></router-view>\n  </div>\n\n</template>\n"; });
+define('text!styles/custom.css', ['module'], function(module) { module.exports = "body {\n  font-family: Arial, Helvetica, sans-serif;\n    padding: 20px;\n}\n@media print\n{\n    .no-print, .no-print *\n    {\n        display: none !important;\n    }\n    .print {\n      margin: 0 0 0 0;\n      page-break-before: none;\n      page-break-after: none;\n      page-break-inside: avoid;\n    }\n    body {\n    }\n}\n.w-b{\n\tword-break: break-word;\n}\n\ntable{\n  table-layout: fixed;\n  overflow-x:auto;\n}\n\nth{\n\tcolor:#428bca;\n\tbackground-color: rgba(135, 206, 250, 0.19)\n}\n#titleTxt{\n\tcolor:#428bca;\n}\n.navbar-default .navbar-nav > li > a:hover{\n\n\tcolor:#428bca !important;\n}\n\n.clickable{\n\tcursor:pointer;\n}\n\n.hoverrable:hover{\n  text-decoration: underline;\n}\n\n.no-padding{\n\tpadding:0px;\n}\n.full-width{\n  width:100%;\n}\n\n.m-b-20{\n\tmargin-bottom : 20px;\n}\n.m-t-5{\n\tmargin-top:5px;\n}\n.m-t-10{\n\tmargin-top:10px;\n}\n.m-t-20{\n\tmargin-top:20px;\n}\n.m-l-10{\n\tmargin-left:10px;\n}\n.m-l-20{\n\tmargin-left:20px;\n}\n.m-r-0{\n\tmargin-right:0px;\n}\n\n.p-b-10{\n\tpadding-bottom : 10px;\n}\n.border{\n\tborder : 1px solid red;\n}\n.w-200{\n\twidth:200px;\n}\n.pieChartDiv{\n\theight:400px;\n\tz-index:999999 !important;\n\toverflow:visible !important;\n}\n\n#nowBtn{\n\tposition: absolute;\n\ttop: 372px;\n\tright: 33px;\n}\n\n.truncateCstm {\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.bold{\n  font-weight: bold !important;\n}\n"; });
 define('text!color-switcher.html', ['module'], function(module) { module.exports = "<template bindable=\"select, primaryColor, accentColor, errorColor\">\n  <div class=\"\" if.bind=\"select\">\n    <div class=\"col l4\">\n      <select md-select=\"label: Primary Color\" value.two-way=\"primaryColor\">\n        <option value=\"#ee6e73\">[Materialize] red</option>\n        <option value=\"#3f51b5\">[Paper] indigo</option>\n        <option value=\"#00bcd4\">[Material-UI] light blue</option>\n        <option value=\"#78909C\">[MuiCss] blue grey</option>\n        <option value=\"#4caf50\">green</option>\n        <option value=\"#ff9800\">orange</option>\n      </select>\n    </div>\n    <div class=\"col l4\">\n      <select md-select=\"label: Accent Color\" value.two-way=\"accentColor\">\n        <option value=\"#009688\">[Materialize] teal</option>\n        <option value=\"#e91e63\">[Paper] pink</option>\n        <option value=\"#ff4081\">[Material-UI] pink</option>\n        <option value=\"#FF80AB\">[MuiCss] another pink</option>\n        <option value=\"#4caf50\">green</option>\n        <option value=\"#ff9800\">orange</option>\n      </select>\n    </div>\n    <div class=\"col l4\">\n      <select md-select=\"label: Error Color\" value.two-way=\"errorColor\">\n        <option value=\"#f44336\">[default] red</option>\n        <option value=\"#D50000\">[Paper] red</option>\n        <option value=\"#4caf50\">[confusing] green</option>\n        <option value=\"#ff9800\">orange</option>\n      </select>\n    </div>\n  </div>\n\n  <ul md-collapsible if.bind=\"!select\">\n    <li>\n      <div class=\"collapsible-header\">\n        <i class=\"material-icons left\">arrow_drop_down</i>Color switcher\n      </div>\n      <div class=\"collapsible-body\" style=\"padding: 10px;\">\n        primary color:\n        <select md-select value.two-way=\"primaryColor\">\n          <option value=\"#ee6e73\">[Materialize] red</option>\n          <option value=\"#3f51b5\">[Paper] indigo</option>\n          <option value=\"#00bcd4\">[Material-UI] light blue</option>\n          <option value=\"#78909C\">[MuiCss] blue grey</option>\n          <option value=\"#4caf50\">green</option>\n          <option value=\"#ff9800\">orange</option>\n        </select>\n\n        accent color:\n        <select md-select value.two-way=\"accentColor\">\n          <option value=\"#009688\">[Materialize] teal</option>\n          <option value=\"#e91e63\">[Paper] pink</option>\n          <option value=\"#ff4081\">[Material-UI] pink</option>\n          <option value=\"#FF80AB\">[MuiCss] another pink</option>\n          <option value=\"#4caf50\">green</option>\n          <option value=\"#ff9800\">orange</option>\n        </select>\n\n        error color:\n        <select md-select value.two-way=\"errorColor\">\n          <option value=\"#f44336\">[default] red</option>\n          <option value=\"#D50000\">[Paper] red</option>\n          <option value=\"#4caf50\">[confusing] green</option>\n          <option value=\"#ff9800\">orange</option>\n        </select>\n      </div>\n    </li>\n  </ul>\n</template>\n"; });
 define('text!styles/responsive-table.css', ['module'], function(module) { module.exports = "/* -- import Roboto Font ---------------------------- */\n@import \"https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic&subset=latin,cyrillic\";\n/* -- You can use this tables in Bootstrap (v3) projects. -- */\n/* -- Box model ------------------------------- */\n*,\n*:after,\n*:before {\n  -webkit-box-sizing: border-box;\n  -moz-box-sizing: border-box;\n  box-sizing: border-box;\n}\n/* -- Demo style ------------------------------- */\nhtml,\nbody {\n  position: relative;\n  min-height: 100%;\n  height: 100%;\n}\nhtml {\n  position: relative;\n  overflow-x: hidden;\n  margin: 16px;\n  padding: 0;\n  min-height: 100%;\n  /*font-size: 62.5%;*/\n}\nbody {\n  font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;\n  font-style: normal;\n  font-weight: 300;\n  /*font-size: 1.4rem;*/\n  line-height: 2rem;\n  letter-spacing: 0.01rem;\n  color: #212121;\n  background-color: #f5f5f5;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-rendering: optimizeLegibility;\n}\n#demo {\n  margin: 20px auto;\n  max-width: 960px;\n}\n#demo h1 {\n  font-size: 2.4rem;\n  line-height: 3.2rem;\n  letter-spacing: 0;\n  font-weight: 300;\n  color: #212121;\n  text-transform: inherit;\n  margin-bottom: 1rem;\n  text-align: center;\n}\n#demo h2 {\n  font-size: 1.5rem;\n  line-height: 2.8rem;\n  letter-spacing: 0.01rem;\n  font-weight: 400;\n  color: #212121;\n  text-align: center;\n}\n.shadow-z-1 {\n  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);\n  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);\n  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);\n}\n/* -- Material Design Table style -------------- */\n.table {\n  width: 100%;\n  max-width: 100%;\n  margin-bottom: 2rem;\n  background-color: #fff;\n}\n.table > thead > tr,\n.table > tbody > tr,\n.table > tfoot > tr {\n  -webkit-transition: all 0.3s ease;\n  -o-transition: all 0.3s ease;\n  transition: all 0.3s ease;\n}\n.table > thead > tr > th,\n.table > tbody > tr > th,\n.table > tfoot > tr > th,\n.table > thead > tr > td,\n.table > tbody > tr > td,\n.table > tfoot > tr > td {\n  text-align: left;\n  padding: 1.6rem;\n  vertical-align: top;\n  border-top: 0;\n  -webkit-transition: all 0.3s ease;\n  -o-transition: all 0.3s ease;\n  transition: all 0.3s ease;\n}\n.table > thead > tr > th {\n  font-weight: 400;\n  color: #757575;\n  vertical-align: bottom;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.12);\n}\n.table > caption + thead > tr:first-child > th,\n.table > colgroup + thead > tr:first-child > th,\n.table > thead:first-child > tr:first-child > th,\n.table > caption + thead > tr:first-child > td,\n.table > colgroup + thead > tr:first-child > td,\n.table > thead:first-child > tr:first-child > td {\n  border-top: 0;\n}\n.table > tbody + tbody {\n  border-top: 1px solid rgba(0, 0, 0, 0.12);\n}\n.table .table {\n  background-color: #fff;\n}\n.table .no-border {\n  border: 0;\n}\n.table-condensed > thead > tr > th,\n.table-condensed > tbody > tr > th,\n.table-condensed > tfoot > tr > th,\n.table-condensed > thead > tr > td,\n.table-condensed > tbody > tr > td,\n.table-condensed > tfoot > tr > td {\n  padding: 0.8rem;\n}\n.table-bordered {\n  border: 0;\n}\n.table-bordered > thead > tr > th,\n.table-bordered > tbody > tr > th,\n.table-bordered > tfoot > tr > th,\n.table-bordered > thead > tr > td,\n.table-bordered > tbody > tr > td,\n.table-bordered > tfoot > tr > td {\n  border: 0;\n  border-bottom: 1px solid #e0e0e0;\n}\n.table-bordered > thead > tr > th,\n.table-bordered > thead > tr > td {\n  border-bottom-width: 2px;\n}\n.table-striped > tbody > tr:nth-child(odd) > td,\n.table-striped > tbody > tr:nth-child(odd) > th {\n  background-color: #f5f5f5;\n}\n.table-hover > tbody > tr:hover > td,\n.table-hover > tbody > tr:hover > th {\n  background-color: rgba(0, 0, 0, 0.12);\n}\n@media screen and (max-width: 993px) {\n  .table-responsive-vertical > .table {\n    margin-bottom: 0;\n    background-color: transparent;\n  }\n  .table-responsive-vertical > .table > thead,\n  .table-responsive-vertical > .table > tfoot {\n    display: none;\n  }\n  .table-responsive-vertical > .table > tbody {\n    display: block;\n  }\n  .table-responsive-vertical > .table > tbody > tr {\n    display: block;\n    border: 1px solid #e0e0e0;\n    border-radius: 2px;\n    margin-bottom: 1.6rem;\n  }\n  .table-responsive-vertical > .table > tbody > tr > td {\n    background-color: #fff;\n    display: block;\n    vertical-align: middle;\n    text-align: right;\n  }\n  .table-responsive-vertical > .table > tbody > tr > td[data-title]:before {\n    content: attr(data-title);\n    float: left;\n    font-size: inherit;\n    font-weight: 800;\n    color: #757575;\n  }\n  .table-responsive-vertical.shadow-z-1 {\n    -webkit-box-shadow: none;\n    -moz-box-shadow: none;\n    box-shadow: none;\n  }\n  .table-responsive-vertical.shadow-z-1 > .table > tbody > tr {\n    border: none;\n    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);\n    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);\n    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);\n  }\n  .table-responsive-vertical > .table-bordered {\n    border: 0;\n  }\n  .table-responsive-vertical > .table-bordered > tbody > tr > td {\n    border: 0;\n    border-bottom: 1px solid #e0e0e0;\n  }\n  .table-responsive-vertical > .table-bordered > tbody > tr > td:last-child {\n    border-bottom: 0;\n  }\n  .table-responsive-vertical > .table-striped > tbody > tr > td,\n  .table-responsive-vertical > .table-striped > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical > .table-striped > tbody > tr > td:nth-child(odd) {\n    background-color: #f5f5f5;\n  }\n  .table-responsive-vertical > .table-hover > tbody > tr:hover > td,\n  .table-responsive-vertical > .table-hover > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical > .table-hover > tbody > tr > td:hover {\n    background-color: rgba(0, 0, 0, 0.12);\n  }\n}\n.table-striped.table-mc-red > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-red > tbody > tr:nth-child(odd) > th {\n  background-color: #fde0dc;\n}\n.table-hover.table-mc-red > tbody > tr:hover > td,\n.table-hover.table-mc-red > tbody > tr:hover > th {\n  background-color: #f9bdbb;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-red > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-red > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-red > tbody > tr > td:nth-child(odd) {\n    background-color: #fde0dc;\n  }\n  .table-responsive-vertical .table-hover.table-mc-red > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-red > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-red > tbody > tr > td:hover {\n    background-color: #f9bdbb;\n  }\n}\n.table-striped.table-mc-pink > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-pink > tbody > tr:nth-child(odd) > th {\n  background-color: #fce4ec;\n}\n.table-hover.table-mc-pink > tbody > tr:hover > td,\n.table-hover.table-mc-pink > tbody > tr:hover > th {\n  background-color: #f8bbd0;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-pink > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-pink > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-pink > tbody > tr > td:nth-child(odd) {\n    background-color: #fce4ec;\n  }\n  .table-responsive-vertical .table-hover.table-mc-pink > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-pink > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-pink > tbody > tr > td:hover {\n    background-color: #f8bbd0;\n  }\n}\n.table-striped.table-mc-purple > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-purple > tbody > tr:nth-child(odd) > th {\n  background-color: #f3e5f5;\n}\n.table-hover.table-mc-purple > tbody > tr:hover > td,\n.table-hover.table-mc-purple > tbody > tr:hover > th {\n  background-color: #e1bee7;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-purple > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-purple > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-purple > tbody > tr > td:nth-child(odd) {\n    background-color: #f3e5f5;\n  }\n  .table-responsive-vertical .table-hover.table-mc-purple > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-purple > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-purple > tbody > tr > td:hover {\n    background-color: #e1bee7;\n  }\n}\n.table-striped.table-mc-deep-purple > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-deep-purple > tbody > tr:nth-child(odd) > th {\n  background-color: #ede7f6;\n}\n.table-hover.table-mc-deep-purple > tbody > tr:hover > td,\n.table-hover.table-mc-deep-purple > tbody > tr:hover > th {\n  background-color: #d1c4e9;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-deep-purple > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-deep-purple > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-deep-purple > tbody > tr > td:nth-child(odd) {\n    background-color: #ede7f6;\n  }\n  .table-responsive-vertical .table-hover.table-mc-deep-purple > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-deep-purple > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-deep-purple > tbody > tr > td:hover {\n    background-color: #d1c4e9;\n  }\n}\n.table-striped.table-mc-indigo > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-indigo > tbody > tr:nth-child(odd) > th {\n  background-color: #e8eaf6;\n}\n.table-hover.table-mc-indigo > tbody > tr:hover > td,\n.table-hover.table-mc-indigo > tbody > tr:hover > th {\n  background-color: #c5cae9;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-indigo > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-indigo > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-indigo > tbody > tr > td:nth-child(odd) {\n    background-color: #e8eaf6;\n  }\n  .table-responsive-vertical .table-hover.table-mc-indigo > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-indigo > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-indigo > tbody > tr > td:hover {\n    background-color: #c5cae9;\n  }\n}\n.table-striped.table-mc-blue > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-blue > tbody > tr:nth-child(odd) > th {\n  background-color: #e7e9fd;\n}\n.table-hover.table-mc-blue > tbody > tr:hover > td,\n.table-hover.table-mc-blue > tbody > tr:hover > th {\n  background-color: #d0d9ff;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-blue > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-blue > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-blue > tbody > tr > td:nth-child(odd) {\n    background-color: #e7e9fd;\n  }\n  .table-responsive-vertical .table-hover.table-mc-blue > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-blue > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-blue > tbody > tr > td:hover {\n    background-color: #d0d9ff;\n  }\n}\n.table-striped.table-mc-light-blue > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-light-blue > tbody > tr:nth-child(odd) > th {\n  background-color: #e1f5fe;\n}\n.table-hover.table-mc-light-blue > tbody > tr:hover > td,\n.table-hover.table-mc-light-blue > tbody > tr:hover > th {\n  background-color: #b3e5fc;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-light-blue > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-light-blue > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-light-blue > tbody > tr > td:nth-child(odd) {\n    background-color: #e1f5fe;\n  }\n  .table-responsive-vertical .table-hover.table-mc-light-blue > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-light-blue > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-light-blue > tbody > tr > td:hover {\n    background-color: #b3e5fc;\n  }\n}\n.table-striped.table-mc-cyan > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-cyan > tbody > tr:nth-child(odd) > th {\n  background-color: #e0f7fa;\n}\n.table-hover.table-mc-cyan > tbody > tr:hover > td,\n.table-hover.table-mc-cyan > tbody > tr:hover > th {\n  background-color: #b2ebf2;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-cyan > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-cyan > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-cyan > tbody > tr > td:nth-child(odd) {\n    background-color: #e0f7fa;\n  }\n  .table-responsive-vertical .table-hover.table-mc-cyan > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-cyan > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-cyan > tbody > tr > td:hover {\n    background-color: #b2ebf2;\n  }\n}\n.table-striped.table-mc-teal > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-teal > tbody > tr:nth-child(odd) > th {\n  background-color: #e0f2f1;\n}\n.table-hover.table-mc-teal > tbody > tr:hover > td,\n.table-hover.table-mc-teal > tbody > tr:hover > th {\n  background-color: #b2dfdb;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-teal > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-teal > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-teal > tbody > tr > td:nth-child(odd) {\n    background-color: #e0f2f1;\n  }\n  .table-responsive-vertical .table-hover.table-mc-teal > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-teal > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-teal > tbody > tr > td:hover {\n    background-color: #b2dfdb;\n  }\n}\n.table-striped.table-mc-green > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-green > tbody > tr:nth-child(odd) > th {\n  background-color: #d0f8ce;\n}\n.table-hover.table-mc-green > tbody > tr:hover > td,\n.table-hover.table-mc-green > tbody > tr:hover > th {\n  background-color: #a3e9a4;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-green > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-green > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-green > tbody > tr > td:nth-child(odd) {\n    background-color: #d0f8ce;\n  }\n  .table-responsive-vertical .table-hover.table-mc-green > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-green > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-green > tbody > tr > td:hover {\n    background-color: #a3e9a4;\n  }\n}\n.table-striped.table-mc-light-green > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-light-green > tbody > tr:nth-child(odd) > th {\n  background-color: #f1f8e9;\n}\n.table-hover.table-mc-light-green > tbody > tr:hover > td,\n.table-hover.table-mc-light-green > tbody > tr:hover > th {\n  background-color: #dcedc8;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-light-green > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-light-green > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-light-green > tbody > tr > td:nth-child(odd) {\n    background-color: #f1f8e9;\n  }\n  .table-responsive-vertical .table-hover.table-mc-light-green > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-light-green > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-light-green > tbody > tr > td:hover {\n    background-color: #dcedc8;\n  }\n}\n.table-striped.table-mc-lime > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-lime > tbody > tr:nth-child(odd) > th {\n  background-color: #f9fbe7;\n}\n.table-hover.table-mc-lime > tbody > tr:hover > td,\n.table-hover.table-mc-lime > tbody > tr:hover > th {\n  background-color: #f0f4c3;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-lime > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-lime > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-lime > tbody > tr > td:nth-child(odd) {\n    background-color: #f9fbe7;\n  }\n  .table-responsive-vertical .table-hover.table-mc-lime > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-lime > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-lime > tbody > tr > td:hover {\n    background-color: #f0f4c3;\n  }\n}\n.table-striped.table-mc-yellow > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-yellow > tbody > tr:nth-child(odd) > th {\n  background-color: #fffde7;\n}\n.table-hover.table-mc-yellow > tbody > tr:hover > td,\n.table-hover.table-mc-yellow > tbody > tr:hover > th {\n  background-color: #fff9c4;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-yellow > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-yellow > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-yellow > tbody > tr > td:nth-child(odd) {\n    background-color: #fffde7;\n  }\n  .table-responsive-vertical .table-hover.table-mc-yellow > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-yellow > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-yellow > tbody > tr > td:hover {\n    background-color: #fff9c4;\n  }\n}\n.table-striped.table-mc-amber > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-amber > tbody > tr:nth-child(odd) > th {\n  background-color: #fff8e1;\n}\n.table-hover.table-mc-amber > tbody > tr:hover > td,\n.table-hover.table-mc-amber > tbody > tr:hover > th {\n  background-color: #ffecb3;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-amber > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-amber > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-amber > tbody > tr > td:nth-child(odd) {\n    background-color: #fff8e1;\n  }\n  .table-responsive-vertical .table-hover.table-mc-amber > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-amber > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-amber > tbody > tr > td:hover {\n    background-color: #ffecb3;\n  }\n}\n.table-striped.table-mc-orange > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-orange > tbody > tr:nth-child(odd) > th {\n  background-color: #fff3e0;\n}\n.table-hover.table-mc-orange > tbody > tr:hover > td,\n.table-hover.table-mc-orange > tbody > tr:hover > th {\n  background-color: #ffe0b2;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-orange > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-orange > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-orange > tbody > tr > td:nth-child(odd) {\n    background-color: #fff3e0;\n  }\n  .table-responsive-vertical .table-hover.table-mc-orange > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-orange > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-orange > tbody > tr > td:hover {\n    background-color: #ffe0b2;\n  }\n}\n.table-striped.table-mc-deep-orange > tbody > tr:nth-child(odd) > td,\n.table-striped.table-mc-deep-orange > tbody > tr:nth-child(odd) > th {\n  background-color: #fbe9e7;\n}\n.table-hover.table-mc-deep-orange > tbody > tr:hover > td,\n.table-hover.table-mc-deep-orange > tbody > tr:hover > th {\n  background-color: #ffccbc;\n}\n@media screen and (max-width: 992px) {\n  .table-responsive-vertical .table-striped.table-mc-deep-orange > tbody > tr > td,\n  .table-responsive-vertical .table-striped.table-mc-deep-orange > tbody > tr:nth-child(odd) {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-striped.table-mc-deep-orange > tbody > tr > td:nth-child(odd) {\n    background-color: #fbe9e7;\n  }\n  .table-responsive-vertical .table-hover.table-mc-deep-orange > tbody > tr:hover > td,\n  .table-responsive-vertical .table-hover.table-mc-deep-orange > tbody > tr:hover {\n    background-color: #fff;\n  }\n  .table-responsive-vertical .table-hover.table-mc-deep-orange > tbody > tr > td:hover {\n    background-color: #ffccbc;\n  }\n}\n"; });
 define('text!home.html', ['module'], function(module) { module.exports = "<template>\n  <h2>Welcome ${auth.user.fullName}</h2>\n  <button class=\"primary\" md-button=\"large: true;\" class=\"waves-effect\" click.delegate=\"logout()\">Logout</button>\n</template>\n"; });
 define('text!login/login.html', ['module'], function(module) { module.exports = "<template>\n  <md-card class=\"container\" if.bind=\"!auth.logged\">\n    <h3 class=\"center\">Please login to access the application</h3>\n    <form submit.delegate=\"tryLogin()\">\n      <md-card md-title=\"Login\" class=\"container\">\n        <div>\n          <md-input md-type=\"text\" md-label=\"Login\" md-value.bind=\"userLogin\"></md-input>\n        </div>\n      </md-card>\n      <md-card md-title=\"Password\" class=\"container\">\n        <div>\n          <md-input md-type=\"password\" md-label=\"password\" md-value.bind=\"password\"></md-input>\n        </div>\n      </md-card>\n      <div class=\"rigt\">\n        <button md-button=\"large: true\" type=\"submit\" class=\"\">Login</button>\n      </div>\n    </form>\n  </md-card>\n  <md-card md-title class=\"center container\" if.bind=\"auth.logged\">\n    <h3>You are already logged in</h3>\n    <div class=\"button-row\">\n      <button md-button=\"large: true;\" class=\"waves-effect\" click.delegate=\"logout()\">Logout</button>\n    </div>\n  </md-card>\n</template>\n"; });
-define('text!worktime/grid.html', ['module'], function(module) { module.exports = "<template><!-- Display a list of the worktime -->\n\t<div class=\"m-t-20\">\n\t\t<div class=\"row\">\n\t  \t<button md-button=\"large: true\" type='button' md-waves title=\"Add a Work Time\" click.delegate=\"addWorkTime()\" class=\"accent no-print right\">ADD</button>\n\t\t\t<!-- <h4>Temps de travail de ${userName} pour ${clientName}<span ng-show=\"gridCtrl.showDates\"> du ${from | dateFormat : 'DD.MM.YYYY'} au ${to | dateFormat : 'DD.MM.YYYY'}</span></h4> -->\n\t  </div>\n\t\t<div class=\"\">\n\t\t\t<div class=\"table-responsive-vertical shadow-z-1\">\n  <!-- Table starts here -->\n  \t\t\t<table id=\"table\" class=\"table table-hover table-mc-light-blue\">\n\t\t\t\t\t<thead>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th>Start</th>\n\t\t\t\t\t\t\t<th>End</th>\n\t\t\t\t\t\t\t<th>Duration</th>\n\t\t\t\t\t\t\t<!-- <th class=\"comment\" width=\"\">Comment</th> -->\n\t\t\t\t\t\t\t<th>Client</th>\n\t\t\t\t\t\t\t<th>Category</th>\n\t\t\t\t\t\t\t<th>User</th>\n\t\t\t\t\t\t\t<th>Break</th>\n\t\t\t\t\t\t\t<th>Reason</th>\n\t\t\t\t\t\t\t<th>Train Time</th>\n\t\t\t\t\t\t\t<th>Train Price</th>\n\t\t\t\t\t\t\t<th class=\"no-print\"></th>\n\t\t\t\t\t\t\t<th class=\"no-print\"></th>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</thead>\n\t\t\t\t\t<tbody repeat.for=\"worktime of worktimes.entities\">\n\t\t\t\t\t\t\t<tr class=\"clickable\">\n\t\t\t\t\t\t\t\t<td data-title=\"Start\">${worktime.start | dateFormat:'DD.MM.YY HH:mm'}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"End\">${worktime.end | dateFormat:'DD.MM.YY HH:mm'}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Duration\">${worktime.timeWorked | millisToHours}</td>\n\t\t\t\t\t\t\t\t<!-- <td data-title=\"Comment\" class=\"w-b comment\">${worktime.comment}</td> -->\n\t\t\t\t\t\t\t\t<td data-title=\"Client\">${worktime.clientName}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Category\">${worktime.categoryName}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"User\">${worktime.userName}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Break Time\" class=\"\">${worktime.breakTime}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Reason\">${worktime.breakReason | truncate:25}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Train Time\" class=\"\">${worktime.trainTime}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Train Price\" class=\"\">${worktime.trainPrice}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"\" click.delegate=\"editTime(worktime.ID)\" class=\"no-print center-align\"><span title=\"Edit\" class=\"material-icons \">edit</span></td>\n\t\t\t\t\t\t\t\t<td data-title=\"\" click.delegate=\"deleteTime(worktime.ID)\" class=\"no-print center-align\"><span title=\"Delete\" class=\"material-icons\">delete</span></td>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t<tr class=\"clickable\">\n\t\t\t\t\t\t\t\t<td class=\"hide-on-med-and-down\"><b>Comment</b></td>\n\t\t\t\t\t\t\t\t<td colspan=\"11\" data-title=\"Comment\" class=\"w-b comment\">${worktime.comment}</td>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<!-- <tr class=\"clickable\" repeat.for=\"worktime of worktimes.entities\">\n\t\t\t\t\t\t\t<td data-title=\"Start\">${worktime.start | dateFormat:'DD.MM.YY HH:mm'}</td>\n\t\t\t\t\t\t\t<td data-title=\"End\">${worktime.end | dateFormat:'DD.MM.YY HH:mm'}</td>\n\t\t\t\t\t\t\t<td data-title=\"Duration\">${worktime.timeWorked | millisToHours}</td>\n\t\t\t\t\t\t\t<td data-title=\"Comment\" class=\"w-b comment\">${worktime.comment}</td>\n\t\t\t\t\t\t\t<td data-title=\"Break\" class=\"\">${worktime.breakTime}</td>\n\t\t\t\t\t\t\t<td data-title=\"Reason\" class=\"truncateCstm\">${worktime.breakReason | truncate:25}</td>\n\t\t\t\t\t\t\t<td data-title=\"Break\" class=\"\">${worktime.trainTime}</td>\n\t\t\t\t\t\t\t<td data-title=\"Break\" class=\"\">${worktime.trainPrice}</td>\n\t\t\t\t\t\t\t<td data-title=\"Client\" class=\"truncateCstm\">${worktime.clientName}</td>\n\t\t\t\t\t\t\t<td data-title=\"Category\" class=\"truncatseCstm\">${worktime.categoryName}</td>\n\t\t\t\t\t\t\t<td data-title=\"User\" class=\"truncateCstm\">${worktime.userName}</td>\n\t\t\t\t\t\t\t<td data-title=\"\" click.delegate=\"editTime(worktime.ID)\" class=\"no-print center-align\"><span title=\"Edit\" class=\"material-icons \">edit</span></td>\n\t\t\t\t\t\t\t<td data-title=\"\" click.delegate=\"deleteTime(worktime.ID)\" class=\"no-print center-align\"><span title=\"Delete\" class=\"material-icons\">delete</span></td>\n\t\t\t\t\t\t</tr> -->\n\t\t\t\t\t</tbody>\n\t\t\t\t</table>\n\t\t\t</div>\n\t\t\t<!-- <button class=\"full-width waves-effect btn no-print\" click.delegate=\"worktimes.more()\" show.bind=\"worktimes._sent < worktimes._count\"><span class=\"material-icons\">add</span></button> -->\n\n\t\t\t<md-pagination class=\"center-align\" md-show-first-last=\"true\" md-show-prev-next=\"true\" md-on-page-changed.delegate=\"pageChanged($event)\" md-pages.bind=\"paginationPages\" md-visible-page-links=\"2\">\n\t\t\t</md-pagination>\n\n\t\t\t<!-- <md-switch md-checked.bind=\"showFirstLast\"></md-switch>\n\t\t\t<md-pagination class=\"center-align\" md-show-first-last.two-way=\"showFirstLast\" md-show-first-last=\"0\" md-pages=\"5\" md-visible-page-links=\"3\" md-active-page=\"1\"></md-pagination>\n\t\t</div>\n\t\t<div class=\"container\">\n\t\t\t<div class=\"progress\">\n\t\t\t\t<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"{{gridCtrl.collValueNow}}\" aria-valuemin=\"0\" aria-valuemax=\"{{gridCtrl.collValueMax}}\" style=\"width: {{gridCtrl.collValuePercent}}%;\">\n\t\t\t\t\t <span>60% Complete</span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div> -->\n\t</div>\n</template>\n"; });
-define('text!worktime/w-form.html', ['module'], function(module) { module.exports = "<template>\n  <a md-button=\"large: true; floating: true\" md-waves class=\"m-t-20 primary\" click.delegate=\"navigateBack()\"><i class=\"material-icons\">navigate_before</i></a>\n  <div class=\"container m-t-20\">\n    <form submit.delegate=\"save()\">\n      <div class=\"row\">\n        <div class=\"col s6\">\n          <h4 class=\"header\">Edit</h4>\n        </div>\n        <div class=\"col s6 right-align\">\n          <button type=\"submit\" md-button=\"large: true\" md-waves class=\"accent\"><i class=\"material-icons\">save</i></button>\n        </div>\n      </div>\n      <md-card md-title=\"Client\">\n        <div class=\"row\">\n          <div class=\"col s12 m6\">\n            <select md-select=\"label: Client\" value.two-way=\"selectedClient & validate\" md-select.ref=\"clientSelect\">\n              <option value=\"\" disabled selected>Select a client...</option>\n              <option repeat.for=\"client of clients\" value.bind=\"client.ID\">${client.name}</option>\n            </select>\n          </div>\n          <div class=\"col s12 m6\">\n            <select md-select=\"disabled.bind: disableCategorySelect; label: Category\" value.two-way=\"selectedCategory & validate\" md-select.ref=\"categorySelect\">\n              <option value=\"\" disabled selected>Select a category...</option>\n              <option repeat.for=\"category of categories\" value.bind=\"category.ID\">${category.name}</option>\n            </select>\n          </div>\n        </div>\n      </md-card>\n      <md-card md-title=\"Time\">\n        <div class=\"row\">\n          <div class=\"col s12\">\n            <label class=\"active\">Different end date :</label>\n            <md-switch md-checked.bind=\"endDateDifferent\" md-label-on=\"Yes\" md-label-off=\"No\"></md-switch>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"col ${endDateDifferent ? 's6 m3' : 's12 m6'} input-field\">\n            <label for=\"startDate\" class=\"active\">Start Date</label>\n            <input id=\"startDate\" md-datepicker=\"container: body; value.bind: startDate & validate;'\" type=\"date\" placeholder=\"Start Date\" />\n          </div>\n          <div class=\"col s6 ${endDateDifferent ? 'm3' : 'hide'} input-field\">\n            <label for=\"endDate\" class=\"active\">End Date</label>\n            <input id=\"endDate\" md-datepicker=\"container: body; value.two-way: endDate;'\" type=\"date\" placeholder=\"End Date\" />\n          </div>\n          <div class=\"col s6 m3\">\n            <md-input md-type=\"time\" md-label=\"Start Time\" md-value.bind=\"startTime & validate\"></md-input>\n          </div>\n          <div class=\"col s6 m3\">\n            <md-input md-type=\"time\" md-label=\"End Time\" md-value.bind=\"endTime & validate\"></md-input>\n          </div>\n        </div>\n      </md-card>\n      <md-card md-title=\"Informations\">\n        <div class=\"row\">\n          <div class=\"col s12\">\n            <md-input md-label=\"Comment\" md-value.bind=\"comment & validate\" validate=\"comment\" md-text-area=\"true\"></md-input>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"col s12\">\n            <label class=\"active\">Break</label>\n            <md-switch md-checked.bind=\"showBreak\" md-label-on=\"Yes\" md-label-off=\"No\"></md-switch>\n          </div>\n        </div>\n        <div class=\"row ${showBreak ? '' : 'hide'}\">\n          <div class=\"col s12 m3\">\n            <md-input md-type=\"time\" md-label=\"Break Time\" md-value.bind=\"breakTime\"></md-input>\n          </div>\n          <div class=\"col s12 m9\">\n            <md-input md-label=\"Break Reason\" md-value.bind=\"breakReason & validate\"></md-input>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"col s12\">\n            <label class=\"active\">Train</label>\n            <md-switch md-checked.bind=\"showTrain\" md-label-on=\"Yes\" md-label-off=\"No\"></md-switch>\n          </div>\n        </div>\n        <div class=\"row ${showTrain ? '' : 'hide'}\">\n          <div class=\"col s6\">\n            <md-input md-type=\"time\" md-label=\"Train Time\" md-value.bind=\"trainTime\"></md-input>\n          </div>\n          <div class=\"col s6\">\n            <md-input md-type=\"number\" md-step=\"any\" md-label=\"Train Price\" md-validate=\"true\" md-validate-error=\"invalid number\" md-value.bind=\"trainPrice\"></md-input>\n          </div>\n        </div>\n      </md-card>\n    </form>\n  </div>\n</template>\n"; });
+define('text!report/report.html', ['module'], function(module) { module.exports = "<template>\n  <filter apply.delegate=\"apply($event)\" f-from.bind=\"from\" f-to.bind=\"to\" f-user-id.bind=\"userID\" f-client-name.bind=\"clientName\" class=\"no-print\"></filter>\n\n  <h5 class=\"center-align\">${message}</h5>\n\n  <div class=\"table-responsive-vertical shadow-z-1 print\" show.bind=\"reportData.length > 0\">\n    <table id=\"table\" class=\"table table-hover table-mc-light-blue\">\n      <thead>\n        <tr>\n          <th>Category</th>\n          <th>Time</th>\n          <th>Train Time</th>\n          <th>Additional Price</th>\n          <th>Price</th>\n        </tr>\n      </thead>\n      <tbody repeat.for=\"item of reportData\">\n          <tr class=\"${item.label === 'Total' ? 'red lighten-3' : ''} ${item.label === 'Sub Total' ? 'blue lighten-3' : ''}\">\n            <td data-title=\"Category\">${item.label}</td>\n            <td data-title=\"Time\">${item.time | minutesToHours}</td>\n            <td data-title=\"Train Time\">${item.trainTime | minutesToHours}</td>\n            <td data-title=\"Additional Price\">${item.addPrice | currency: 'CHF'}</td>\n            <td data-title=\"Price\">${item.price | currency}</td>\n          </tr>\n      </tbody>\n    </table>\n  </div>\n</template>\n"; });
+define('text!worktime/grid.html', ['module'], function(module) { module.exports = "<template><!-- Display a list of the worktime -->\n\t<div class=\"m-t-20\">\n\t\t<div class=\"row\">\n\t  \t<button md-button=\"large: true\" type='button' md-waves title=\"Add a Work Time\" click.delegate=\"addWorkTime()\" class=\"accent no-print right\">ADD</button>\n\t\t\t<!-- <h4>Temps de travail de ${userName} pour ${clientName}<span ng-show=\"gridCtrl.showDates\"> du ${from | dateFormat : 'DD.MM.YYYY'} au ${to | dateFormat : 'DD.MM.YYYY'}</span></h4> -->\n\t  </div>\n\t\t<div class=\"\">\n\t\t\t<div class=\"table-responsive-vertical z-depth-4\">\n  <!-- Table starts here -->\n  \t\t\t<table id=\"table\" class=\"table table-hover table-mc-light-blue\">\n\t\t\t\t\t<thead>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th>Start</th>\n\t\t\t\t\t\t\t<th>End</th>\n\t\t\t\t\t\t\t<th>Duration</th>\n\t\t\t\t\t\t\t<!-- <th class=\"comment\" width=\"\">Comment</th> -->\n\t\t\t\t\t\t\t<th>Client</th>\n\t\t\t\t\t\t\t<th>Category</th>\n\t\t\t\t\t\t\t<th>User</th>\n\t\t\t\t\t\t\t<th>Break</th>\n\t\t\t\t\t\t\t<th>Reason</th>\n\t\t\t\t\t\t\t<th>Train Time</th>\n\t\t\t\t\t\t\t<th>Train Price</th>\n\t\t\t\t\t\t\t<th class=\"no-print\"></th>\n\t\t\t\t\t\t\t<th class=\"no-print\"></th>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</thead>\n\t\t\t\t\t<tbody repeat.for=\"worktime of worktimes.entities\">\n\t\t\t\t\t\t\t<tr class=\"clickable\">\n\t\t\t\t\t\t\t\t<td data-title=\"Start\">${worktime.start | dateFormat:'DD.MM.YY HH:mm'}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"End\">${worktime.end | dateFormat:'DD.MM.YY HH:mm'}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Duration\">${worktime.timeWorked | millisToHours}</td>\n\t\t\t\t\t\t\t\t<!-- <td data-title=\"Comment\" class=\"w-b comment\">${worktime.comment}</td> -->\n\t\t\t\t\t\t\t\t<td data-title=\"Client\">${worktime.clientName}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Category\">${worktime.categoryName}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"User\">${worktime.userName}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Break Time\" class=\"\">${worktime.breakTime}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Reason\">${worktime.breakReason | truncate:25}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Train Time\" class=\"\">${worktime.trainTime}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"Train Price\" class=\"\">${worktime.trainPrice}</td>\n\t\t\t\t\t\t\t\t<td data-title=\"\" click.delegate=\"editTime(worktime.ID)\" class=\"no-print center-align\"><span title=\"Edit\" class=\"material-icons \">edit</span></td>\n\t\t\t\t\t\t\t\t<td data-title=\"\" click.delegate=\"deleteTime(worktime.ID)\" class=\"no-print center-align\"><span title=\"Delete\" class=\"material-icons\">delete</span></td>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t<tr class=\"clickable\">\n\t\t\t\t\t\t\t\t<td class=\"hide-on-med-and-down\"><b>Comment</b></td>\n\t\t\t\t\t\t\t\t<td colspan=\"11\" data-title=\"Comment\" class=\"w-b comment\">${worktime.comment}</td>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<!-- <tr class=\"clickable\" repeat.for=\"worktime of worktimes.entities\">\n\t\t\t\t\t\t\t<td data-title=\"Start\">${worktime.start | dateFormat:'DD.MM.YY HH:mm'}</td>\n\t\t\t\t\t\t\t<td data-title=\"End\">${worktime.end | dateFormat:'DD.MM.YY HH:mm'}</td>\n\t\t\t\t\t\t\t<td data-title=\"Duration\">${worktime.timeWorked | millisToHours}</td>\n\t\t\t\t\t\t\t<td data-title=\"Comment\" class=\"w-b comment\">${worktime.comment}</td>\n\t\t\t\t\t\t\t<td data-title=\"Break\" class=\"\">${worktime.breakTime}</td>\n\t\t\t\t\t\t\t<td data-title=\"Reason\" class=\"truncateCstm\">${worktime.breakReason | truncate:25}</td>\n\t\t\t\t\t\t\t<td data-title=\"Break\" class=\"\">${worktime.trainTime}</td>\n\t\t\t\t\t\t\t<td data-title=\"Break\" class=\"\">${worktime.trainPrice}</td>\n\t\t\t\t\t\t\t<td data-title=\"Client\" class=\"truncateCstm\">${worktime.clientName}</td>\n\t\t\t\t\t\t\t<td data-title=\"Category\" class=\"truncatseCstm\">${worktime.categoryName}</td>\n\t\t\t\t\t\t\t<td data-title=\"User\" class=\"truncateCstm\">${worktime.userName}</td>\n\t\t\t\t\t\t\t<td data-title=\"\" click.delegate=\"editTime(worktime.ID)\" class=\"no-print center-align\"><span title=\"Edit\" class=\"material-icons \">edit</span></td>\n\t\t\t\t\t\t\t<td data-title=\"\" click.delegate=\"deleteTime(worktime.ID)\" class=\"no-print center-align\"><span title=\"Delete\" class=\"material-icons\">delete</span></td>\n\t\t\t\t\t\t</tr> -->\n\t\t\t\t\t</tbody>\n\t\t\t\t</table>\n\t\t\t</div>\n\t\t\t<!-- <button class=\"full-width waves-effect btn no-print\" click.delegate=\"worktimes.more()\" show.bind=\"worktimes._sent < worktimes._count\"><span class=\"material-icons\">add</span></button> -->\n\n\t\t\t<md-pagination class=\"center-align\" md-show-first-last=\"true\" md-show-prev-next=\"true\" md-on-page-changed.delegate=\"pageChanged($event)\" md-pages.bind=\"paginationPages\" md-visible-page-links=\"2\">\n\t\t\t</md-pagination>\n\n\t\t\t<!-- <md-switch md-checked.bind=\"showFirstLast\"></md-switch>\n\t\t\t<md-pagination class=\"center-align\" md-show-first-last.two-way=\"showFirstLast\" md-show-first-last=\"0\" md-pages=\"5\" md-visible-page-links=\"3\" md-active-page=\"1\"></md-pagination>\n\t\t</div>\n\t\t<div class=\"container\">\n\t\t\t<div class=\"progress\">\n\t\t\t\t<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"{{gridCtrl.collValueNow}}\" aria-valuemin=\"0\" aria-valuemax=\"{{gridCtrl.collValueMax}}\" style=\"width: {{gridCtrl.collValuePercent}}%;\">\n\t\t\t\t\t <span>60% Complete</span>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div> -->\n\t</div>\n</template>\n"; });
+define('text!worktime/w-form.html', ['module'], function(module) { module.exports = "<template>\n  <a md-button=\"large: true; floating: true\" md-waves class=\"m-t-20 primary\" click.delegate=\"navigateBack()\"><i class=\"material-icons\">navigate_before</i></a>\n  <div class=\"container m-t-20\">\n    <form submit.delegate=\"save()\">\n      <div class=\"row\">\n        <div class=\"col s6\">\n          <h4 class=\"header\">Edit</h4>\n        </div>\n        <div class=\"col s6 right-align\">\n          <button type=\"submit\" md-button=\"large: true\" md-waves class=\"accent\"><i class=\"material-icons\">save</i></button>\n        </div>\n      </div>\n      <md-card md-title=\"Client\">\n        <div class=\"row\">\n          <div class=\"col s12 m6\">\n            <select md-select=\"label: Client\" value.two-way=\"selectedClient & validate\" md-select.ref=\"clientSelect\">\n              <option value=\"\" disabled selected>Select a client...</option>\n              <option repeat.for=\"client of clients\" value.bind=\"client.ID\">${client.name}</option>\n            </select>\n          </div>\n          <div class=\"col s12 m6\">\n            <select md-select=\"disabled.bind: disableCategorySelect; label: Category\" value.two-way=\"selectedCategory & validate\" md-select.ref=\"categorySelect\">\n              <option value=\"\" disabled selected>Select a category...</option>\n              <option repeat.for=\"category of categories\" value.bind=\"category.ID\">${category.name}</option>\n            </select>\n          </div>\n        </div>\n      </md-card>\n      <md-card md-title=\"Time\">\n        <div class=\"row\">\n          <div class=\"col s12\">\n            <label class=\"active\">Different end date :</label>\n            <md-switch md-checked.bind=\"endDateDifferent\" md-label-on=\"Yes\" md-label-off=\"No\"></md-switch>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"col ${endDateDifferent ? 's6 m3' : 's12 m6'} input-field\">\n            <label for=\"startDate\" class=\"active\">Start Date</label>\n            <input id=\"startDate\" md-datepicker=\"container: body; value.bind: startDate & validate;\" type=\"date\" placeholder=\"Start Date\" />\n          </div>\n          <div class=\"col s6 ${endDateDifferent ? 'm3' : 'hide'} input-field\">\n            <label for=\"endDate\" class=\"active\">End Date</label>\n            <input id=\"endDate\" md-datepicker=\"container: body; value.two-way: endDate;\" type=\"date\" placeholder=\"End Date\" />\n          </div>\n          <div class=\"col s6 m3\">\n            <md-input md-type=\"time\" md-label=\"Start Time\" md-value.bind=\"startTime & validate\"></md-input>\n          </div>\n          <div class=\"col s6 m3\">\n            <md-input md-type=\"time\" md-label=\"End Time\" md-value.bind=\"endTime & validate\"></md-input>\n          </div>\n        </div>\n      </md-card>\n      <md-card md-title=\"Informations\">\n        <div class=\"row\">\n          <div class=\"col s12\">\n            <md-input md-label=\"Comment\" md-value.bind=\"comment & validate\" validate=\"comment\" md-text-area=\"true\"></md-input>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"col s12\">\n            <label class=\"active\">Break</label>\n            <md-switch md-checked.bind=\"showBreak\" md-label-on=\"Yes\" md-label-off=\"No\"></md-switch>\n          </div>\n        </div>\n        <div class=\"row ${showBreak ? '' : 'hide'}\">\n          <div class=\"col s12 m3\">\n            <md-input md-type=\"time\" md-label=\"Break Time\" md-value.bind=\"breakTime\"></md-input>\n          </div>\n          <div class=\"col s12 m9\">\n            <md-input md-label=\"Break Reason\" md-value.bind=\"breakReason & validate\"></md-input>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"col s12\">\n            <label class=\"active\">Train</label>\n            <md-switch md-checked.bind=\"showTrain\" md-label-on=\"Yes\" md-label-off=\"No\"></md-switch>\n          </div>\n        </div>\n        <div class=\"row ${showTrain ? '' : 'hide'}\">\n          <div class=\"col s6\">\n            <md-input md-type=\"time\" md-label=\"Train Time\" md-value.bind=\"trainTime\"></md-input>\n          </div>\n          <div class=\"col s6\">\n            <md-input md-type=\"number\" md-step=\"any\" md-label=\"Train Price\" md-validate=\"true\" md-validate-error=\"invalid number\" md-value.bind=\"trainPrice\"></md-input>\n          </div>\n        </div>\n      </md-card>\n    </form>\n  </div>\n</template>\n"; });
 define('text!worktime/worktimeSection.html', ['module'], function(module) { module.exports = "<template>\n  <router-view></router-view>\n</template>\n"; });
-define('text!resources/elements/datePicker.html', ['module'], function(module) { module.exports = "<template>\n  <label for.bind=\"dpid\">${dplabel}</label>\n  <input id.bind=\"dpid\" type=\"date\" class=\"datepicker\" value.bind=\"dpdate | dateFormat: 'YYYY-MM-DD'\" />\n</template>\n"; });
-define('text!resources/elements/navBar.html', ['module'], function(module) { module.exports = "<template>\n  <header class=\"container full-width no-padding\">\n    <nav class=\"navbar navbar-default\">\n      <div class=\"container-fluid\">\n\n      \t<div class=\"navbar-header\">\n\n      \t\t<button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\".collapse\" aria-expanded=\"\">\n      \t\t\t<span class=\"sr-only\">Toggle navigation</span>\n      \t\t\t<span class=\"icon-bar\"></span>\n      \t\t\t<span class=\"icon-bar\"></span>\n      \t\t\t<span class=\"icon-bar\"></span>\n      \t\t</button>\n      \t\t<a id=\"titleTxt\" class=\"navbar-brand\" href=\"#\">Worktime</a>\n      \t</div>\n      \t<div class=\"navbar-collapse collapse\">\n      \t\t<div ng-controller=\"tabs as tabCtrl\">\n      \t\t\t<ul class=\"nav navbar-nav\">\n      \t\t\t\t<li><a route-href=\"route: home\">Home<span class=\"sr-only\">(current)</span></a></li>\n      \t\t\t\t<li><a route-href=\"route: worktime\">WorkTime</a></li>\n      \t\t\t\t<li><a>Clients</a></li>\n      \t\t\t\t<li ng-class=\"{'active':tabCtrl.isActive('category')}\" ng-click=\"tabCtrl.setActive('category')\"><a ui-sref=\"app.categories\">Categories</a></li>\n      \t\t\t\t<li ng-class=\"{'active':tabCtrl.isActive('report')}\" ng-click=\"tabCtrl.setActive('report')\"><a ui-sref=\"app.report\">Report</a></li>\n      \t\t\t</ul>\n      \t\t</div>\n      \t\t<login></login>\n      \t</div>\n      </div><!-- /.container-fluid -->\n    </nav>\n  </header>\n</template>\n"; });
-define('text!resources/elements/pagination.html', ['module'], function(module) { module.exports = "<template>\n  <ul class=\"pagination\">\n    <li class=\"disabled\"><a href=\"#!\"><i class=\"material-icons\">chevron_left</i></a></li>\n    <li class=\"active\"><a href=\"#!\">1</a></li>\n    <li class=\"waves-effect\"><a href=\"#!\">2</a></li>\n    <li class=\"waves-effect\"><a href=\"#!\">3</a></li>\n    <li class=\"waves-effect\"><a href=\"#!\">4</a></li>\n    <li class=\"waves-effect\"><a href=\"#!\">5</a></li>\n    <li class=\"waves-effect\"><a href=\"#!\"><i class=\"material-icons\">chevron_right</i></a></li>\n  </ul>\n</template>\n"; });
+define('text!resources/elements/filter.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"\">\n    <ul md-collapsible>\n      <li>\n        <div md-waves id=\"filterHeader\" class=\"collapsible-header accent\"><i class=\"material-icons\">search</i>Filters</div>\n        <div class=\"collapsible-body\">\n            <div class=\"row\">\n              <div class=\"col s12\">\n                <label class=\"active\">Custom Date</label>\n                <md-switch md-checked.bind=\"customDate\" md-label-on=\"Yes\" md-label-off=\"No\"></md-switch>\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col s12 m6\" hide.bind=\"customDate\">\n                <select md-select=\"label: Range\" value.bind=\"rangeSelection\">\n                  <option value=\"\" disabled selected>Select a range...</option>\n                  <option value=\"thisMonth\">This Month</option>\n                  <option value=\"lastMonth\">Last Month</option>\n                  <option value=\"thisYear\">This Year</option>\n                </select>\n              </div>\n              <div class=\"col ${customDate ? 's12 m6' : 'm3 s6'} input-field\">\n                <label for=\"from\" class=\"active\">From</label>\n                <input id=\"from\" md-datepicker=\"container: body; value.bind: FFrom & validate\" type=\"date\" placeholder=\"From\" disabled.bind=\"!customDate\" />\n              </div>\n              <div class=\"col ${customDate ? 's12 m6' : 'm3 s6'} input-field\">\n                <label for=\"to\" class=\"active\">To</label>\n                <input id=\"to\" md-datepicker=\"container: body; value.bind: FTo & validate\" type=\"date\" placeholder=\"To\" disabled.bind=\"!customDate\" />\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col s12 m8\">\n                <select md-select=\"disabled.bind: allClients; label: Client\" value.bind=\"FClientName & validate\" md-select.ref=\"clientSelect\">\n                  <option value=\"\" disabled selected>Select a client...</option>\n                  <option repeat.for=\"client of clients\" value.bind=\"client.name\">${client.name}</option>\n                  <option if.bind=\"allClients\" value=\"all\">All Clients</option>\n                </select>\n              </div>\n              <div class=\"col s12 m4\">\n                <p>\n                  <md-checkbox md-checked.bind=\"allClients\">All Clients</md-checkbox>\n                </p>\n              </div>\n            </div>\n            <div class=\"row\" show.bind=\"showUsers\">\n              <div class=\"col s12\">\n                <select md-select=\"label: User\" value.bind=\"FUserId & validate\" md-select.ref=\"userSelect\">\n                  <option value=\"\" disabled selected>Select a user...</option>\n                  <option repeat.for=\"user of users\" value.bind=\"user.userID\">${user.fullName}</option>\n                </select>\n              </div>\n            </div>\n            <div class=\"row\">\n              <div class=\"col s12\">\n                  <button type=\"button\" click.delegate=\"applyFilter()\" md-button=\"large: true\" class=\"right\">Apply</button>\n              </div>\n            </div>\n        </div>\n      </li>\n    </ul>\n  </div>\n</template>\n"; });
 //# sourceMappingURL=app-bundle.js.map

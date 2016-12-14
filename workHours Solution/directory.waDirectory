@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><directory>
-	<user name="ganbin" ID="25142ED937B243768ECEBBF070E96A09" fullName="Gabriel Inzirillo" password="e1c2fec20f0d1dd72f0d00d708c95ed5"/>
-	<user name="momo" ID="93C116C1D4AC4C089C2DE233853B2C9B" fullName="Maurice Inzirillo" password="e5047b926db556c45c1167e692e32d09"/>
-	<user name="aubry" ID="C1AE05A0EF1548EE80117F8AA92F2A60" fullName="Michel Aubry" password="e8862172c2191579fbea408f61e2f084"/>
-	<user name="admin" ID="D0D8CC58F600458CA22F0BB1EDA3C712" fullName="SuperAdministrator" password="857bada515e1d29f9d055cafceb2f040"/>
 	<user name="dataAdmin" ID="0578FB4828064B6C8D1A2E4054E06E31" fullName="DataAdmin" password="ff6f42c05dfd9722ac366fea461cd96e"/>
-	<user name="test" ID="74F0BA1E7BC445F391578403EF1821E3" fullName="test" password="55ea11aa107a8be7cce713a70103bc1e"/>
-	<group name="Admin" ID="01000000000000000000000000000000" fullName="Admin">
-		<include user="admin" userID="D0D8CC58F600458CA22F0BB1EDA3C712"/>
-	</group>
+	<user name="test" ID="74F0BA1E7BC445F391578403EF1821E3" fullName="test" password="f4a180fed7546302b46f3bf64e0728da"/>
+	<group name="Admin" ID="01000000000000000000000000000000" fullName="Admin">	</group>
 	<group name="dataAdmin" ID="C4EDAA1B68FE4324BF5AA15FC28EBB45" fullName="dataAdmin">
-		<include user="momo" userID="93C116C1D4AC4C089C2DE233853B2C9B"/>
 		<include user="dataAdmin" userID="0578FB4828064B6C8D1A2E4054E06E31"/>
 	</group>
-	<group name="Administrateur" ID="CD2C452599874B9BA77947DA0E1ACAB2" fullName="Administrateur">
-		<include user="aubry" userID="C1AE05A0EF1548EE80117F8AA92F2A60"/>
-	</group>
 	<group name="User" ID="504DE9660DE94AF08C2CEE10F40B49C9" fullName="User">
-		<include user="ganbin" userID="25142ED937B243768ECEBBF070E96A09"/>
 		<include user="test" userID="74F0BA1E7BC445F391578403EF1821E3"/>
 		<include group="dataAdmin" groupID="C4EDAA1B68FE4324BF5AA15FC28EBB45"/>
 	</group>

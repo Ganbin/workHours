@@ -329,7 +329,7 @@
 			"name": "Log",
 			"className": "Log",
 			"collectionName": "LogCollection",
-			"scope": "publicOnServer",
+			"scope": "public",
 			"attributes": [
 				{
 					"name": "ID",

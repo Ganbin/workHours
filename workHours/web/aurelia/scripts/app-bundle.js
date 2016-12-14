@@ -988,9 +988,15 @@ define('worktime/w-form',['exports', 'wakanda-client', 'aurelia-router', 'aureli
                             filter: 'ID = :1',
                             params: [_this2.selectedCategory]
                         }).then(function (evt2) {
+                            var endDate = void 0;
                             _this2.worktime.category = evt2.entities[0];
                             _this2.worktime.start = (0, _moment2.default)(_this2.startDate).hour(_this2.startTime.substr(0, 2)).minute(_this2.startTime.substr(3, 2)).second(0).millisecond(0)._d;
-                            _this2.worktime.end = (0, _moment2.default)(_this2.endDate).hour(_this2.endTime.substr(0, 2)).minute(_this2.endTime.substr(3, 2)).second(0).millisecond(0)._d;
+                            if (_this2.endDateDifferent) {
+                                endDate = _this2.endDate;
+                            } else {
+                                endDate = _this2.startDate;
+                            }
+                            _this2.worktime.end = (0, _moment2.default)(endDate).hour(_this2.endTime.substr(0, 2)).minute(_this2.endTime.substr(3, 2)).second(0).millisecond(0)._d;
                             _this2.worktime.comment = _this2.comment;
 
                             if (_this2.showBreak) {

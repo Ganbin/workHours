@@ -13,7 +13,6 @@
 							<th>Start</th>
 							<th>End</th>
 							<th>Duration</th>
-							<!-- <th class="comment" width="">Comment</th> -->
 							<th>Client</th>
 							<th>Category</th>
 							<th>User</th>
@@ -30,7 +29,6 @@
 								<td data-title="Start">${worktime.start | dateFormat:'DD.MM.YY HH:mm'}</td>
 								<td data-title="End">${worktime.end | dateFormat:'DD.MM.YY HH:mm'}</td>
 								<td data-title="Duration">${worktime.timeWorked | millisToHours}</td>
-								<!-- <td data-title="Comment" class="w-b comment">${worktime.comment}</td> -->
 								<td data-title="Client">${worktime.clientName}</td>
 								<td data-title="Category">${worktime.categoryName}</td>
 								<td data-title="User">${worktime.userName}</td>
@@ -45,38 +43,11 @@
 								<td class="hide-on-med-and-down"><b>Comment</b></td>
 								<td colspan="11" data-title="Comment" class="w-b comment">${worktime.comment}</td>
 							</tr>
-						<!-- <tr class="clickable" repeat.for="worktime of worktimes.entities">
-							<td data-title="Start">${worktime.start | dateFormat:'DD.MM.YY HH:mm'}</td>
-							<td data-title="End">${worktime.end | dateFormat:'DD.MM.YY HH:mm'}</td>
-							<td data-title="Duration">${worktime.timeWorked | millisToHours}</td>
-							<td data-title="Comment" class="w-b comment">${worktime.comment}</td>
-							<td data-title="Break" class="">${worktime.breakTime}</td>
-							<td data-title="Reason" class="truncateCstm">${worktime.breakReason | truncate:25}</td>
-							<td data-title="Break" class="">${worktime.trainTime}</td>
-							<td data-title="Break" class="">${worktime.trainPrice}</td>
-							<td data-title="Client" class="truncateCstm">${worktime.clientName}</td>
-							<td data-title="Category" class="truncatseCstm">${worktime.categoryName}</td>
-							<td data-title="User" class="truncateCstm">${worktime.userName}</td>
-							<td data-title="" click.delegate="editTime(worktime.ID)" class="no-print center-align"><span title="Edit" class="material-icons ">edit</span></td>
-							<td data-title="" click.delegate="deleteTime(worktime.ID)" class="no-print center-align"><span title="Delete" class="material-icons">delete</span></td>
-						</tr> -->
 					</tbody>
 				</table>
 			</div>
-			<!-- <button class="full-width waves-effect btn no-print" click.delegate="worktimes.more()" show.bind="worktimes._sent < worktimes._count"><span class="material-icons">add</span></button> -->
-
-			<md-pagination class="center-align" md-show-first-last="true" md-show-prev-next="true" md-on-page-changed.delegate="pageChanged($event)" md-pages.bind="paginationPages" md-visible-page-links="2">
+			<md-pagination class="center-align" md-show-first-last="true" md-show-prev-next="true" md-on-page-changed.delegate="pageChanged($event)" md-pages.bind="paginationPages" md-visible-page-links="5">
 			</md-pagination>
 
-			<!-- <md-switch md-checked.bind="showFirstLast"></md-switch>
-			<md-pagination class="center-align" md-show-first-last.two-way="showFirstLast" md-show-first-last="0" md-pages="5" md-visible-page-links="3" md-active-page="1"></md-pagination>
-		</div>
-		<div class="container">
-			<div class="progress">
-				<div class="progress-bar" role="progressbar" aria-valuenow="{{gridCtrl.collValueNow}}" aria-valuemin="0" aria-valuemax="{{gridCtrl.collValueMax}}" style="width: {{gridCtrl.collValuePercent}}%;">
-					 <span>60% Complete</span>
-				</div>
-			</div>
-		</div> -->
 	</div>
 </template>

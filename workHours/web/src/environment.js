@@ -1,5 +1,5 @@
 export default {
-  debug: true,
-  testing: true,
-  port: 8081
+  debug: false,
+  testing: false,
+  port: 80
 };

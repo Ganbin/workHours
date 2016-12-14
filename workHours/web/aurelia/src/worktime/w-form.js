@@ -8,7 +8,8 @@ import moment from 'moment';
 import env from 'services/env';
 
 const hostname = env.hostname;
-const wakanda = new WakandaClient(`http://${hostname}:8081`);
+const port = env.port;
+const wakanda = new WakandaClient(`http://${hostname}:${port}`);
 
 // TODO : Integrate the material-datetime-picker library
 

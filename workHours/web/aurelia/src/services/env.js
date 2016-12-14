@@ -1,4 +1,6 @@
-export default {hostname: window.location.hostname};
+import environment from 'environment';
+
+export default {hostname: window.location.hostname, port: environment.port};
 
 const datas = {routeRequest: 'home'}; // Default route request set to home
 

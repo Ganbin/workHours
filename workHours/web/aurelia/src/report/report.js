@@ -4,7 +4,8 @@ import env from 'services/env';
 import moment from 'moment';
 
 const hostname = env.hostname;
-const wakanda = new WakandaClient(`http://${hostname}:8081`);
+const port = env.port;
+const wakanda = new WakandaClient(`http://${hostname}:${port}`);
 
 export class Report {
     from;

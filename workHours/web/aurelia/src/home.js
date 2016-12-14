@@ -5,7 +5,8 @@ import {inject} from 'aurelia-framework';
 import env from 'services/env';
 
 const hostname = env.hostname;
-const wakanda = new WakandaClient(`http://${hostname}:8081`);
+const port = env.port;
+const wakanda = new WakandaClient(`http://${hostname}:${port}`);
 
 @inject(Auth, AppRouter)
 export class Home {

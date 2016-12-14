@@ -123,9 +123,15 @@ export class WForm {
                         filter: 'ID = :1',
                         params: [this.selectedCategory]
                     }).then((evt2) => {
+                        let endDate;
                         this.worktime.category = evt2.entities[0];
                         this.worktime.start = (moment(this.startDate).hour(this.startTime.substr(0, 2)).minute(this.startTime.substr(3, 2)).second(0).millisecond(0))._d;
-                        this.worktime.end = (moment(this.endDate).hour(this.endTime.substr(0, 2)).minute(this.endTime.substr(3, 2)).second(0).millisecond(0))._d;
+                        if (this.endDateDifferent) {
+                            endDate = this.endDate;
+                        } else {
+                            endDate = this.startDate;
+                        }
+                        this.worktime.end = (moment(endDate).hour(this.endTime.substr(0, 2)).minute(this.endTime.substr(3, 2)).second(0).millisecond(0))._d;
                         this.worktime.comment = this.comment;
 
                         if (this.showBreak) {

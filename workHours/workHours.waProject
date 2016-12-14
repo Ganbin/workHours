@@ -3,9 +3,6 @@
 	<folder path="./database/data/">
 		<tag name="dataFolder"/>
 	</folder>
-	<file path="./database/model.waModel">
-		<tag name="catalog"/>
-	</file>
 	<folder path="./database/backups/">
 		<tag name="Backups"/>
 	</folder>
@@ -18,10 +15,16 @@
 	<folder path="./web/">
 		<tag name="webFolder"/>
 	</folder>
+	<file path="./database/model.waModel">
+		<tag name="catalog"/>
+	</file>
 	<file path="./backend/settings.waSettings">
 		<tag name="settings"/>
 	</file>
 	<file path="./backend/permissions.waPerm">
 		<tag name="permissions"/>
+	</file>
+	<file path="./bootstrap.js">
+		<tag name="bootStrap"/>
 	</file>
 </project>

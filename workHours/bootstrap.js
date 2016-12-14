@@ -1,0 +1,1 @@
+directory.setLoginListener('customLoginListener','DataAdmin');

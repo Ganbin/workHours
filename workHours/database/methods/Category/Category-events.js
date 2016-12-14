@@ -16,3 +16,10 @@ model.Category.events.restrict = function(event) {
 	
 	return returnCol;
 };
+
+
+model.Category.events.remove = function(event) {
+	if (this.allUsers.length !== 0) {
+		return {error: 34, errorMessage: 'This category have some users, you cannot remove it.'};
+	}
+};

@@ -12,8 +12,8 @@
 					"isOpen": "true",
 					"pathVisible": false,
 					"position": {
-						"X": 50,
-						"Y": 20
+						"X": 71,
+						"Y": 21
 					}
 				}
 			},
@@ -26,8 +26,8 @@
 					"isOpen": "true",
 					"pathVisible": true,
 					"position": {
-						"X": 488,
-						"Y": 9
+						"X": 417,
+						"Y": 13
 					}
 				}
 			},
@@ -106,7 +106,7 @@
 			"relShowMode": "true",
 			"relationCurve": {
 				"run": true,
-				"mode": 1
+				"mode": 2
 			},
 			"lastScriptLocation": {
 				"Client": {
@@ -216,6 +216,11 @@
 			],
 			"events": [
 				{
+					"kind": "remove",
+					"from": "$mainModel.Category.events.remove",
+					"userDefined": true
+				},
+				{
 					"kind": "restrict",
 					"from": "$mainModel.Category.events.restrict",
 					"userDefined": true
@@ -309,6 +314,11 @@
 				}
 			],
 			"events": [
+				{
+					"kind": "remove",
+					"from": "$mainModel.Client.events.remove",
+					"userDefined": true
+				},
 				{
 					"kind": "restrict",
 					"from": "$mainModel.Client.events.restrict",
@@ -442,6 +452,11 @@
 				}
 			],
 			"events": [
+				{
+					"kind": "remove",
+					"from": "$mainModel.User.events.remove",
+					"userDefined": true
+				},
 				{
 					"kind": "restrict",
 					"from": "$mainModel.User.events.restrict",

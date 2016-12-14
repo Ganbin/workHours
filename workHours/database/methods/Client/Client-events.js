@@ -11,3 +11,10 @@ model.Client.events.restrict = function(event) {
 	
 	return returnCol;
 };
+
+
+model.Client.events.remove = function(event) {
+	if (this.allCategories.length !== 0) {
+		return {error: 31, errorMessage: 'This client have some categories, you cannot remove it.'};
+	}
+};

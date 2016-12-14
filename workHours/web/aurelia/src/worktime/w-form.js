@@ -112,7 +112,7 @@ export class WForm {
 
     save() {
         this.validationController.validate().then(v => {
-            if (v.length === 0) {
+            if (v.valid) {
                 this.ds.Client.query({
                     filter: 'ID = :1',
                     params: [this.selectedClient]

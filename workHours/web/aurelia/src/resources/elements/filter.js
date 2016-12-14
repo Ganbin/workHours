@@ -62,13 +62,16 @@ export class Filter {
 
     applyFilter() {
         this.validationController.validate().then(v => {
-            if (v.length === 0) {
+            if (v.valid) {
                 const user = this.users.find((userItem) => {
                     return userItem.userID === this.FUserId;
                 });
+
+                const fullName = user !== undefined ? user.fullName : this.auth.user.fullName;
+
                 const event = new CustomEvent('apply', {
                     bubbles: true,
-                    detail: {userName: user.fullName}
+                    detail: {userName: fullName}
                 });
 
                 /*

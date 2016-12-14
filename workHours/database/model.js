@@ -6,3 +6,4 @@ include("./methods/Utility/Utility-methods.js");
 include("./methods/User/User-events.js");
 include("./methods/Category/Category-methods.js");
 include("./methods/Client/Client-events.js");
+include("./methods/Log/Log-methods.js");

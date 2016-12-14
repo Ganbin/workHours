@@ -82,6 +82,19 @@
 						"Y": 672
 					}
 				}
+			},
+			"Log": {
+				"panelColor": "#8DB3E2",
+				"flatVisible": "true",
+				"methVisible": "true",
+				"panel": {
+					"isOpen": "true",
+					"pathVisible": true,
+					"position": {
+						"X": 942,
+						"Y": 210
+					}
+				}
 			}
 		},
 		"model": {
@@ -115,6 +128,9 @@
 				"User": {
 					"computed": "User/User-events.js",
 					"events": "User/User-events.js"
+				},
+				"Log": {
+					"method": "Log/Log-methods.js"
 				}
 			}
 		}
@@ -305,6 +321,51 @@
 					"applyTo": "dataClass",
 					"scope": "public",
 					"from": "$mainModel.Client.methods.getReport",
+					"userDefined": true
+				}
+			]
+		},
+		{
+			"name": "Log",
+			"className": "Log",
+			"collectionName": "LogCollection",
+			"scope": "publicOnServer",
+			"attributes": [
+				{
+					"name": "ID",
+					"kind": "storage",
+					"scope": "public",
+					"unique": true,
+					"autosequence": true,
+					"type": "long",
+					"primKey": true
+				},
+				{
+					"name": "type",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				},
+				{
+					"name": "timestamp",
+					"kind": "storage",
+					"scope": "public",
+					"type": "date",
+					"simpleDate": false
+				},
+				{
+					"name": "comment",
+					"kind": "storage",
+					"scope": "public",
+					"type": "string"
+				}
+			],
+			"methods": [
+				{
+					"name": "newLog",
+					"applyTo": "dataClass",
+					"scope": "publicOnServer",
+					"from": "$mainModel.Log.methods.newLog",
 					"userDefined": true
 				}
 			]

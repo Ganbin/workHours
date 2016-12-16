@@ -4,17 +4,23 @@
   <require from="./styles/responsive-table.css"></require>
   <require from="./color-switcher.html"></require>
   <md-colors md-primary-color.bind="primaryColor" md-accent-color.bind="accentColor" md-error-color.bind="errorColor"></md-colors>
-
-  <div class="row no-print">
-    <div class="col l6">
-      <color-switcher select.bind="true" primary-color.two-way="primaryColor" accent-color.two-way="accentColor" error-color.two-way="errorColor"></color-switcher>
-    </div>
-    <div class="right-align col l6" if.bind="auth.logged">
-      <a md-waves md-button="large: true" click.delegate="logout()" class="m-b-20 primary bold">Logout</a>
-      <!-- <button class="m-b-20" md-button="flat:true">Logout</button> -->
-    </div>
+  <div id="topInfos" class="">
+    <ul md-collapsible>
+      <li>
+        <div class="collapsible-header"><i id="arrowDown" click.delegate="showTopInfos($event)" class="medium material-icons right">${topIcon}</i></div>
+        <div class="collapsible-body m-t-20">
+          <div class="row no-print">
+            <div class="col l6">
+              <color-switcher select.bind="true" primary-color.two-way="primaryColor" accent-color.two-way="accentColor" error-color.two-way="errorColor"></color-switcher>
+            </div>
+            <div class="right-align col l6" if.bind="auth.logged">
+              <a md-waves md-button="large: true" click.delegate="logout()" class="m-b-20 primary bold">Logout</a>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
-
 
   <nav class="primary z-depth-4 no-print">
     <div class="nav-wrapper">
@@ -25,11 +31,6 @@
           <a md-waves href.bind="route.href" class="waves-effect waves-light">${route.title}</a>
         </li>
       </ul>
-      <!-- <ul class="side-nav">
-        <li repeat.for="route of router.navigation" class="${route.isActive ? 'active' : ''}">
-          <a href.bind="route.href" class="waves-effect waves-light">${route.title}</a>
-        </li>
-      </ul> -->
       <md-sidenav view-model.ref="sideNav" md-edge="left" md-close-on-click="true">
         <ul class="">
           <li repeat.for="route of router.navigation" class="${route.isActive ? 'active' : ''}">

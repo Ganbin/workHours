@@ -1,7 +1,6 @@
 <template><!-- Display a list of the worktime -->
-	<div class="m-t-20">
-		<div class="row">
-	  	<button md-button="large: true" type='button' md-waves title="Add a Work Time" click.delegate="addWorkTime()" class="accent no-print right">ADD</button>
+		<div class="row m-t-20">
+	  	<button md-button="" type="button" md-waves title="Add a Work Time" click.delegate="addWorkTime()" class="accent no-print right">ADD</button>
 			<!-- <h4>Temps de travail de ${userName} pour ${clientName}<span ng-show="gridCtrl.showDates"> du ${from | dateFormat : 'DD.MM.YYYY'} au ${to | dateFormat : 'DD.MM.YYYY'}</span></h4> -->
 	  </div>
 		<div class="">
@@ -46,8 +45,21 @@
 					</tbody>
 				</table>
 			</div>
-			<md-pagination class="center-align" md-show-first-last="true" md-show-prev-next="true" md-on-page-changed.delegate="pageChanged($event)" md-pages.bind="paginationPages" md-visible-page-links="5">
-			</md-pagination>
+			<div class="row">
+				<div class="col s12 center-align">
+					<div class="input-field inline">
+						<md-pagination class="center-align" md-show-first-last="true" md-show-prev-next="true" md-on-page-changed.delegate="pageChanged($event)" md-pages.bind="paginationPages" md-visible-page-links="5"></md-pagination>
+					</div>
 
+					<div class="input-field inline">
+						Nb Records
+						<select name="nbRecords" class="browser-default" value.two-way="pageSize" change.delegate="pageSizeChanged()" >
+							<option value="5">5</option>
+							<option value="10">10</option>
+							<option value="15">15</option>
+						</select>
+					</div>
+				</div>
+			</div>
 	</div>
 </template>

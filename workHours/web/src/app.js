@@ -6,6 +6,7 @@ export function App(auth) {
     this.primaryColor = '#ee6e73';
     this.accentColor = '#2bbbad';
     this.errorColor = '#f44336';
+    this.topIcon = 'keyboard_arrow_down';
     this.configureRouter = (config, router) => {
         this.router = router;
         config.title = 'Work Times';
@@ -29,6 +30,11 @@ export function App(auth) {
         this.auth.logout().then(() => {
             this.router.navigate('login');
         });
+    };
+
+    this.showTopInfos = (e) => {
+        this.topIcon = this.topIcon === 'keyboard_arrow_down' ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
+        $(e.srcElement).toggleClass('hackArrowTopInfos');
     };
 }
 

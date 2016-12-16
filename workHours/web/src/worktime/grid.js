@@ -8,7 +8,7 @@ import env from 'services/env';
 const hostname = env.hostname;
 const port = env.port;
 const wakanda = new WakandaClient(`http://${hostname}:${port}`);
-const PAGE_SIZE = 5;
+const PAGE_SIZE = '5';
 
 export function Grid(auth, router, utilsService, toast) {
     const self = this;
@@ -20,6 +20,7 @@ export function Grid(auth, router, utilsService, toast) {
     this.toast = toast;
     this.startForm = 0;
     this.paginationPages = 0;
+    this.pageSize = PAGE_SIZE;
 
     function editTime(ID) {
         this.router.navigate(this.route + '/' + ID);
@@ -38,7 +39,7 @@ export function Grid(auth, router, utilsService, toast) {
         self.getAll = (start) => {
             return ds.WorkTime.query({
                 filter: 'ID >= 0',
-                pageSize: PAGE_SIZE,
+                pageSize: parseInt(this.pageSize, 10),
                 start: start,
                 orderBy: 'start desc'
             }).then((evt) => {
@@ -49,8 +50,12 @@ export function Grid(auth, router, utilsService, toast) {
         };
 
         self.pageChanged = (e) => {
-            self.startFrom = PAGE_SIZE * (e.detail - 1);
+            self.startFrom = this.pageSize * (e.detail - 1);
             self.getAll(self.startFrom);
+        };
+
+        self.pageSizeChanged = () => {
+            self.getAll(0);
         };
 
         self.deleteTime = function (ID) {

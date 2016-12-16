@@ -38,6 +38,10 @@ th{
   text-decoration: underline;
 }
 
+.pinned.fixed-right{
+  right: 36px;
+}
+
 .no-padding{
 	padding:0px;
 }
@@ -95,4 +99,33 @@ th{
 
 .bold{
   font-weight: bold !important;
+}
+
+#topInfos .collapsible-header{
+	min-height: 0;
+	border-bottom: none;
+}
+#topInfos .collapsible-body {
+	border-bottom: none;
+}
+#topInfos .collapsible-header i{
+	font-size: 4rem !important;
+	border: none;
+	margin-top: -25px;
+}
+#topInfos{
+	margin-top:-40px;
+}
+#topInfos ul{
+	border: none;
+	box-shadow: none;
+}
+
+.nav-wrapper{
+	margin-top:30px;
+}
+
+.hackArrowTopInfos{
+	margin-bottom: -252px !important;
+  margin-top: 60px !important;
 }

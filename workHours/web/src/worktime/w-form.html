@@ -1,13 +1,18 @@
 <template>
-  <a md-button="large: true; floating: true" md-waves class="m-t-20 primary" click.delegate="navigateBack()"><i class="material-icons">navigate_before</i></a>
-  <div class="container m-t-20">
+    <div md-pushpin="top: 110; offset: 20;" class="left">
+      <a md-button="large: true; floating: true" md-waves class="primary" click.delegate="navigateBack()"><i class="material-icons">navigate_before</i></a>
+    </div>
+    <div class="right fixed-right" md-pushpin="top: 110; offset: 20;">
+      <div class="">
+        <button type="button" md-button="large: true" md-waves class="accent" click.delegate="save()"><i class="material-icons">save</i></button>
+      </div>
+    </div>
+
+  <div class="container row m-t-20">
     <form submit.delegate="save()">
       <div class="row">
         <div class="col s6">
           <h4 class="header">Edit</h4>
-        </div>
-        <div class="col s6 right-align">
-          <button type="submit" md-button="large: true" md-waves class="accent"><i class="material-icons">save</i></button>
         </div>
       </div>
       <md-card md-title="Client">

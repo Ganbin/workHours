@@ -11,8 +11,6 @@ const hostname = env.hostname;
 const port = env.port;
 const wakanda = new WakandaClient(`http://${hostname}:${port}`);
 
-// TODO : Integrate the material-datetime-picker library
-
 @inject(AppRouter, NewInstance.of(ValidationController), Auth, MdToastService)
 export class WForm {
     worktime;

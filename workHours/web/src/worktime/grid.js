@@ -37,14 +37,13 @@ export function Grid(auth, router, utilsService, toast) {
          * @return no return but it affect the entities from the result to a worktime array
          */
         self.getAll = (start) => {
-            return ds.WorkTime.query({
-                filter: 'ID >= 0',
+            return ds.WorkTime.getMine({
                 pageSize: parseInt(this.pageSize, 10),
                 start: start,
                 orderBy: 'start desc'
             }).then((evt) => {
-                self.worktimes = evt;
-                self.paginationPages = Math.ceil(evt._count / evt._pageSize);
+                self.worktimes = evt.times;
+                self.paginationPages = Math.ceil(evt._count / this.pageSize);
             }).catch((err) => {
             });
         };

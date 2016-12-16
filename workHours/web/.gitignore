@@ -10,9 +10,8 @@ materialize-css.js
 rbuild.js
 yarn.lock
 
-aurelia-project/
+aurelia-project/*
 
 scripts/app-bundle.js.map
 
 src/*
-!src/styles/

@@ -41,7 +41,7 @@ node_modules/
 *.log
 
 #dev bundle
-./web/scripts/app-bundle.js
-./web/scripts/app-bundle.js.map
-./web/scripts/materialize-bundle.js
-./web/scripts/vendor-bundle.js
+*/web/scripts/app-bundle.js
+*/web/scripts/app-bundle.js.map
+*/web/scripts/materialize-bundle.js
+*/web/scripts/vendor-bundle.js

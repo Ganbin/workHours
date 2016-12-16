@@ -120,7 +120,8 @@
 				},
 				"WorkTime": {
 					"events": "WorkTime/WorkTime-events.js",
-					"computed": "WorkTime/WorkTime-events.js"
+					"computed": "WorkTime/WorkTime-events.js",
+					"method": "WorkTime/WorkTime-methods.js"
 				},
 				"Utility": {
 					"method": "Utility/Utility-methods.js"
@@ -752,6 +753,15 @@
 				{
 					"kind": "restrict",
 					"from": "$mainModel.WorkTime.events.restrict",
+					"userDefined": true
+				}
+			],
+			"methods": [
+				{
+					"name": "getMine",
+					"applyTo": "dataClass",
+					"scope": "public",
+					"from": "$mainModel.WorkTime.methods.getMine",
 					"userDefined": true
 				}
 			]

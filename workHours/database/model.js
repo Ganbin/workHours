@@ -7,3 +7,4 @@ include("./methods/User/User-events.js");
 include("./methods/Category/Category-methods.js");
 include("./methods/Client/Client-events.js");
 include("./methods/Log/Log-methods.js");
+include("./methods/WorkTime/WorkTime-methods.js");

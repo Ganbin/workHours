@@ -181,11 +181,10 @@ export class WForm {
     }
 }
 
-
 ValidationRules
     .customRule(
         'time',
-        (value, obj) => value === null || value === undefined || value.match(/([01]{1}[0-9]|2[0-3]):[0-5][0-9]/),
+        (value, obj) => value === null || value === undefined  || /([01]{1}[0-9]|2[0-3]):[0-5][0-9]/.test(value) && value.length === 5,
         '${$displayName} must be between "00:00" and "23:59"'
     );
 

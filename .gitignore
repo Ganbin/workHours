@@ -47,3 +47,5 @@ node_modules/
 */web/scripts/vendor-bundle.js
 
 ssjs.js
+
+.waDirectory

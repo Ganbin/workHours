@@ -1,7 +1,7 @@
 {
   "name": "aurelia",
   "description": "An application to enter and get report of worktime",
-  "version": "2.7.3",
+  "version": "2.7.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/Ganbin/workHours"

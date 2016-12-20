@@ -45,3 +45,5 @@ node_modules/
 */web/scripts/app-bundle.js.map
 */web/scripts/materialize-bundle.js
 */web/scripts/vendor-bundle.js
+
+ssjs.js

@@ -70,7 +70,7 @@ export class Filter {
 
                 const fullName = user !== undefined ? user.fullName : this.auth.user.fullName;
 
-                const event = new CustomEvent('apply', {
+                const event = new CustomEvent('apply-filter', {
                     bubbles: true,
                     detail: {userName: fullName}
                 });

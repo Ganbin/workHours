@@ -758,6 +758,13 @@
 			],
 			"methods": [
 				{
+					"name": "getFiltered",
+					"applyTo": "dataClass",
+					"scope": "publicOnServer",
+					"from": "$mainModel.WorkTime.methods.getFiltered",
+					"userDefined": true
+				},
+				{
 					"name": "getMine",
 					"applyTo": "dataClass",
 					"scope": "public",

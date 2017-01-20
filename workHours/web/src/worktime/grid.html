@@ -3,6 +3,8 @@
 	  	<button md-button="" type="button" md-waves title="Add a Work Time" click.delegate="addWorkTime()" class="accent no-print right">ADD</button>
 			<!-- <h4>Temps de travail de ${userName} pour ${clientName}<span ng-show="gridCtrl.showDates"> du ${from | dateFormat : 'DD.MM.YYYY'} au ${to | dateFormat : 'DD.MM.YYYY'}</span></h4> -->
 	  </div>
+		<filter apply-filter.delegate="applyFilter($event)" f-from.bind="from" f-to.bind="to" f-user-id.bind="userID" f-client-name.bind="clientName" class="no-print"></filter>
+		<h5 class="center-align">${message}</h5>
 		<div class="">
 			<div class="table-responsive-vertical z-depth-4">
   <!-- Table starts here -->
@@ -48,7 +50,7 @@
 			<div class="row">
 				<div class="col s12 center-align">
 					<div class="input-field inline">
-						<md-pagination class="center-align" md-show-first-last="true" md-show-prev-next="true" md-on-page-changed.delegate="pageChanged($event)" md-pages.bind="paginationPages" md-visible-page-links="5"></md-pagination>
+						<md-pagination hide.bind="all" class="center-align" md-show-first-last="true" md-show-prev-next="true" md-on-page-changed.delegate="pageChanged($event)" md-pages.bind="paginationPages" md-visible-page-links="5"></md-pagination>
 					</div>
 
 					<div class="input-field inline">
@@ -57,6 +59,7 @@
 							<option value="5">5</option>
 							<option value="10">10</option>
 							<option value="15">15</option>
+							<option value="all">All</option>
 						</select>
 					</div>
 				</div>

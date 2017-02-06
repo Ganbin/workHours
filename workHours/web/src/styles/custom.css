@@ -2,11 +2,16 @@ body {
   font-family: Arial, Helvetica, sans-serif;
     padding: 20px;
 }
+.only-print, .only-print * {
+		display: none;
+}
 @media print
 {
-    .no-print, .no-print *
-    {
+    .no-print, .no-print * {
         display: none !important;
+    }
+    .only-print, .only-print * {
+      display: inherit !important;
     }
 }
 .w-b{
@@ -14,7 +19,7 @@ body {
 }
 
 table{
-  table-layout: fixed;
+  table-layout: ;
   overflow-x:auto;
 }
 

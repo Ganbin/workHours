@@ -3,6 +3,39 @@
 	  	<button md-button="" type="button" md-waves title="Add a Work Time" click.delegate="addWorkTime()" class="accent no-print right">ADD</button>
 			<!-- <h4>Temps de travail de ${userName} pour ${clientName}<span ng-show="gridCtrl.showDates"> du ${from | dateFormat : 'DD.MM.YYYY'} au ${to | dateFormat : 'DD.MM.YYYY'}</span></h4> -->
 	  </div>
+		<ul md-collapsible class="no-print">
+			<li>
+				<div md-waves id="filterHeader" class="collapsible-header accent"><i class="material-icons">print</i>Print Options</div>
+				<div class="collapsible-body">
+					<div class="row">
+						<div class="col s4">
+							<label class="active">Show Client</label>
+							<md-switch md-checked.bind="showClientForPrint" md-label-on="Yes" md-label-off="No"></md-switch>
+						</div>
+						<div class="col s4">
+							<label class="active">Show User</label>
+							<md-switch md-checked.bind="showUserForPrint" md-label-on="Yes" md-label-off="No"></md-switch>
+						</div>
+						<div class="col s4">
+							<label class="active">Show Break Time</label>
+							<md-switch md-checked.bind="showBreakTimeForPrint" md-label-on="Yes" md-label-off="No"></md-switch>
+						</div>
+						<div class="col s4">
+							<label class="active">Show Break Reason</label>
+							<md-switch md-checked.bind="showBreakReasonForPrint" md-label-on="Yes" md-label-off="No"></md-switch>
+						</div>
+						<div class="col s4">
+							<label class="active">Show Train Time</label>
+							<md-switch md-checked.bind="showTrainTimeForPrint" md-label-on="Yes" md-label-off="No"></md-switch>
+						</div>
+						<div class="col s4">
+							<label class="active">Show Train Price</label>
+							<md-switch md-checked.bind="showTrainPriceForPrint" md-label-on="Yes" md-label-off="No"></md-switch>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
 		<filter apply-filter.delegate="applyFilter($event)" f-from.bind="from" f-to.bind="to" f-user-id.bind="userID" f-client-name.bind="clientName" class="no-print"></filter>
 		<h5 class="center-align">${message}</h5>
 		<div class="">
@@ -14,40 +47,41 @@
 							<th>Start</th>
 							<th>End</th>
 							<th>Duration</th>
-							<th>Client</th>
+							<th class="${showClientForPrint == true ? '' : 'no-print'}">Client</th>
 							<th>Category</th>
-							<th>User</th>
-							<th>Break</th>
-							<th>Reason</th>
-							<th>Train Time</th>
-							<th>Train Price</th>
+							<th class="${showUserForPrint == true ? '' : 'no-print'}">User</th>
+							<th class="${showBreakTimeForPrint == true ? '' : 'no-print'}">Break</th>
+							<th class="${showBreakReasonForPrint == true ? '' : 'no-print'}">Reason</th>
+							<th class="${showTrainTimeForPrint == true ? '' : 'no-print'}">Train Time</th>
+							<th class="${showTrainPriceForPrint == true ? '' : 'no-print'}">Train Price</th>
 							<th class="no-print"></th>
 							<th class="no-print"></th>
 						</tr>
 					</thead>
+
 					<tbody repeat.for="worktime of worktimes">
 							<tr class="clickable">
 								<td data-title="Start">${worktime.start | dateFormat:'DD.MM.YY HH:mm'}</td>
 								<td data-title="End">${worktime.end | dateFormat:'DD.MM.YY HH:mm'}</td>
 								<td data-title="Duration">${worktime.timeWorked | millisToHours}</td>
-								<td data-title="Client">${worktime.clientName}</td>
+								<td data-title="Client" class="${showClientForPrint == true ? '' : 'no-print'}">${worktime.clientName}</td>
 								<td data-title="Category">${worktime.categoryName}</td>
-								<td data-title="User">${worktime.userName}</td>
-								<td data-title="Break Time" class="">${worktime.breakTime}</td>
-								<td data-title="Reason">${worktime.breakReason | truncate:25}</td>
-								<td data-title="Train Time" class="">${worktime.trainTime}</td>
-								<td data-title="Train Price" class="">${worktime.trainPrice}</td>
+								<td data-title="User" class="${showUserForPrint == true ? '' : 'no-print'}">${worktime.userName}</td>
+								<td data-title="Break Time" class="${showBreakTimeForPrint == true ? '' : 'no-print'}">${worktime.breakTime}</td>
+								<td data-title="Reason" class="${showBreakReasonForPrint == true ? '' : 'no-print'}">${worktime.breakReason | truncate:25}</td>
+								<td data-title="Train Time" class="${showTrainTimeForPrint == true ? '' : 'no-print'}">${worktime.trainTime}</td>
+								<td data-title="Train Price" class="${showTrainPriceForPrint == true ? '' : 'no-print'}">${worktime.trainPrice}</td>
 								<td data-title="" click.delegate="editTime(worktime.ID)" class="no-print center-align"><span title="Edit" class="material-icons ">edit</span></td>
 								<td data-title="" click.delegate="deleteTime(worktime.ID)" class="no-print center-align"><span title="Delete" class="material-icons">delete</span></td>
 							</tr>
 							<tr class="clickable">
-								<td class="hide-on-med-and-down"><b>Comment</b></td>
-								<td colspan="11" data-title="Comment" class="w-b comment">${worktime.comment}</td>
+								<td class="hide-on-med-and-down no-print"><b>Comment</b></td>
+								<td colspan="9" data-title="Comment" class="w-b comment">&nbsp;${worktime.comment} dsadsa hbjdsah jdsahjsdahj dsahj dsahj dsahj sadhj dsahj sdahjdsahj dsahjadshj adhjdashjdashj dasdajdsadsdda djahjdash </td>
 							</tr>
 					</tbody>
 				</table>
 			</div>
-			<div class="row">
+			<div class="row no-print">
 				<div class="col s12 center-align">
 					<div class="input-field inline">
 						<md-pagination hide.bind="all" class="center-align" md-show-first-last="true" md-show-prev-next="true" md-on-page-changed.delegate="pageChanged($event)" md-pages.bind="paginationPages" md-visible-page-links="5"></md-pagination>

@@ -3,8 +3,9 @@
   <require from="./styles/custom.css"></require>
   <require from="./styles/responsive-table.css"></require>
   <require from="./color-switcher.html"></require>
+
   <md-colors md-primary-color.bind="primaryColor" md-accent-color.bind="accentColor" md-error-color.bind="errorColor"></md-colors>
-  <div id="topInfos" class="">
+  <div id="topInfos" class="no-print">
     <ul md-collapsible>
       <li>
         <div class="collapsible-header"><i id="arrowDown" click.delegate="showTopInfos($event)" class="medium material-icons right">${topIcon}</i></div>

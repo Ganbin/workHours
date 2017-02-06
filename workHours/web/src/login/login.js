@@ -24,7 +24,7 @@ export class Login {
     }
 
     tryLogin() {
-        wakanda.directory.login(this.userLogin, this.password).then(() => {
+        wakanda.directory.login(this.userLogin, this.password, 86400).then(() => {
             //User is logged in
             this.auth.setCurrentUser().then((evt) => {
                 this.auth.isDataAdmin().then(() => this.router.navigate(this.datas.routeRequest));

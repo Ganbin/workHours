@@ -135,12 +135,20 @@ export class WForm {
                         if (this.showBreak) {
                             this.worktime.breakTime = this.breakTime;
                             this.worktime.breakReason = this.breakReason;
+                        } else {
+                            this.worktime.breakTime = null;
+                            this.worktime.breakReason = null;
                         }
+
 
                         if (this.showTrain) {
                             this.worktime.trainTime = this.trainTime;
                             this.worktime.trainPrice = this.trainPrice;
+                        } else {
+                              this.worktime.trainTime = null;
+                              this.worktime.trainPrice = null;
                         }
+
                         this.worktime.save().then((evt3) => {
                             if (this.edition) {
                                 this.toast.show('Entity edited!', 5000, 'green bold');

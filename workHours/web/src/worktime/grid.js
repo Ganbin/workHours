@@ -99,7 +99,7 @@ export function Grid(auth, router, utilsService, toast) {
       if (self.filtered) {
         self.getFiltered(self.startFrom, all);
       } else {
-        //self.getAll(self.startFrom, all);
+        self.getAll(self.startFrom, all);
       }
     };
 

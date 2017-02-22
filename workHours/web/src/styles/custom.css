@@ -18,6 +18,11 @@ body {
 	word-break: break-word;
 }
 
+textarea{
+  overflow-y: scroll !important;
+	max-height: 500px !important;
+	height: 100px !important;
+}
 table{
   table-layout: ;
   overflow-x:auto;

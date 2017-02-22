@@ -60,20 +60,25 @@ model.Client.methods.getReport = function (options) {
 	
 	workTimes.forEach(function (workTime){
 		var categoryClientName = workTime.categoryClient.replace(/\s|-/g, ""), label;
-		catObj[categoryClientName].time += (((workTime.end - workTime.start) - workTime.breakTimeMs)/1000/60); // Compute the time for each category in minute.
-		catObj[categoryClientName].price += (((((workTime.end - workTime.start) + (workTime.trainTimeMs)) - workTime.breakTimeMs)/1000/60/60)*workTime.categoryPriceHour); // Compute the price for each category.
-		catObj[categoryClientName].addPrice += workTime.trainPrice; // Compute the train price for each category .
-		catObj[categoryClientName].trainTime += workTime.trainTimeMs/1000/60; // Compute the train time for each category in minute.
+		
+		var breakTimeMs = isNaN(workTime.breakTimeMs) ? 0 : workTime.breakTimeMs;
+		var trainTimeMs = isNaN(workTime.trainTimeMs) ? 0 : workTime.trainTimeMs;
+		var trainPrice = isNaN(workTime.trainPrice) ? 0 : workTime.trainPrice;
+		
+		catObj[categoryClientName].time += (((workTime.end - workTime.start) - breakTimeMs)/1000/60); // Compute the time for each category in minute.
+		catObj[categoryClientName].price += (((((workTime.end - workTime.start) + (trainTimeMs)) - breakTimeMs)/1000/60/60)*workTime.categoryPriceHour); // Compute the price for each category.
+		catObj[categoryClientName].addPrice += trainPrice; // Compute the train price for each category .
+		catObj[categoryClientName].trainTime += trainTimeMs/1000/60; // Compute the train time for each category in minute.
 		
 		label = (clientName !== null && clientName === 'all') ? workTime.categoryClient : workTime.categoryName;
 		
 		catObj[categoryClientName].label = label;
 		
 		// Calculate the total
-		subTotal.time += (((workTime.end - workTime.start) - workTime.breakTimeMs)/1000/60);
-		subTotal.price += (((((workTime.end - workTime.start) + (workTime.trainTimeMs)) - workTime.breakTimeMs)/1000/60/60)*workTime.categoryPriceHour);
-		subTotal.addPrice += workTime.trainPrice;
-		subTotal.trainTime += workTime.trainTimeMs/1000/60;
+		subTotal.time += (((workTime.end - workTime.start) - breakTimeMs)/1000/60);
+		subTotal.price += (((((workTime.end - workTime.start) + (trainTimeMs)) - breakTimeMs)/1000/60/60)*workTime.categoryPriceHour);
+		subTotal.addPrice += trainPrice;
+		subTotal.trainTime += trainTimeMs/1000/60;
 	});
 	
 	total.price = subTotal.price+subTotal.addPrice;

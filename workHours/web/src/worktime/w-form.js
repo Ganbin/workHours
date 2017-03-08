@@ -154,8 +154,9 @@ export class WForm {
                                 this.toast.show('Entity edited!', 5000, 'green bold');
                             } else {
                                 this.toast.show('Entity saved!', 5000, 'green bold');
-                                this.toast.show('You can create a new time', 5000, 'green bold');
-                                this.worktime = this.ds.WorkTime.create();
+                                setTimeout(() => {
+                                  this.router.navigate('worktime');
+                                }, 500);
                             }
                         });
                     });

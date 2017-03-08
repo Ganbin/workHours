@@ -19,8 +19,9 @@ export function Grid(auth, router, utilsService, toast) {
   this.route = 'worktime';
   this.utils = utilsService;
   this.toast = toast;
-  this.startForm = 0;
+  this.startFrom = 0;
   this.paginationPages = 0;
+  this.activePage = 1;
   this.pageSize = PAGE_SIZE;
   this.from;
   this.to;
@@ -28,7 +29,7 @@ export function Grid(auth, router, utilsService, toast) {
   this.userID = '';
   this.message = '';
   this.filtered = false;
-  this.all;
+  this.all = false;
 
   function editTime(ID) {
     this.router.navigate(this.route + '/' + ID);
@@ -59,6 +60,7 @@ export function Grid(auth, router, utilsService, toast) {
         self.worktimes = evt.times;
         if (!self.all) {
           self.paginationPages = Math.ceil(evt._count / self.pageSize);
+          localStorage.setItem('paginationPages', `${self.paginationPages}`);
         }
       }).catch((err) => {
       });
@@ -82,10 +84,13 @@ export function Grid(auth, router, utilsService, toast) {
       options.clientName = self.clientName;
       options.userID = self.userID;
 
+      localStorage.setItem('filter', JSON.stringify(options));
+
       ds.WorkTime.getFiltered(options).then((evt) => {
         self.worktimes = evt.times;
         if (!self.all) {
           self.paginationPages = Math.ceil(evt._count / self.pageSize);
+          localStorage.setItem('paginationPages', `${self.paginationPages}`);
         }
       });
     };
@@ -95,6 +100,8 @@ export function Grid(auth, router, utilsService, toast) {
       self.startFrom = 0;
       if (!all) {
         self.startFrom = self.pageSize * (e.detail - 1);
+        localStorage.setItem('startFrom', `${self.startFrom}`);
+        localStorage.setItem('activePage', `${e.detail}`);
       }
       if (self.filtered) {
         self.getFiltered(self.startFrom, all);
@@ -105,6 +112,7 @@ export function Grid(auth, router, utilsService, toast) {
 
     self.pageSizeChanged = () => {
       const all = self.pageSize === 'all';
+      localStorage.setItem('pageSize', `${self.pageSize}`);
       if (self.filtered) {
         self.getFiltered(0, all);
       } else {
@@ -134,7 +142,37 @@ export function Grid(auth, router, utilsService, toast) {
       self.getFiltered(self.startFrom, all);
     };
 
-    self.getAll(0);
+    // Get back the state if one is find in the localStorage
+    if (localStorage.getItem('activePage') != null) {
+      self.activePage = parseInt(localStorage.getItem('activePage'), 10);
+    }
+    if (localStorage.getItem('paginationPages') != null) {
+      const paginationPages = localStorage.getItem('paginationPages');
+
+      self.paginationPages = parseInt(paginationPages, 10);
+    }
+    if (localStorage.getItem('startFrom') != null) {
+      const startFrom = localStorage.getItem('startFrom');
+      self.startFrom = parseInt(startFrom, 10);
+    }
+    if (localStorage.getItem('pageSize') != null) {
+      const pageSize = localStorage.getItem('pageSize');
+      self.pageSize = pageSize;
+      if (pageSize === 'all') {
+        self.all = true;
+      }
+    }
+    if (localStorage.getItem('filter') != null) {
+      const filter = JSON.parse(localStorage.getItem('filter'));
+      self.filtered = true;
+      self.from = new Date(filter.from);
+      self.to = new Date(filter.to);
+      self.clientName = filter.clientName;
+      self.userID = filter.userID;
+      self.getFiltered(self.startFrom, self.all);
+    } else {
+      self.getAll(self.startFrom, self.all);
+    }
   });
 }
 Grid.inject = [Auth, AppRouter, utils, MdToastService];

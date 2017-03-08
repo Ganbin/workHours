@@ -11,8 +11,8 @@ const wakanda = new WakandaClient(`http://${hostname}:${port}`);
 
 @inject(Element, NewInstance.of(ValidationController), Auth)
 export class Filter {
-    @bindable({ defaultBindingMode: bindingMode.twoWay }) FFrom = new Date();
-    @bindable({ defaultBindingMode: bindingMode.twoWay }) FTo = new Date();
+    @bindable({ defaultBindingMode: bindingMode.twoWay }) FFrom;
+    @bindable({ defaultBindingMode: bindingMode.twoWay }) FTo;
     @bindable({ defaultBindingMode: bindingMode.twoWay }) FClientName = 'all';
     @bindable({ defaultBindingMode: bindingMode.twoWay }) FUserId;
     customDate = false;
@@ -54,7 +54,10 @@ export class Filter {
                 this.FUserId = this.auth.user.ID;
             }
         });
-        this.thisMonth(); // Initialize the default range to this month
+
+        if (this.FFrom == null || this.FTo == null) {
+            this.thisMonth(); // Initialize the default range to this month
+        }
 
         if (this.FClientName === 'all') {
             this.allClients = true;

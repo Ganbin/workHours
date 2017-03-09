@@ -28,8 +28,8 @@ export function Grid(auth, router, utilsService, toast) {
   this.clientName = 'all';
   this.userID = '';
   this.message = '';
-  this.filtered = false;
   this.all = false;
+  this.filtered = false;
 
   function editTime(ID) {
     this.router.navigate(this.route + '/' + ID);
@@ -37,8 +37,15 @@ export function Grid(auth, router, utilsService, toast) {
   function addWorkTime() {
     this.router.navigate(this.route + '/add');
   }
+  function removeFilter() {
+    this.filtered = !this.filtered;
+    localStorage.removeItem('filter');
+    self.getAll(0, self.all);
+  }
   this.editTime = editTime;
   this.addWorkTime = addWorkTime;
+  this.removeFilter = removeFilter;
+
 
   wakanda.getCatalog(['WorkTime', 'Client', 'Category', 'CategoryUser', 'User']).then((ds) => {
     /**

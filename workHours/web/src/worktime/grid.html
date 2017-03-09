@@ -36,6 +36,9 @@
 				</div>
 			</li>
 		</ul>
+		<div class="row m-t-20" show.two-way="filtered">
+			<button md-button="" type="button" md-waves title="Remove Filters" click.delegate="removeFilter()" class="accent no-print right">Remove Filters</button>
+		</div>
 		<filter apply-filter.delegate="applyFilter($event)" f-from.bind="from" f-to.bind="to" f-user-id.bind="userID" f-client-name.bind="clientName" class="no-print"></filter>
 		<h5 class="center-align">${message}</h5>
 		<div class="">

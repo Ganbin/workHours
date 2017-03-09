@@ -2,9 +2,9 @@
   <require from="materialize-css/css/materialize.css"></require>
   <require from="./styles/custom.css"></require>
   <require from="./styles/responsive-table.css"></require>
-  <require from="./color-switcher.html"></require>
+  <require from="./color-switcher"></require>
 
-  <md-colors md-primary-color.bind="primaryColor" md-accent-color.bind="accentColor" md-error-color.bind="errorColor"></md-colors>
+  <md-colors md-primary-color.two-way="primaryColor" md-accent-color.two-way="accentColor" md-error-color.two-way="errorColor"></md-colors>
   <div id="topInfos" class="no-print">
     <ul md-collapsible>
       <li>

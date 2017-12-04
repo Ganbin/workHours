@@ -327,13 +327,13 @@
 				}
 			],
 			"methods": [
-				{
-					"name": "getReport",
-					"applyTo": "dataClass",
-					"scope": "public",
-					"from": "$mainModel.Client.methods.getReport",
-					"userDefined": true
-				}
+			{
+				"name": "getReport",
+				"applyTo": "dataClass",
+				"scope": "public",
+				"from": "$mainModel.Client.methods.getReport",
+				"userDefined": true
+			}
 			]
 		},
 		{

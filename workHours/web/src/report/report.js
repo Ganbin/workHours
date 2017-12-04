@@ -13,6 +13,7 @@ export class Report {
   clientName = 'all';
   userID = '';
   message = '';
+  csvText = '';
 
   constructor() {
   }
@@ -39,14 +40,18 @@ export class Report {
   getReport(options) {
     this.ds.Client.getReport(options).then((evt) => {
       this.reportData = [];
+      this.csvText = evt.csv;
       for (const cat in evt) {
-        this.reportData.push({'name': cat,
-          'time': evt[cat].time,
-          'price': evt[cat].price,
-          'addPrice': evt[cat].addPrice,
-          'trainTime': evt[cat].trainTime,
-          'label': evt[cat].label
-        });
+        if (cat !== 'csv') {
+          this.reportData.push({
+            'name': cat,
+            'time': evt[cat].time,
+            'price': evt[cat].price,
+            'addPrice': evt[cat].addPrice,
+            'trainTime': evt[cat].trainTime,
+            'label': evt[cat].label
+          });
+        }
       }
     });
   }

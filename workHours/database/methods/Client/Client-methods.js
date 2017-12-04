@@ -25,7 +25,7 @@ model.Client.methods.getReport = function (options) {
   catObj = {};
   subTotal = {'time':0,'price':0,'addPrice':0,'trainTime':0};
   total = {'time':0,'price':0,'addPrice':0,'trainTime':0};
-  csv = 'start,end,duration,client,category,user,break,reason,train time,train price';
+  csv = 'start,end,duration,client,category,comment,user,break,reason,train time,train price\n\r';
 
   if (options === undefined || options.from === undefined || options.to === undefined) {
     throw new Error('Must give a from and to date');
@@ -81,8 +81,13 @@ model.Client.methods.getReport = function (options) {
     subTotal.addPrice += trainPrice;
     subTotal.trainTime += trainTimeMs/1000/60;
 
-    csv += '\n'+workTime.start+';'+workTime.end+';'+workTime.timeWorked+';'+workTime.categoryName+';'+workTime.clientName+';'+workTime.breakTimeMs+';'+workTime.breakReason+';'+workTime.trainTimeMs+';'+workTime.trainPrice;
-  });
+    var comment = workTime.comment.replace(/\\n/g, "\n").replace(/"/g,'\'');
+
+
+    csv += workTime.start+','+workTime.end+','+(((workTime.timeWorked)/1000)/60)+','+workTime.clientName+','+workTime.categoryName+',\"'+comment+'\",'+workTime.userName+',';
+    csv += (((breakTimeMs)/1000)/60)+','+workTime.breakReason+','+(((trainTimeMs)/1000)/60)+','+trainPrice+'\n\r';
+
+    });
 
   total.price = subTotal.price+subTotal.addPrice;
   total.time = subTotal.time;
